@@ -28,16 +28,14 @@ export const useGameStore = defineStore('game', () => {
   })
 
   function shuffleCars() {
-    console.log('shuffleCars called')
     shuffledCars.value = [...cars.value].sort(() => Math.random() - 0.5)
-    console.log('shuffledCars after shuffle:', shuffledCars.value)
+    console.log('Cars shuffled:', shuffledCars.value)
   }
 
   function resetGame() {
-    console.log('resetGame called')
     shuffleCars()
     placedCars.value = [null, null, null, null, null, null, null, null]
-    console.log('shuffledCars after reset:', shuffledCars.value)
+    console.log('Game reset, shuffled cars:', shuffledCars.value)
   }
 
   function placeCar(carId: number, zoneIndex: number) {
@@ -48,10 +46,27 @@ export const useGameStore = defineStore('game', () => {
     }
   }
 
-  // Call resetGame immediately to initialize the game state
+  function removeCar(zoneIndex: number) {
+    const removedCar = placedCars.value[zoneIndex]
+    if (removedCar) {
+      shuffledCars.value.push(removedCar)
+      placedCars.value[zoneIndex] = null
+    }
+  }
+
+  // Initialize the game
   resetGame()
 
-  return { cars, shuffledCars, placedCars, isGameComplete, shuffleCars, resetGame, placeCar }
+  return {
+    cars,
+    shuffledCars,
+    placedCars,
+    isGameComplete,
+    shuffleCars,
+    resetGame,
+    placeCar,
+    removeCar
+  }
 })
 
 export type GameStore = ReturnType<typeof useGameStore>
