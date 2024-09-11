@@ -120,29 +120,31 @@ const preventDefaultTouchMove = (e: TouchEvent) => {
 
 <template>
   <div
-    class="game-screen w-full flex flex-col items-center gap-10 h-screen bg-sky-800 text-slate-50 p-10 overflow-hidden touch-none">
+    class="game-screen w-full flex flex-col items-center gap-4 h-screen bg-sky-800 text-slate-50 p-4 overflow-hidden touch-none">
     <div class="flex flex-col items-center gap-2">
 
       <h1 class="text-2xl font-bold">VolksWagen History Game</h1>
       <p class="text-md font-semibold mb-1">Place each car to their creation year</p>
     </div>
-    <div class="flex flex-col items-center mb-1">
-      <div class="flex pb-1 drop-zone" :data-zone-id="0">
-        <div v-for="car in initialList" :key="car.id" class="car-item flex-shrink-0 mr-1 text-center"
-          :data-car-id="car.id">
-          <img :src="car.image" :alt="car.name" class=" h-auto mb-0.5">
-          <p class="text-xs">{{ car.name }}</p>
+    <div class="w-full overflow-x-auto">
+      <div class="flex justify-center pb-1 drop-zone" :data-zone-id="0">
+        <div class="inline-flex space-x-2">
+          <div v-for="car in initialList" :key="car.id" class="car-item flex-shrink-0 text-center"
+            :data-car-id="car.id">
+            <img :src="car.image" :alt="car.name" class="h-16 w-auto object-contain mb-0.5">
+            <p class="text-xs">{{ car.name }}</p>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="drop-zones w-full flex flex-col items-center justify-center p-1">
+    <div class="drop-zones w-full flex items-center justify-center p-1">
       <div class="flex justify-between w-full gap-1">
-        <div v-for="zone in zones" :key="zone.id" class="drop-zone w-[calc(25%-0.25rem)] p-1 bg-sky-700 rounded-md"
+        <div v-for="zone in zones" :key="zone.id" class="drop-zone flex-1 p-1 bg-sky-700 rounded-md"
           :data-zone-id="zone.id">
-          <div class="min-h-[100px] mb-0.5">
-            <div v-if="zone.car" class="car-item" :data-car-id="zone.car.id">
-              <img :src="zone.car.image" :alt="zone.car.name" class="w-full">
+          <div class="aspect-square mb-0.5">
+            <div v-if="zone.car" class="car-item h-full flex items-center justify-center" :data-car-id="zone.car.id">
+              <img :src="zone.car.image" :alt="zone.car.name" class="max-w-full max-h-full object-contain">
             </div>
           </div>
           <p class="text-center font-semibold text-xs">{{ zone.year }}</p>
@@ -160,5 +162,24 @@ const preventDefaultTouchMove = (e: TouchEvent) => {
 .game-screen {
   overscroll-behavior: none;
   touch-action: none;
+}
+
+.drop-zone {
+  min-width: 60px;
+  scrollbar-width: none;
+  /* For Firefox */
+  -ms-overflow-style: none;
+  /* For Internet Explorer and Edge */
+}
+
+.drop-zone::-webkit-scrollbar {
+  display: none;
+  /* For Chrome, Safari, and Opera */
+}
+
+@media (max-width: 640px) {
+  .drop-zone {
+    min-width: 40px;
+  }
 }
 </style>
