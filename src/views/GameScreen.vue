@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { Button } from '@/components/ui/button'
 
@@ -32,15 +32,37 @@ const isAllCarsPlaced = computed(() => {
 })
 
 const draggedCar = ref<Car | null>(null)
+const touchedCar = ref<Car | null>(null)
+const touchStartX = ref(0)
+const touchStartY = ref(0)
 
-const onDragStart = (car: Car) => {
+// Add these new refs
+const ghostPosition = ref({ x: 0, y: 0 })
+const showGhost = ref(false)
+
+// Modify onDragStart
+const onDragStart = (car: Car, event: DragEvent | TouchEvent) => {
   draggedCar.value = car
+  if (event.type === 'touchstart') {
+    const touch = (event as TouchEvent).touches[0]
+    touchedCar.value = car
+    touchStartX.value = touch.clientX
+    touchStartY.value = touch.clientY
+    ghostPosition.value = { x: touch.clientX, y: touch.clientY }
+    showGhost.value = true
+  }
 }
 
-const onDragEnd = () => {
+// Modify onDragEnd
+const onDragEnd = (event: DragEvent | TouchEvent) => {
   draggedCar.value = null
+  if (event.type === 'touchend') {
+    touchedCar.value = null
+    showGhost.value = false
+  }
 }
 
+// Modify onDragOver
 const onDragOver = (event: DragEvent) => {
   event.preventDefault()
 }
@@ -87,22 +109,55 @@ const checkAnswers = () => {
   }
 }
 
+// Modify onTouchMove
+const onTouchMove = (event: TouchEvent) => {
+  if (touchedCar.value) {
+    event.preventDefault()
+    const touch = event.touches[0]
+    ghostPosition.value = { x: touch.clientX, y: touch.clientY }
+    const dropZone = document.elementFromPoint(touch.clientX, touch.clientY) as HTMLElement
+    const zoneId = dropZone?.dataset.zoneId
+    if (zoneId) {
+      onDrop(parseInt(zoneId))
+    }
+  }
+}
+
+// Add this new function
+const preventDefault = (e: Event) => {
+  e.preventDefault()
+}
+
 onMounted(() => {
   resetGame()
+  // Add these event listeners
+  document.addEventListener('touchmove', preventDefault, { passive: false })
+  document.addEventListener('touchstart', preventDefault, { passive: false })
 })
+
+// Add this onUnmounted hook
+onUnmounted(() => {
+  // Remove the event listeners when the component is unmounted
+  document.removeEventListener('touchmove', preventDefault)
+  document.removeEventListener('touchstart', preventDefault)
+})
+
 </script>
 
 <template>
-  <div class="game-screen w-full flex flex-col items-center justify-center min-h-screen bg-sky-700 text-slate-50 p-4">
+  <div
+    class="game-screen w-full flex flex-col items-center justify-between min-h-screen bg-sky-700 text-slate-50 p-4 overflow-hidden"
+    @touchmove.prevent="onTouchMove" @touchstart.prevent>
     <h1 class="text-2xl font-bold mb-8">VolksWagen History Game</h1>
 
-    <div class="flex flex-col items-center cars-to-place mb-8">
-      <h2 class="text-base font-semibold mb-4">Place each car to their creation year</h2>
-      <div class="flex overflow-x-auto pb-4">
+    <div class="flex flex-col items-center cars-to-place mb-4">
+      <h2 class="text-base font-semibold mb-2">Place each car to their creation year</h2>
+      <div class="flex overflow-x-auto pb-2">
         <div v-for="car in initialList" :key="car.id" class="car-item flex-shrink-0 mr-4 text-center cursor-move"
-          draggable="true" @dragstart="onDragStart(car)" @dragend="onDragEnd">
-          <img :src="car.image" :alt="car.name" class="w-32 h-auto mb-2">
-          <p class="text-sm">{{ car.name }}</p>
+          draggable="true" @dragstart="(e) => onDragStart(car, e)" @dragend="onDragEnd"
+          @touchstart="(e) => onDragStart(car, e)" @touchend="onDragEnd">
+          <img :src="car.image" :alt="car.name" class="w-24 h-auto mb-1">
+          <p class="text-xs">{{ car.name }}</p>
         </div>
       </div>
     </div>
@@ -111,10 +166,11 @@ onMounted(() => {
       <div class="flex justify-between w-full gap-8">
         <div v-for="zone in zones" :key="zone.id"
           class="drop-zone w-[calc(25%-1rem)] mb-4 p-4 ring-2 ring-slate-50 rounded-lg" @dragover="onDragOver"
-          @drop="onDrop(zone.id)">
+          @drop="onDrop(zone.id)" :data-zone-id="zone.id">
           <div class="min-h-[100px] mb-2">
             <img v-if="zone.car" :src="zone.car.image" :alt="zone.car.name" class="w-full h-auto cursor-move"
-              draggable="true" @dragstart="onDragStart(zone.car)" @dragend="onDragEnd">
+              draggable="true" @dragstart="(e) => onDragStart(zone.car!, e)" @dragend="onDragEnd"
+              @touchstart="(e) => onDragStart(zone.car!, e)" @touchend="onDragEnd">
           </div>
           <p class="text-center font-semibold">{{ zone.year }}</p>
         </div>
@@ -124,5 +180,17 @@ onMounted(() => {
     <div class="mt-8 text-center">
       <Button @click="checkAnswers" :disabled="!isAllCarsPlaced">Submit Answers</Button>
     </div>
+
+    <!-- Add the ghost element -->
+    <div v-if="showGhost" class="ghost-car fixed pointer-events-none z-50 opacity-70"
+      :style="{ left: `${ghostPosition.x}px`, top: `${ghostPosition.y}px`, transform: 'translate(-50%, -50%)' }">
+      <img :src="touchedCar?.image" :alt="touchedCar?.name" class="w-16 h-auto">
+    </div>
   </div>
 </template>
+
+<style scoped>
+.ghost-car {
+  transition: left 0.1s, top 0.1s;
+}
+</style>
