@@ -45,9 +45,10 @@ const onSubmit = form.handleSubmit(async (values) => {
 
 <template>
   <div class="flex items-center justify-center min-h-screen bg-gray-100">
-    <div class="w-full max-w-md">
-      <h2 class="text-3xl font-bold text-center mb-6">Enter Your Details</h2>
-      <Form @submit="onSubmit" class="space-y-8">
+    <div class="w-full max-w-[800px] flex items-center">
+      <h1 class="text-2xl font-bold text-center mb-1">Congrats! You've made it to the end!</h1>
+      <h3 class="text-1xl font-bold text-center mb-6">Enter Your Details and have a chance to win a prize!</h3>
+      <Form @submit.prevent="onSubmit" class="w-full flex flex-col gap-5 max-w-[600px]">
         <FormField v-slot="{ componentField }" name="name">
           <FormItem>
             <FormLabel>Name</FormLabel>
@@ -72,11 +73,10 @@ const onSubmit = form.handleSubmit(async (values) => {
             <FormMessage />
           </FormItem>
         </FormField>
-        <Button type="submit" :disabled="form.isSubmitting">
-          {{ form.isSubmitting ? 'Submitting...' : 'Submit' }}
+        <Button type="submit">
+          Submit
         </Button>
       </Form>
     </div>
   </div>
 </template>
-```
