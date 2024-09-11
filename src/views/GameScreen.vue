@@ -2,6 +2,7 @@
 import { ref, onMounted, computed, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { Button } from '@/components/ui/button'
+import { Sortable } from '@shopify/draggable'
 
 interface Car {
   id: number
@@ -31,64 +32,6 @@ const isAllCarsPlaced = computed(() => {
   return initialList.value.length === 0 && zones.value.every(zone => zone.car !== null)
 })
 
-const draggedCar = ref<Car | null>(null)
-const touchedCar = ref<Car | null>(null)
-const touchStartX = ref(0)
-const touchStartY = ref(0)
-
-// Add these new refs
-const ghostPosition = ref({ x: 0, y: 0 })
-const showGhost = ref(false)
-
-// Modify onDragStart
-const onDragStart = (car: Car, event: DragEvent | TouchEvent) => {
-  draggedCar.value = car
-  if (event.type === 'touchstart') {
-    const touch = (event as TouchEvent).touches[0]
-    touchedCar.value = car
-    touchStartX.value = touch.clientX
-    touchStartY.value = touch.clientY
-    ghostPosition.value = { x: touch.clientX, y: touch.clientY }
-    showGhost.value = true
-  }
-}
-
-// Modify onDragEnd
-const onDragEnd = (event: DragEvent | TouchEvent) => {
-  draggedCar.value = null
-  if (event.type === 'touchend') {
-    touchedCar.value = null
-    showGhost.value = false
-  }
-}
-
-// Modify onDragOver
-const onDragOver = (event: DragEvent) => {
-  event.preventDefault()
-}
-
-const onDrop = (zoneId: number) => {
-  if (!draggedCar.value) return
-
-  const sourceZone = zones.value.find(zone => zone.car && zone.car.id === draggedCar.value?.id)
-  const targetZone = zones.value.find(zone => zone.id === zoneId)
-
-  if (sourceZone) {
-    sourceZone.car = null
-  } else {
-    initialList.value = initialList.value.filter(car => car.id !== draggedCar.value?.id)
-  }
-
-  if (targetZone) {
-    if (targetZone.car) {
-      initialList.value.push(targetZone.car)
-    }
-    targetZone.car = draggedCar.value
-  }
-
-  draggedCar.value = null
-}
-
 const resetGame = () => {
   initialList.value = [...cars.value].sort(() => Math.random() - 0.5)
   zones.value.forEach(zone => zone.car = null)
@@ -109,88 +52,113 @@ const checkAnswers = () => {
   }
 }
 
-// Modify onTouchMove
-const onTouchMove = (event: TouchEvent) => {
-  if (touchedCar.value) {
-    event.preventDefault()
-    const touch = event.touches[0]
-    ghostPosition.value = { x: touch.clientX, y: touch.clientY }
-    const dropZone = document.elementFromPoint(touch.clientX, touch.clientY) as HTMLElement
-    const zoneId = dropZone?.dataset.zoneId
-    if (zoneId) {
-      onDrop(parseInt(zoneId))
-    }
-  }
-}
-
-// Add this new function
-const preventDefault = (e: Event) => {
-  e.preventDefault()
-}
+// Add this computed property
+const isMobile = computed(() => window.innerWidth < 768)
 
 onMounted(() => {
   resetGame()
-  // Add these event listeners
-  document.addEventListener('touchmove', preventDefault, { passive: false })
-  document.addEventListener('touchstart', preventDefault, { passive: false })
+
+  const containers = document.querySelectorAll('.drop-zone')
+  const sortable = new Sortable(containers, {
+    draggable: '.car-item',
+    mirror: {
+      appendTo: 'body',
+      constrainDimensions: true,
+    },
+  })
+
+  sortable.on('sortable:stop', (event) => {
+    const { newContainer, oldContainer, dragEvent } = event
+    const carId = parseInt(dragEvent.source.dataset.carId!)
+    const newZoneId = parseInt(newContainer.dataset.zoneId!)
+    const oldZoneId = parseInt(oldContainer.dataset.zoneId!)
+
+    updateZones(carId, newZoneId, oldZoneId)
+  })
+
+  // Prevent pull-to-refresh
+  document.body.style.overscrollBehavior = 'none'
+
+  // Prevent default touch move behavior
+  document.addEventListener('touchmove', preventDefaultTouchMove, { passive: false })
 })
 
-// Add this onUnmounted hook
 onUnmounted(() => {
-  // Remove the event listeners when the component is unmounted
-  document.removeEventListener('touchmove', preventDefault)
-  document.removeEventListener('touchstart', preventDefault)
+  // Clean up event listener
+  document.removeEventListener('touchmove', preventDefaultTouchMove)
+  document.body.style.overscrollBehavior = ''
 })
+
+const updateZones = (carId: number, newZoneId: number, oldZoneId: number) => {
+  const car = cars.value.find(c => c.id === carId)
+  if (!car) return
+
+  const newZone = zones.value.find(z => z.id === newZoneId)
+  const oldZone = zones.value.find(z => z.id === oldZoneId)
+
+  if (oldZone) {
+    oldZone.car = null
+  } else {
+    initialList.value = initialList.value.filter(c => c.id !== carId)
+  }
+
+  if (newZone) {
+    if (newZone.car) {
+      initialList.value.push(newZone.car)
+    }
+    newZone.car = car
+  }
+}
+
+const preventDefaultTouchMove = (e: TouchEvent) => {
+  if (e.target instanceof Element && e.target.closest('.game-screen')) {
+    e.preventDefault()
+  }
+}
 
 </script>
 
 <template>
   <div
-    class="game-screen w-full flex flex-col items-center justify-between min-h-screen bg-sky-700 text-slate-50 p-4 overflow-hidden"
-    @touchmove.prevent="onTouchMove" @touchstart.prevent>
-    <h1 class="text-2xl font-bold mb-8">VolksWagen History Game</h1>
+    class="game-screen w-full flex flex-col items-center gap-10 h-screen bg-sky-800 text-slate-50 p-10 overflow-hidden touch-none">
+    <div class="flex flex-col items-center gap-2">
 
-    <div class="flex flex-col items-center cars-to-place mb-4">
-      <h2 class="text-base font-semibold mb-2">Place each car to their creation year</h2>
-      <div class="flex overflow-x-auto pb-2">
-        <div v-for="car in initialList" :key="car.id" class="car-item flex-shrink-0 mr-4 text-center cursor-move"
-          draggable="true" @dragstart="(e) => onDragStart(car, e)" @dragend="onDragEnd"
-          @touchstart="(e) => onDragStart(car, e)" @touchend="onDragEnd">
-          <img :src="car.image" :alt="car.name" class="w-24 h-auto mb-1">
+      <h1 class="text-2xl font-bold">VolksWagen History Game</h1>
+      <p class="text-md font-semibold mb-1">Place each car to their creation year</p>
+    </div>
+    <div class="flex flex-col items-center mb-1">
+      <div class="flex pb-1 drop-zone" :data-zone-id="0">
+        <div v-for="car in initialList" :key="car.id" class="car-item flex-shrink-0 mr-1 text-center"
+          :data-car-id="car.id">
+          <img :src="car.image" :alt="car.name" class=" h-auto mb-0.5">
           <p class="text-xs">{{ car.name }}</p>
         </div>
       </div>
     </div>
 
-    <div class="drop-zones w-full flex flex-col items-center justify-center  p-8">
-      <div class="flex justify-between w-full gap-8">
-        <div v-for="zone in zones" :key="zone.id"
-          class="drop-zone w-[calc(25%-1rem)] mb-4 p-4 ring-2 ring-slate-50 rounded-lg" @dragover="onDragOver"
-          @drop="onDrop(zone.id)" :data-zone-id="zone.id">
-          <div class="min-h-[100px] mb-2">
-            <img v-if="zone.car" :src="zone.car.image" :alt="zone.car.name" class="w-full h-auto cursor-move"
-              draggable="true" @dragstart="(e) => onDragStart(zone.car!, e)" @dragend="onDragEnd"
-              @touchstart="(e) => onDragStart(zone.car!, e)" @touchend="onDragEnd">
+    <div class="drop-zones w-full flex flex-col items-center justify-center p-1">
+      <div class="flex justify-between w-full gap-1">
+        <div v-for="zone in zones" :key="zone.id" class="drop-zone w-[calc(25%-0.25rem)] p-1 bg-sky-700 rounded-md"
+          :data-zone-id="zone.id">
+          <div class="min-h-[100px] mb-0.5">
+            <div v-if="zone.car" class="car-item" :data-car-id="zone.car.id">
+              <img :src="zone.car.image" :alt="zone.car.name" class="w-full">
+            </div>
           </div>
-          <p class="text-center font-semibold">{{ zone.year }}</p>
+          <p class="text-center font-semibold text-xs">{{ zone.year }}</p>
         </div>
       </div>
     </div>
 
-    <div class="mt-8 text-center">
-      <Button @click="checkAnswers" :disabled="!isAllCarsPlaced">Submit Answers</Button>
-    </div>
-
-    <!-- Add the ghost element -->
-    <div v-if="showGhost" class="ghost-car fixed pointer-events-none z-50 opacity-70"
-      :style="{ left: `${ghostPosition.x}px`, top: `${ghostPosition.y}px`, transform: 'translate(-50%, -50%)' }">
-      <img :src="touchedCar?.image" :alt="touchedCar?.name" class="w-16 h-auto">
+    <div class="text-center">
+      <Button @click="checkAnswers" :disabled="!isAllCarsPlaced" class="text-base">Submit your answer</Button>
     </div>
   </div>
 </template>
 
 <style scoped>
-.ghost-car {
-  transition: left 0.1s, top 0.1s;
+.game-screen {
+  overscroll-behavior: none;
+  touch-action: none;
 }
 </style>

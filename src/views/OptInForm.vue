@@ -44,7 +44,7 @@ const onSubmit = form.handleSubmit(async (values) => {
 </script>
 
 <template>
-  <div class="flex items-center justify-center min-h-screen bg-gray-100">
+  <div class="flex items-center justify-center min-h-screen bg-sky-800 text-slate-50">
     <div class="w-full max-w-[800px] flex items-center">
       <h1 class="text-2xl font-bold text-center mb-1">Congrats! You've made it to the end!</h1>
       <h3 class="text-1xl font-bold text-center mb-6">Enter Your Details and have a chance to win a prize!</h3>
