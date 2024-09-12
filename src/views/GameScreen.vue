@@ -110,7 +110,7 @@ const updateZones = (carId: number, newZoneId: number, oldZoneId: number) => {
   }
 }
 
-const preventDefaultTouchMove = (e: TouchEvent) => {
+const preventDefaultTouchMove = (e: TouchEvent) => 
   if (e.target instanceof Element && e.target.closest('.game-screen')) {
     e.preventDefault()
   }
@@ -126,28 +126,28 @@ const preventDefaultTouchMove = (e: TouchEvent) => {
       <h1 class="text-2xl font-bold">VolksWagen History Game</h1>
       <p class="text-md font-semibold mb-1">Place each car to their creation year</p>
     </div>
-    <div class="w-full overflow-x-auto">
-      <div class="flex justify-center pb-1 drop-zone" :data-zone-id="0">
-        <div class="inline-flex space-x-2">
-          <div v-for="car in initialList" :key="car.id" class="car-item flex-shrink-0 text-center"
-            :data-car-id="car.id">
-            <img :src="car.image" :alt="car.name" class="h-16 w-auto object-contain mb-0.5">
-            <p class="text-xs">{{ car.name }}</p>
-          </div>
+    <div class="initial-cars-wrapper w-full flex justify-center">
+      <div class="flex pb-1 drop-zone initial-cars-container" :data-zone-id="0">
+        <div v-for="car in initialList" :key="car.id" class="car-item flex flex-col items-center justify-center"
+          :data-car-id="car.id">
+          <img :src="car.image" :alt="car.name" class="car-image object-contain mb-0.5">
+          <p class="text-xs">{{ car.name }}</p>
         </div>
       </div>
     </div>
 
     <div class="drop-zones w-full flex items-center justify-center p-1">
       <div class="flex justify-between w-full gap-1">
-        <div v-for="zone in zones" :key="zone.id" class="drop-zone flex-1 p-1 bg-sky-700 rounded-md"
+        <div v-for="zone in zones" :key="zone.id"
+          class="drop-zone flex-1 p-1 bg-sky-700 min-h-[150px]  rounded-md flex flex-col items-center justify-center"
           :data-zone-id="zone.id">
-          <div class="aspect-square mb-0.5">
-            <div v-if="zone.car" class="car-item h-full flex items-center justify-center" :data-car-id="zone.car.id">
+          <p class="text-center font-semibold text-xs absolute top-1">{{ zone.year }}</p>
+          <div class="car-container">
+            <div v-if="zone.car" class="car-item flex items-center justify-center" :data-car-id="zone.car.id">
               <img :src="zone.car.image" :alt="zone.car.name" class="max-w-full max-h-full object-contain">
+              <p class="text-xs">{{ zone.car.name }}</p>
             </div>
           </div>
-          <p class="text-center font-semibold text-xs">{{ zone.year }}</p>
         </div>
       </div>
     </div>
@@ -166,15 +166,86 @@ const preventDefaultTouchMove = (e: TouchEvent) => {
 
 .drop-zone {
   min-width: 60px;
-  scrollbar-width: none;
-  /* For Firefox */
-  -ms-overflow-style: none;
-  /* For Internet Explorer and Edge */
+  height: 100px;
+  /* Fixed height */
+  position: relative;
+  overflow: hidden;
 }
 
-.drop-zone::-webkit-scrollbar {
+.drop-zone .car-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.drop-zone .car-item,
+.drop-zone .sortable-ghost {
+  max-width: 100%;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.drop-zone img {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+}
+
+.initial-cars-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.initial-cars-wrapper::-webkit-scrollbar {
   display: none;
-  /* For Chrome, Safari, and Opera */
+}
+
+.initial-cars-container {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  padding-bottom: 1rem;
+  justify-content: center;
+}
+
+.car-item {
+  flex: 0 0 auto;
+  width: 80px;
+  margin: 0 0.25rem;
+}
+
+.car-image {
+  width: 100%;
+  height: auto;
+  max-height: 80px;
+  object-fit: contain;
+}
+
+@media (min-width: 640px) {
+  .car-item {
+    width: 100px;
+  }
+
+  .car-image {
+    max-height: 100px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .car-item {
+    width: 120px;
+  }
+
+  .car-image {
+    max-height: 120px;
+  }
 }
 
 @media (max-width: 640px) {
