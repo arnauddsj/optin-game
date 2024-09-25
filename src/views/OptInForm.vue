@@ -2,11 +2,9 @@
 import { useRouter } from 'vue-router'
 import { useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { Label } from '@/components/ui/label'
-
 import * as z from 'zod'
 
 const router = useRouter()
@@ -16,11 +14,11 @@ const formSchema = toTypedSchema(z.object({
   email: z.string().email('Invalid email address'),
 }))
 
-const form = useForm({
+const { handleSubmit, resetForm } = useForm({
   validationSchema: formSchema,
 })
 
-const onSubmit = form.handleSubmit(async (values) => {
+const onSubmit = handleSubmit(async (values) => {
   try {
     // Simulating API call to Airtable
     await new Promise(resolve => setTimeout(resolve, 1000))
@@ -35,7 +33,7 @@ const onSubmit = form.handleSubmit(async (values) => {
     localStorage.setItem('optInUserData', JSON.stringify(updatedData))
 
     // Reset form and redirect
-    form.resetForm()
+    resetForm()
     router.push('/')
   } catch (error) {
     console.error('Error submitting form:', error)
@@ -45,15 +43,15 @@ const onSubmit = form.handleSubmit(async (values) => {
 
 <template>
   <div class="flex items-center justify-center min-h-screen bg-sky-800 text-slate-50">
-    <div class="w-full max-w-[800px] flex items-center">
+    <div class="w-full max-w-[800px] flex flex-col items-center">
       <h1 class="text-2xl font-bold text-center mb-1">Congrats! You've made it to the end!</h1>
-      <h3 class="text-1xl font-bold text-center mb-6">Enter Your Details and have a chance to win a prize!</h3>
-      <Form @submit.prevent="onSubmit" class="w-full flex flex-col gap-5 max-w-[600px]">
-        <FormField v-slot="{ componentField }" name="name">
+      <h3 class="text-xl font-bold text-center mb-6">Enter Your Details and have a chance to win a prize!</h3>
+      <form @submit="onSubmit" class="w-full flex flex-col gap-5 max-w-[600px]">
+        <FormField v-slot="{ field }" name="name">
           <FormItem>
             <FormLabel>Name</FormLabel>
             <FormControl>
-              <Input v-bind="componentField" placeholder="Your name" />
+              <Input v-bind="field" placeholder="Your name" />
             </FormControl>
             <FormDescription>
               Enter your full name.
@@ -61,11 +59,11 @@ const onSubmit = form.handleSubmit(async (values) => {
             <FormMessage />
           </FormItem>
         </FormField>
-        <FormField v-slot="{ componentField }" name="email">
+        <FormField v-slot="{ field }" name="email">
           <FormItem>
             <FormLabel>Email</FormLabel>
             <FormControl>
-              <Input v-bind="componentField" type="email" placeholder="your.email@example.com" />
+              <Input v-bind="field" type="email" placeholder="your.email@example.com" />
             </FormControl>
             <FormDescription>
               Enter your email address.
@@ -76,7 +74,7 @@ const onSubmit = form.handleSubmit(async (values) => {
         <Button type="submit">
           Submit
         </Button>
-      </Form>
+      </form>
     </div>
   </div>
 </template>

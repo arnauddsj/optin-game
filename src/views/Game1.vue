@@ -3,6 +3,7 @@ import { ref, onMounted, computed, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { Button } from '@/components/ui/button'
 import { Sortable } from '@shopify/draggable'
+import PublicLayout from '@/layouts/Public.vue'
 
 interface Car {
   id: number
@@ -51,9 +52,6 @@ const checkAnswers = () => {
     alert("Please place all cars before submitting.")
   }
 }
-
-// Add this computed property
-const isMobile = computed(() => window.innerWidth < 768)
 
 onMounted(() => {
   resetGame()
@@ -110,7 +108,7 @@ const updateZones = (carId: number, newZoneId: number, oldZoneId: number) => {
   }
 }
 
-const preventDefaultTouchMove = (e: TouchEvent) => 
+const preventDefaultTouchMove = (e: TouchEvent) => {
   if (e.target instanceof Element && e.target.closest('.game-screen')) {
     e.preventDefault()
   }
@@ -119,138 +117,50 @@ const preventDefaultTouchMove = (e: TouchEvent) =>
 </script>
 
 <template>
-  <div
-    class="game-screen w-full flex flex-col items-center gap-4 h-screen bg-sky-800 text-slate-50 p-4 overflow-hidden touch-none">
-    <div class="flex flex-col items-center gap-2">
+  <PublicLayout>
+    <div
+      class="game-screen w-full flex flex-col items-center gap-4 h-screen bg-sky-800 text-slate-50 p-4 overflow-hidden touch-none">
+      <div class="flex gap-1 h-full">
 
-      <h1 class="text-2xl font-bold">VolksWagen History Game</h1>
-      <p class="text-md font-semibold mb-1">Place each car to their creation year</p>
-    </div>
-    <div class="initial-cars-wrapper w-full flex justify-center">
-      <div class="flex pb-1 drop-zone initial-cars-container" :data-zone-id="0">
-        <div v-for="car in initialList" :key="car.id" class="car-item flex flex-col items-center justify-center"
-          :data-car-id="car.id">
-          <img :src="car.image" :alt="car.name" class="car-image object-contain mb-0.5">
-          <p class="text-xs">{{ car.name }}</p>
+        <div class="initial-cars-wrapper flex flex-col w-full justify-center">
+          <div class="flex flex-col justify-between pb-1 drop-zone initial-cars-container" :data-zone-id="0">
+            <div v-for="car in initialList" :key="car.id" class="car-item flex flex-col items-center justify-center"
+              :data-car-id="car.id">
+              <img :src="car.image" :alt="car.name" class="car-image object-contain mb-0.5">
+              <p class="text-xs">{{ car.name }}</p>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
 
-    <div class="drop-zones w-full flex items-center justify-center p-1">
-      <div class="flex justify-between w-full gap-1">
-        <div v-for="zone in zones" :key="zone.id"
-          class="drop-zone flex-1 p-1 bg-sky-700 min-h-[150px]  rounded-md flex flex-col items-center justify-center"
-          :data-zone-id="zone.id">
-          <p class="text-center font-semibold text-xs absolute top-1">{{ zone.year }}</p>
-          <div class="car-container">
-            <div v-if="zone.car" class="car-item flex items-center justify-center" :data-car-id="zone.car.id">
-              <img :src="zone.car.image" :alt="zone.car.name" class="max-w-full max-h-full object-contain">
-              <p class="text-xs">{{ zone.car.name }}</p>
+        <div class="drop-zones w-full flex flex-col items-center justify-center p-1">
+          <div class="flex flex-col justify-between w-full gap-1">
+            <div v-for="zone in zones" :key="zone.id"
+              class="drop-zone flex-1 p-1 bg-sky-700 min-h-[150px] flex flex-col items-center justify-center"
+              :data-zone-id="zone.id">
+              <p class="text-center font-semibold text-xs absolute top-1">{{ zone.year }}</p>
+              <div class="car-container">
+                <div v-if="zone.car" class="car-item flex items-center justify-center" :data-car-id="zone.car.id">
+                  <img :src="zone.car.image" :alt="zone.car.name" class="max-w-full max-h-full object-contain">
+                  <p class="text-xs">{{ zone.car.name }}</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="text-center">
-      <Button @click="checkAnswers" :disabled="!isAllCarsPlaced" class="text-base">Submit your answer</Button>
+      <div class="text-center">
+        <Button @click="checkAnswers" :disabled="!isAllCarsPlaced" class="text-base">Submit your answer</Button>
+      </div>
     </div>
-  </div>
+  </PublicLayout>
 </template>
 
 <style scoped>
-.game-screen {
-  overscroll-behavior: none;
-  touch-action: none;
-}
-
 .drop-zone {
   min-width: 60px;
-  height: 100px;
   /* Fixed height */
   position: relative;
   overflow: hidden;
-}
-
-.drop-zone .car-container {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.drop-zone .car-item,
-.drop-zone .sortable-ghost {
-  max-width: 100%;
-  max-height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.drop-zone img {
-  max-width: 90%;
-  max-height: 90%;
-  object-fit: contain;
-}
-
-.initial-cars-wrapper {
-  width: 100%;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.initial-cars-wrapper::-webkit-scrollbar {
-  display: none;
-}
-
-.initial-cars-container {
-  display: inline-flex;
-  flex-wrap: nowrap;
-  padding-bottom: 1rem;
-  justify-content: center;
-}
-
-.car-item {
-  flex: 0 0 auto;
-  width: 80px;
-  margin: 0 0.25rem;
-}
-
-.car-image {
-  width: 100%;
-  height: auto;
-  max-height: 80px;
-  object-fit: contain;
-}
-
-@media (min-width: 640px) {
-  .car-item {
-    width: 100px;
-  }
-
-  .car-image {
-    max-height: 100px;
-  }
-}
-
-@media (min-width: 1024px) {
-  .car-item {
-    width: 120px;
-  }
-
-  .car-image {
-    max-height: 120px;
-  }
-}
-
-@media (max-width: 640px) {
-  .drop-zone {
-    min-width: 40px;
-  }
 }
 </style>
