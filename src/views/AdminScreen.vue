@@ -86,17 +86,17 @@ const clearUserData = () => {
     <div class="mb-6">
       <button @click="downloadUserData"
         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4">
-        Télécharger les Données Utilisateur
+        Télécharger les Données OPT-IN
       </button>
       <button @click="clearUserData" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-        Effacer les Données Utilisateur
+        Effacer les Données OPT-IN
       </button>
     </div>
 
     <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-      <h2 class="text-xl font-semibold mb-4">Données Utilisateur Stockées</h2>
+      <h2 class="text-xl font-semibold mb-4">Données Stockées</h2>
       <div v-if="userData.length === 0" class="text-gray-500">
-        Aucune donnée utilisateur disponible.
+        Aucune donnée disponible.
       </div>
       <div v-else class="overflow-x-auto">
         <table class="min-w-full leading-normal">
