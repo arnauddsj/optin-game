@@ -44,7 +44,7 @@ const loadUserData = () => {
   request.onerror = (event) => {
     console.error("Erreur lors du chargement des données:", event)
   }
-  request.onsuccess = (event) => {
+  request.onsuccess = () => {
     userData.value = request.result
   }
 }
