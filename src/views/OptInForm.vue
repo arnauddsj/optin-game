@@ -124,9 +124,9 @@ const onSubmit = handleSubmit(async (values) => {
           <FormItem>
             <FormLabel>Nom</FormLabel>
             <FormControl>
-              <Input v-bind="field" placeholder="Votre nom" />
+              <Input v-bind="field" placeholder="Votre nom" class="text-sky-800" />
             </FormControl>
-            <FormDescription>
+            <FormDescription class="text-sky-50">
               Entrez votre nom de famille.
             </FormDescription>
             <FormMessage />
@@ -136,9 +136,9 @@ const onSubmit = handleSubmit(async (values) => {
           <FormItem>
             <FormLabel>Prénom</FormLabel>
             <FormControl>
-              <Input v-bind="field" placeholder="Votre prénom" />
+              <Input v-bind="field" placeholder="Votre prénom" class="text-sky-800" />
             </FormControl>
-            <FormDescription>
+            <FormDescription class="text-sky-50">
               Entrez votre prénom.
             </FormDescription>
             <FormMessage />
@@ -148,9 +148,9 @@ const onSubmit = handleSubmit(async (values) => {
           <FormItem>
             <FormLabel>Email</FormLabel>
             <FormControl>
-              <Input v-bind="field" type="email" placeholder="votre.email@example.com" />
+              <Input v-bind="field" type="email" placeholder="votre.email@example.com" class="text-sky-800" />
             </FormControl>
-            <FormDescription>
+            <FormDescription class="text-sky-50">
               Entrez votre adresse email.
             </FormDescription>
             <FormMessage />
@@ -160,25 +160,25 @@ const onSubmit = handleSubmit(async (values) => {
           <FormItem>
             <FormLabel>Numéro de téléphone</FormLabel>
             <FormControl>
-              <Input v-bind="field" placeholder="0677849988" />
+              <Input v-bind="field" placeholder="0677849988" class="text-sky-800" />
             </FormControl>
-            <FormDescription>
+            <FormDescription class="text-sky-50">
               Entrez votre numéro de téléphone (format: 0677849988 ou 06 77 84 99 88).
             </FormDescription>
             <FormMessage />
           </FormItem>
         </FormField>
         <FormField v-slot="{ field }" name="consentMarketing">
-          <FormItem class="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+          <FormItem class="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 text-sky-800">
             <FormControl>
               <Checkbox :checked="field.value" @update:checked="(checked) => field.onChange(checked)" />
             </FormControl>
             <div class="space-y-1 leading-none">
-              <FormLabel>
+              <FormLabel class="text-sky-50 font-bold">
                 J'accepte de recevoir des communications marketing de [Nom du Salon] et de ses partenaires, y compris
                 Volkswagen.
               </FormLabel>
-              <FormDescription>
+              <FormDescription class="text-sky-50">
                 Vous pouvez vous désabonner à tout moment. Veuillez lire notre Politique de Confidentialité pour plus
                 d'informations.
               </FormDescription>
