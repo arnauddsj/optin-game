@@ -11,6 +11,12 @@ export default defineConfig({
       plugins: [tailwind(), autoprefixer()],
     },
   },
+  build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+    minify: 'terser',
+    sourcemap: true,
+  },
   plugins: [vue()],
   base: './',
   resolve: {
