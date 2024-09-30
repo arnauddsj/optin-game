@@ -1,21 +1,17 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { useForm } from 'vee-validate'
-import { toTypedSchema } from '@vee-validate/zod'
-import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { Checkbox } from '@/components/ui/checkbox'
-import { Button } from '@/components/ui/button'
 import * as z from 'zod'
 import Airtable from 'airtable'
 
 const router = useRouter()
 const submissionStatus = ref('')
+const hasSubmitted = ref(false)
+
 // Initialize Airtable
 const base = new Airtable({ apiKey: import.meta.env.VITE_AIR_TABLE_API_KEY }).base(import.meta.env.VITE_AIR_TABLE_BASE_ID as string)
 
-const formSchema = toTypedSchema(z.object({
+const formSchema = z.object({
   nom: z.string().min(2, 'Le nom doit comporter au moins 2 caractères'),
   prenom: z.string().min(2, 'Le prénom doit comporter au moins 2 caractères'),
   email: z.string().email('Adresse email invalide'),
@@ -23,11 +19,30 @@ const formSchema = toTypedSchema(z.object({
   consentMarketing: z.boolean().refine(value => value === true, {
     message: 'Vous devez accepter de recevoir des communications marketing'
   })
-}))
-
-const { handleSubmit, resetForm } = useForm({
-  validationSchema: formSchema,
 })
+
+
+interface FormValues {
+  [key: string]: string | boolean;
+}
+
+const values = ref<FormValues>({});
+const fieldLabels: Record<string, any> = {
+  nom: 'Nom',
+  prenom: 'Prénom',
+  email: 'Email',
+  telephone: 'Téléphone',
+  consentMarketing: false
+}
+
+const fieldPlaceholders: Record<string, string> = {
+  nom: 'Entrez votre nom',
+  prenom: 'Entrez votre prénom',
+  email: 'Entrez votre adresse email',
+  telephone: 'Entrez votre numéro de téléphone'
+}
+
+const errors = ref<Partial<Record<keyof FormValues, string>>>({})
 
 let db: IDBDatabase
 
@@ -93,25 +108,54 @@ const saveToAirtable = async (values: any) => {
   }
 }
 
-const onSubmit = handleSubmit(async (values) => {
-  // Always save locally
-  saveLocally(values)
-
-  // Attempt to save to Airtable
+const validateForm = (): boolean => {
+  hasSubmitted.value = true
+  errors.value = {}
   try {
-    await saveToAirtable(values)
-    submissionStatus.value = 'Soumission enregistrée avec succès !'
+    formSchema.parse(values.value)
+    return true
   } catch (error) {
-    console.error('Erreur lors de la sauvegarde sur Airtable:', error)
-    submissionStatus.value = 'Sauvegardé localement. Échec de la sauvegarde sur Airtable.'
+    if (error instanceof z.ZodError) {
+      error.errors.forEach((err) => {
+        if (err.path) {
+          errors.value[err.path[0] as keyof FormValues] = err.message
+        }
+      })
+    }
+    return false
   }
+}
 
-  resetForm()
-  setTimeout(() => {
-    submissionStatus.value = ''
-    router.push('/')
-  }, 2000)
-})
+const onSubmit = async () => {
+  if (validateForm()) {
+    // Always save locally
+    saveLocally(values.value)
+
+    // Attempt to save to Airtable
+    try {
+      await saveToAirtable(values.value)
+      submissionStatus.value = 'Soumission enregistrée avec succès !'
+    } catch (error) {
+      console.error('Erreur lors de la sauvegarde sur Airtable:', error)
+      submissionStatus.value = 'Sauvegardé localement. Échec de la sauvegarde sur Airtable.'
+    }
+
+    // Reset form
+    values.value = {
+      nom: '',
+      prenom: '',
+      email: '',
+      telephone: '',
+      consentMarketing: false
+    }
+    hasSubmitted.value = false
+
+    setTimeout(() => {
+      submissionStatus.value = ''
+      router.push('/')
+    }, 2000)
+  }
+}
 </script>
 
 <template>
@@ -119,75 +163,32 @@ const onSubmit = handleSubmit(async (values) => {
     <div class="w-full max-w-[800px] flex flex-col items-center">
       <h1 class="text-2xl font-bold text-center mb-1">Félicitations ! Vous êtes arrivé à la fin !</h1>
       <h3 class="text-xl font-bold text-center mb-6">Entrez vos coordonnées et tentez de gagner un prix !</h3>
-      <form @submit="onSubmit" class="w-full flex flex-col gap-5 max-w-[600px]">
-        <FormField v-slot="{ field }" name="nom">
-          <FormItem>
-            <FormLabel>Nom</FormLabel>
-            <FormControl>
-              <Input v-bind="field" placeholder="Votre nom" class="text-sky-800" />
-            </FormControl>
-            <FormDescription class="text-sky-50">
-              Entrez votre nom de famille.
-            </FormDescription>
-            <FormMessage />
-          </FormItem>
-        </FormField>
-        <FormField v-slot="{ field }" name="prenom">
-          <FormItem>
-            <FormLabel>Prénom</FormLabel>
-            <FormControl>
-              <Input v-bind="field" placeholder="Votre prénom" class="text-sky-800" />
-            </FormControl>
-            <FormDescription class="text-sky-50">
-              Entrez votre prénom.
-            </FormDescription>
-            <FormMessage />
-          </FormItem>
-        </FormField>
-        <FormField v-slot="{ field }" name="email">
-          <FormItem>
-            <FormLabel>Email</FormLabel>
-            <FormControl>
-              <Input v-bind="field" type="email" placeholder="votre.email@example.com" class="text-sky-800" />
-            </FormControl>
-            <FormDescription class="text-sky-50">
-              Entrez votre adresse email.
-            </FormDescription>
-            <FormMessage />
-          </FormItem>
-        </FormField>
-        <FormField v-slot="{ field }" name="telephone">
-          <FormItem>
-            <FormLabel>Numéro de téléphone</FormLabel>
-            <FormControl>
-              <Input v-bind="field" placeholder="0677849988" class="text-sky-800" />
-            </FormControl>
-            <FormDescription class="text-sky-50">
-              Entrez votre numéro de téléphone (format: 0677849988 ou 06 77 84 99 88).
-            </FormDescription>
-            <FormMessage />
-          </FormItem>
-        </FormField>
-        <FormField v-slot="{ field }" name="consentMarketing">
-          <FormItem class="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 text-sky-800">
-            <FormControl>
-              <Checkbox :checked="field.value" @update:checked="(checked) => field.onChange(checked)" />
-            </FormControl>
-            <div class="space-y-1 leading-none">
-              <FormLabel class="text-sky-50 font-bold">
-                J'accepte de recevoir des communications marketing de [Nom du Salon] et de ses partenaires, y compris
-                Volkswagen.
-              </FormLabel>
-              <FormDescription class="text-sky-50">
-                Vous pouvez vous désabonner à tout moment. Veuillez lire notre Politique de Confidentialité pour plus
-                d'informations.
-              </FormDescription>
-            </div>
-          </FormItem>
-        </FormField>
-        <Button type="submit">
+      <form @submit.prevent="onSubmit" class="w-full flex flex-col gap-5 max-w-[600px]">
+        <div v-for="field in ['nom', 'prenom', 'email', 'telephone']" :key="field" class="flex flex-col">
+          <label :for="field" class="mb-1">{{ fieldLabels[field] }}</label>
+          <input :id="field" v-model="values[field]" :type="field === 'email' ? 'email' : 'text'"
+            :placeholder="fieldPlaceholders[field]" class="p-2 rounded text-sky-800" />
+          <p class="text-sm text-sky-50 mt-1">{{ field === 'telephone' ? 'Entrez votre numéro de téléphone (format: 0677849988 ou 06 77 84 99 88)' : `Entrez votre ${fieldLabels[field].toLowerCase()}` }}</p>
+          <p v-if="hasSubmitted && errors[field]" class="text-sm text-red-400 mt-1">{{ errors[field] }}</p>
+        </div>
+        <div class="flex items-start space-x-3 rounded-md border p-4 text-sky-800">
+          <input id="consentMarketing" v-model="values.consentMarketing" type="checkbox" class="mt-1" />
+          <div class="space-y-1 leading-none">
+            <label for="consentMarketing" class="text-sky-50 font-bold">
+              J'accepte de recevoir des communications marketing de [Nom du Salon] et de ses partenaires, y compris
+              Volkswagen.
+            </label>
+            <p class="text-sm text-sky-50">
+              Vous pouvez vous désabonner à tout moment. Veuillez lire notre Politique de Confidentialité pour plus
+              d'informations.
+            </p>
+          </div>
+        </div>
+        <p v-if="hasSubmitted && errors.consentMarketing" class="text-sm text-red-400 mt-1">{{ errors.consentMarketing
+          }}</p>
+        <button type="submit" class="bg-blue-500 text-white p-2 rounded">
           Soumettre
-        </Button>
+        </button>
       </form>
       <p v-if="submissionStatus" class="mt-4 text-green-400">{{ submissionStatus }}</p>
     </div>

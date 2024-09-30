@@ -1,0 +1,20 @@
+@font-face {
+  font-family: 'VWHead';
+  src: url('./fonts/VWHead-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'VWHead';
+  src: url('./fonts/VWHead-Bold.otf') format('opentype');
+  font-weight: 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'VWHead';
+  src: url('./fonts/VWHead-Light.otf') format('opentype');
+  font-weight: 100;
+  font-style: normal;
+}

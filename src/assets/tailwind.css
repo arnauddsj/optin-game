@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom Fonts */
+@font-face {
+  font-family: 'VWHead';
+  src: url('./fonts/VWHead-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'VWHead';
+  src: url('./fonts/VWHead-Bold.otf') format('opentype');
+  font-weight: 700; 
+  font-style: bold;
+}
+
+/* Apply the custom font */
+body {
+  @apply bg-vw-500 text-white;
+  font-family: 'VWHead', sans-serif;
+}
+
+h1 {
+  font-family: 'VWHead', sans-serif;
+  font-weight: 700;
+}
+
+button {
+  font-family: 'VWHead', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  border-radius: 100px;
+  padding: 0.8rem 2em;
+}

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, computed, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { Button } from '@/components/ui/button'
 import { Sortable } from '@shopify/draggable'
 import PublicLayout from '@/layouts/Public.vue'
 
@@ -150,7 +149,7 @@ const preventDefaultTouchMove = (e: TouchEvent) => {
       </div>
 
       <div class="text-center">
-        <Button @click="checkAnswers" :disabled="!isAllCarsPlaced" class="text-base">Submit your answer</Button>
+        <button @click="checkAnswers" :disabled="!isAllCarsPlaced" class="text-base">Submit your answer</button>
       </div>
     </div>
   </PublicLayout>
