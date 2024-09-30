@@ -21,6 +21,10 @@ module.exports = {
       fontFamily: {
         VWHead: ['VWHead', 'sans-serif'],
       },
+      screens: {
+        'tablet': '640px',
+        'tablet-lg': '1080px',
+      },
     },
     container: {
       center: true,

@@ -30,8 +30,10 @@ h1 {
 
 button {
   font-family: 'VWHead', sans-serif;
-  font-size: 20px;
+  font-size: 1.25rem;
   font-weight: 700;
-  border-radius: 100px;
+  border-radius: 9999px;
   padding: 0.8rem 2em;
+  min-height: 2.75rem;
+  min-width: 2.75rem;
 }
