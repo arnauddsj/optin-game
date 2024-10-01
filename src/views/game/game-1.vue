@@ -80,24 +80,33 @@ const handleContinue = () => {
 const startDrag = (event: TouchEvent, car: Car) => {
   draggedCar.value = car
   draggedElement.value = event.target as HTMLElement
-  const touch = event.touches[0]
-  const rect = draggedElement.value.getBoundingClientRect()
-  draggedElement.value.style.position = 'fixed'
-  draggedElement.value.style.left = `${touch.clientX - rect.width / 2}px`
-  draggedElement.value.style.top = `${touch.clientY - rect.height / 2}px`
-  draggedElement.value.style.zIndex = '1000'
+
+  // Create a new element for dragging
+  const ghostElement = draggedElement.value.cloneNode(true) as HTMLElement
+  ghostElement.style.position = 'fixed'
+  ghostElement.style.width = '250px' 
+  ghostElement.style.height = '250px' 
+  ghostElement.style.zIndex = '1000'
+  ghostElement.style.opacity = '0.8' 
+  ghostElement.style.pointerEvents = 'none'  
+
+  document.body.appendChild(ghostElement)
+  draggedElement.value = ghostElement
+
   event.preventDefault()
 }
 
+// Update the onDrag function to use the new ghost element
 const onDrag = (event: TouchEvent) => {
   if (draggedElement.value) {
     const touch = event.touches[0]
-    draggedElement.value.style.left = `${touch.clientX - draggedElement.value.offsetWidth / 2}px`
-    draggedElement.value.style.top = `${touch.clientY - draggedElement.value.offsetHeight / 2}px`
+    draggedElement.value.style.left = `${touch.clientX - 100}px`
+    draggedElement.value.style.top = `${touch.clientY - 100}px`
     event.preventDefault()
   }
 }
 
+// Update the endDrag function to remove the ghost element
 const endDrag = (event: TouchEvent) => {
   if (draggedCar.value && draggedElement.value) {
     const dropZones = document.querySelectorAll('.drop-zone')
@@ -123,10 +132,8 @@ const endDrag = (event: TouchEvent) => {
       updateZones(draggedCar.value.id, 0)
     }
 
-    draggedElement.value.style.position = ''
-    draggedElement.value.style.left = ''
-    draggedElement.value.style.top = ''
-    draggedElement.value.style.zIndex = ''
+    // Remove the ghost element from the DOM
+    document.body.removeChild(draggedElement.value)
     draggedCar.value = null
     draggedElement.value = null
   }
