@@ -11,12 +11,12 @@ const timeLeft = ref(props.duration)
 const intervalId = ref<number | null>(null)
 
 const strokeDasharray = computed(() => {
-  const circumference = 2 * Math.PI * 40 // 40 is the radius of our circle
+  const circumference = 2 * Math.PI * 20 // 20 is the new radius of our circle (half of 40)
   return `${circumference} ${circumference}`
 })
 
 const strokeDashoffset = computed(() => {
-  const circumference = 2 * Math.PI * 40
+  const circumference = 2 * Math.PI * 20 // Update this to 20 as well
   const progress = 1 - timeLeft.value / props.duration
   return circumference * progress
 })
@@ -54,11 +54,11 @@ onUnmounted(() => {
 
 <template>
   <div class="circular-timer">
-    <svg width="100" height="100" viewBox="0 0 100 100">
-      <circle cx="50" cy="50" r="40" fill="none" stroke="#ffffff" stroke-width="4" stroke-opacity="0.3" />
-      <circle cx="50" cy="50" r="40" fill="none" stroke="#ffffff" stroke-width="4" :stroke-dasharray="strokeDasharray"
-        :stroke-dashoffset="strokeDashoffset" transform="rotate(-90 50 50)" />
-      <text x="50" y="50" text-anchor="middle" dy="7" font-size="24" fill="#ffffff">
+    <svg width="50" height="50" viewBox="0 0 50 50">
+      <circle cx="25" cy="25" r="20" fill="none" stroke="#ffffff" stroke-width="2" stroke-opacity="0.3" />
+      <circle cx="25" cy="25" r="20" fill="none" stroke="#ffffff" stroke-width="2" :stroke-dasharray="strokeDasharray"
+        :stroke-dashoffset="strokeDashoffset" transform="rotate(-90 25 25)" />
+      <text x="25" y="25" text-anchor="middle" dy="4" font-size="12" fill="#ffffff">
         {{ timeLeft }}
       </text>
     </svg>
@@ -68,7 +68,7 @@ onUnmounted(() => {
 <style scoped>
 .circular-timer {
   position: fixed;
-  bottom: 20px;
+  bottom: 10px; /* Reduced from 20px */
   left: 50%;
   transform: translateX(-50%);
 }

@@ -5,8 +5,8 @@ import Logo50Years from '@/assets/50ans-logo.svg'
 <template>
   <div class="header-container">
     <Logo50Years class="years-logo absolute" />
-    <div class="logo-wrapper h-[120px] w-[100px]">
-      <Logo class="logovw p-[20px]" />
+    <div class="logo-wrapper h-[80px] w-[80px]">
+      <Logo class="logovw p-[18px]" />
     </div>
   </div>
 </template>
@@ -24,7 +24,6 @@ content: '';
 .header-container {
   width: 100%;
   position: relative;
-  padding: 0.5rem 1rem;
   z-index: 1;
 }
 
@@ -37,7 +36,7 @@ content: '';
 }
 
 .years-logo{
-  top: 70px;
+  top: 50px;
   left: 1.2rem;
   height: 5vw;
   width: auto;

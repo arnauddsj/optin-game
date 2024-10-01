@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed, onUnmounted, watch } from 'vue'
+import { ref, onMounted, computed, onUnmounted, watch, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import { Sortable } from '@shopify/draggable'
 import PublicLayout from '@/layouts/PublicLayout.vue'
@@ -74,6 +74,18 @@ const handleContinue = () => {
 
 onMounted(() => {
   resetGame()
+  nextTick(() => {
+    initializeSortable()
+  })
+
+  // Prevent pull-to-refresh
+  document.body.style.overscrollBehavior = 'none'
+
+  // Prevent default touch move behavior
+  document.addEventListener('touchmove', preventDefaultTouchMove, { passive: false })
+})
+
+const initializeSortable = () => {
   const containers = document.querySelectorAll('.drop-zone')
   const sortable = new Sortable(containers, {
     draggable: '.car-item',
@@ -81,6 +93,7 @@ onMounted(() => {
       appendTo: 'body',
       constrainDimensions: true,
     },
+    delay: 0, // Remove any delay
   })
 
   sortable.on('sortable:stop', (event) => {
@@ -91,13 +104,7 @@ onMounted(() => {
 
     updateZones(carId, newZoneId, oldZoneId)
   })
-
-  // Prevent pull-to-refresh
-  document.body.style.overscrollBehavior = 'none'
-
-  // Prevent default touch move behavior
-  document.addEventListener('touchmove', preventDefaultTouchMove, { passive: false })
-})
+}
 
 onUnmounted(() => {
   // Clean up event listener
@@ -136,12 +143,12 @@ const preventDefaultTouchMove = (e: TouchEvent) => {
 
 <template>
   <PublicLayout class="h-screen flex flex-col">
-    <div class="game1-screen flex-grow flex flex-col items-center justify-between p-4">
+    <div class="game1-screen flex-grow flex flex-col items-center justify-between">
       <div class="game-container grid grid-cols-12 w-full">
         <!-- Left column: Initial cars -->
         <div class="col-span-4 flex flex-col justify-center">
-          <div class="flex flex-col justify-between pb-1 drop-zone initial-cars-container" :data-zone-id="0">
-            <div v-for="car in initialList" :key="car.id" class="car-item flex flex-col items-center justify-center mb-2"
+          <div class="flex flex-col justify-between drop-zone initial-cars-container" :data-zone-id="0">
+            <div v-for="car in initialList" :key="car.id" class="car-item flex flex-col items-center justify-center mb-4"
               :data-car-id="car.id">
               <img :src="car.image" :alt="car.name" class="car-image object-contain w-full">
             </div>
@@ -151,14 +158,14 @@ const preventDefaultTouchMove = (e: TouchEvent) => {
         <!-- Middle column: Timeline -->
         <div class="col-span-4 timeline relative flex flex-col items-center justify-between">
           <div v-for="zone in zones" :key="zone.id" class="year-marker flex items-center w-full justify-center pr-4">
-            <span class="text-white font-bold text-[1rem]">{{ zone.year }}</span>
+            <span class="year-text text-white font-bold text-[1rem]">{{ zone.year }}</span>
           </div>
         </div>
 
         <!-- Right column: Drop zones -->
         <div class="col-span-4 drop-zones grid grid-rows-8 gap-2">
           <div v-for="zone in zones" :key="zone.id"
-            class="drop-zone bg-vw-blue-50 w-full flex items-center justify-center"
+            class="drop-zone bg-vw-50 w-full flex items-center justify-center"
             :data-zone-id="zone.id">
             <div class="car-container w-full h-full flex items-center justify-center">
               <div v-if="zone.car" class="car-item flex items-center justify-center" :data-car-id="zone.car.id">
@@ -180,9 +187,6 @@ const preventDefaultTouchMove = (e: TouchEvent) => {
 </template>
 
 <style scoped>
-.game1-screen {
-  background-color: #00205b; /* VW dark blue background */
-}
 
 .game-container {
   position: relative;
@@ -193,9 +197,6 @@ const preventDefaultTouchMove = (e: TouchEvent) => {
   overflow: hidden;
 }
 
-.bg-vw-blue-50 {
-  background-color: #73b3e7; /* VW light blue for drop zones */
-}
 
 .timeline::before {
   content: '';
@@ -211,6 +212,25 @@ const preventDefaultTouchMove = (e: TouchEvent) => {
   position: relative;
   z-index: 1;
   height: 100%;
+  padding: 0.5rem 1rem;
+}
+
+.year-text {
+  position: relative;
+  z-index: 2;
+}
+
+.year-text::after {
+  @apply bg-vw-500;
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 120%;
+  height: 120%;
+  z-index: -1;
+  border-radius: 4px;
 }
 
 /* Adjust car image sizes */
