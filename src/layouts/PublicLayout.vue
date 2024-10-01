@@ -4,7 +4,7 @@ import Header from '@/components/Header.vue'
 
 <template>
   <Header />
-  <div class="flex flex-col flex-1 p-8 justify-center gap-[5rem]">
+  <div class="flex flex-col flex-1 pt-4 pb-14 px-6 justify-center gap-[5rem]">
     <slot />
   </div>
 </template>
