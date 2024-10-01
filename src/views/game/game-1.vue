@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, watch, nextTick } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import PublicLayout from '@/layouts/PublicLayout.vue'
 import TimeUpDialog from '@/components/TimeUpDialog.vue'
@@ -15,14 +15,14 @@ interface Car {
 const router = useRouter()
 
 const cars = ref<Car[]>([
-  { id: 1, name: 'Voiture 1', year: 1908, image: '/cars/voiture-1.png' },
-  { id: 2, name: 'Voiture 2', year: 1938, image: '/cars/voiture-2.png' },
-  { id: 3, name: 'Voiture 3', year: 1959, image: '/cars/voiture-3.png' },
-  { id: 4, name: 'Voiture 4', year: 1964, image: '/cars/voiture-4.png' },
-  { id: 5, name: 'Voiture 5', year: 1989, image: '/cars/voiture-5.png' },
-  { id: 6, name: 'Voiture 6', year: 1974, image: '/cars/voiture-6.png' },
-  { id: 7, name: 'Voiture 7', year: 1973, image: '/cars/voiture-7.png' },
-  { id: 8, name: 'Voiture 8', year: 1975, image: '/cars/voiture-8.png' }
+  { id: 1, name: 'Voiture 1', year: 1974, image: '/cars/voiture-1.png' },
+  { id: 2, name: 'Voiture 2', year: 1983, image: '/cars/voiture-2.png' },
+  { id: 3, name: 'Voiture 3', year: 1991, image: '/cars/voiture-3.png' },
+  { id: 4, name: 'Voiture 4', year: 1997, image: '/cars/voiture-4.png' },
+  { id: 5, name: 'Voiture 5', year: 2003, image: '/cars/voiture-5.png' },
+  { id: 6, name: 'Voiture 6', year: 2008, image: '/cars/voiture-6.png' },
+  { id: 7, name: 'Voiture 7', year: 2012, image: '/cars/voiture-7.png' },
+  { id: 8, name: 'Voiture 8', year: 2019, image: '/cars/voiture-8.png' }
 ])
 
 const zones = ref(cars.value.map(car => ({ id: car.id, year: car.year, car: null as Car | null })))
@@ -166,12 +166,12 @@ onMounted(() => {
 })
 </script>
 <template>
-  <PublicLayout class="h-screen flex flex-col">
-    <div class="game1-screen flex-grow flex flex-col items-center justify-between p-4 overflow-hidden">
-      <div class="game-container grid grid-cols-12 w-full gap-2">
+  <PublicLayout class="h-screen flex flex-col items-center">
+    <div class="flex flex-col items-center justify-between p-4 overflow-hidden">
+      <div class="game-container grid grid-cols-3 w-full gap-2">
         <!-- Left column: Initial cars -->
-        <div class="col-span-3 flex flex-col justify-center overflow-y-auto">
-          <div class="flex flex-col justify-between drop-zone initial-cars-container" :data-zone-id="0">
+        <div class="col-span-1 flex flex-col justify-center drop-zones">
+          <div class="grid grid-rows-8 gap-5 justify-between drop-zone initial-cars-container" :data-zone-id="0">
             <div v-for="car in initialList" :key="car.id"
               class="car-item flex flex-col items-center justify-center mb-2" :data-car-id="car.id"
               @touchstart="startDrag($event, car)" @touchmove="onDrag" @touchend="endDrag">
@@ -181,7 +181,7 @@ onMounted(() => {
         </div>
 
         <!-- Middle column: Timeline -->
-        <div class="col-span-6 timeline relative flex flex-col items-center justify-between">
+        <div class="col-span-1 timeline relative items-center grid grid-rows-8">
           <div class="absolute h-[80%] w-0.5 bg-white left-1/2 transform"></div>
           <div v-for="zone in zones" :key="zone.id" class="year-marker flex items-center w-full justify-center">
             <span class="year-text text-white font-bold text-2xl">{{ zone.year }}</span>
@@ -189,7 +189,7 @@ onMounted(() => {
         </div>
 
         <!-- Right column: Drop zones -->
-        <div class="col-span-3 drop-zones grid grid-rows-8 gap-2 overflow-y-auto">
+        <div class="col-span-1 drop-zones grid grid-rows-8 gap-3">
           <div v-for="zone in zones" :key="zone.id"
             class="drop-zone bg-vw-light w-full flex items-center justify-center" :data-zone-id="zone.id">
             <div class="car-container w-full h-full flex items-center justify-center">
@@ -216,7 +216,6 @@ onMounted(() => {
 .drop-zone {
   position: relative;
   overflow: hidden;
-  border-radius: 8px;
 }
 
 .timeline {
@@ -234,7 +233,6 @@ onMounted(() => {
   @apply bg-vw-dark;
   position: relative;
   z-index: 2;
-  padding: 0.25rem 0.5rem;
   border-radius: 4px;
   display: inline-block;
 }
@@ -244,10 +242,9 @@ onMounted(() => {
   content: '';
   position: absolute;
   left: 50%;
-  top: -3px;
   transform: translateX(-50%);
   width: 20px;
-  height: 50px;
+  height: 35px;
   z-index: -1;
 }
 
@@ -258,6 +255,11 @@ onMounted(() => {
   width: auto;
   height: auto;
   object-fit: contain;
+}
+
+.initial-cars-container,
+.drop-zones {
+  max-height: calc(100vh - 18rem);
 }
 
 .initial-cars-container,
