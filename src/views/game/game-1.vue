@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { ref, onMounted, computed, onUnmounted, watch, nextTick } from 'vue'
+import { ref, computed, onMounted, watch, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
-import { Sortable } from '@shopify/draggable'
 import PublicLayout from '@/layouts/PublicLayout.vue'
 import TimeUpDialog from '@/components/TimeUpDialog.vue'
 import Timer from '@/components/Timer.vue'
@@ -27,8 +26,10 @@ const cars = ref<Car[]>([
 ])
 
 const zones = ref(cars.value.map(car => ({ id: car.id, year: car.year, car: null as Car | null })))
-
 const initialList = ref<Car[]>([])
+
+const draggedCar = ref<Car | null>(null)
+const draggedElement = ref<HTMLElement | null>(null)
 
 const isAllCarsPlaced = computed(() => {
   return initialList.value.length === 0 && zones.value.every(zone => zone.car !== null)
@@ -40,14 +41,18 @@ const resetGame = () => {
 }
 
 watch(isAllCarsPlaced, (newValue: boolean) => {
-  if (isAllCarsPlaced.value) {
+  if (newValue) {
     const allCorrect = zones.value.every(zone => zone.car && zone.car.year === zone.year)
-
     if (allCorrect) {
       router.push('/success-game1')
     } else {
       alert("Some cars are not in the correct year. Try again!")
-      resetGame()
+      zones.value.forEach(zone => {
+        if (zone.car && zone.car.year !== zone.year) {
+          initialList.value.push(zone.car)
+          zone.car = null
+        }
+      })
     }
   }
 })
@@ -65,80 +70,100 @@ const handleTimeUp = () => {
 const resetGameState = () => {
   resetGame()
   showTimeUpDialog.value = false
-  timerKey.value++ // Increment the key to force Timer re-render
+  timerKey.value++
 }
 
 const handleContinue = () => {
   resetGameState()
 }
 
-onMounted(() => {
-  resetGame()
-  nextTick(() => {
-    initializeSortable()
-  })
-
-  // Prevent pull-to-refresh
-  document.body.style.overscrollBehavior = 'none'
-
-  // Prevent default touch move behavior
-  document.addEventListener('touchmove', preventDefaultTouchMove, { passive: false })
-})
-
-const initializeSortable = () => {
-  const containers = document.querySelectorAll('.drop-zone')
-  const sortable = new Sortable(containers, {
-    draggable: '.car-item',
-    mirror: {
-      appendTo: 'body',
-      constrainDimensions: true,
-    },
-    delay: 0, // Remove any delay
-  })
-
-  sortable.on('sortable:stop', (event) => {
-    const { newContainer, oldContainer, dragEvent } = event
-    const carId = parseInt(dragEvent.source.dataset.carId!)
-    const newZoneId = parseInt(newContainer.dataset.zoneId!)
-    const oldZoneId = parseInt(oldContainer.dataset.zoneId!)
-
-    updateZones(carId, newZoneId, oldZoneId)
-  })
+const startDrag = (event: TouchEvent, car: Car) => {
+  draggedCar.value = car
+  draggedElement.value = event.target as HTMLElement
+  const touch = event.touches[0]
+  const rect = draggedElement.value.getBoundingClientRect()
+  draggedElement.value.style.position = 'fixed'
+  draggedElement.value.style.left = `${touch.clientX - rect.width / 2}px`
+  draggedElement.value.style.top = `${touch.clientY - rect.height / 2}px`
+  draggedElement.value.style.zIndex = '1000'
+  event.preventDefault()
 }
 
-onUnmounted(() => {
-  // Clean up event listener
-  document.removeEventListener('touchmove', preventDefaultTouchMove)
-  document.body.style.overscrollBehavior = ''
-})
+const onDrag = (event: TouchEvent) => {
+  if (draggedElement.value) {
+    const touch = event.touches[0]
+    draggedElement.value.style.left = `${touch.clientX - draggedElement.value.offsetWidth / 2}px`
+    draggedElement.value.style.top = `${touch.clientY - draggedElement.value.offsetHeight / 2}px`
+    event.preventDefault()
+  }
+}
 
-const updateZones = (carId: number, newZoneId: number, oldZoneId: number) => {
+const endDrag = (event: TouchEvent) => {
+  if (draggedCar.value && draggedElement.value) {
+    const dropZones = document.querySelectorAll('.drop-zone')
+    const touch = event.changedTouches[0]
+    let droppedZone: Element | null = null
+
+    dropZones.forEach((zone) => {
+      const rect = zone.getBoundingClientRect()
+      if (
+        touch.clientX >= rect.left &&
+        touch.clientX <= rect.right &&
+        touch.clientY >= rect.top &&
+        touch.clientY <= rect.bottom
+      ) {
+        droppedZone = zone
+      }
+    })
+
+    if (droppedZone) {
+      const zoneId = parseInt(droppedZone.getAttribute('data-zone-id') || '0')
+      updateZones(draggedCar.value.id, zoneId)
+    } else {
+      updateZones(draggedCar.value.id, 0)
+    }
+
+    draggedElement.value.style.position = ''
+    draggedElement.value.style.left = ''
+    draggedElement.value.style.top = ''
+    draggedElement.value.style.zIndex = ''
+    draggedCar.value = null
+    draggedElement.value = null
+  }
+}
+
+const updateZones = (carId: number, newZoneId: number) => {
   const car = cars.value.find(c => c.id === carId)
   if (!car) return
 
-  const newZone = zones.value.find(z => z.id === newZoneId)
-  const oldZone = zones.value.find(z => z.id === oldZoneId)
-
-  if (oldZone) {
-    oldZone.car = null
-  } else {
-    initialList.value = initialList.value.filter(c => c.id !== carId)
-  }
-
-  if (newZone) {
-    if (newZone.car) {
-      initialList.value.push(newZone.car)
+  zones.value = zones.value.map(zone => {
+    if (zone.car && zone.car.id === carId) {
+      return { ...zone, car: null }
     }
-    newZone.car = car
+    return zone
+  })
+  initialList.value = initialList.value.filter(c => c.id !== carId)
+
+  if (newZoneId !== 0) {
+    zones.value = zones.value.map(zone => {
+      if (zone.id === newZoneId) {
+        if (zone.car) {
+          initialList.value.push(zone.car)
+        }
+        return { ...zone, car }
+      }
+      return zone
+    })
+  } else {
+    initialList.value.push(car)
   }
 }
 
-const preventDefaultTouchMove = (e: TouchEvent) => {
-  if (e.target instanceof Element && e.target.closest('.game1-screen')) {
-    e.preventDefault()
-  }
-}
-
+onMounted(() => {
+  resetGame()
+  document.body.style.overscrollBehavior = 'none'
+  document.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false })
+})
 </script>
 
 <template>
@@ -149,7 +174,7 @@ const preventDefaultTouchMove = (e: TouchEvent) => {
         <div class="col-span-4 flex flex-col justify-center">
           <div class="flex flex-col justify-between drop-zone initial-cars-container h-full" :data-zone-id="0">
             <div v-for="car in initialList" :key="car.id" class="car-item flex flex-col items-center justify-center"
-              :data-car-id="car.id">
+              :data-car-id="car.id" @touchstart="startDrag($event, car)" @touchmove="onDrag" @touchend="endDrag">
               <img :src="car.image" :alt="car.name" class="car-image object-contain w-full">
             </div>
           </div>
@@ -164,11 +189,11 @@ const preventDefaultTouchMove = (e: TouchEvent) => {
 
         <!-- Right column: Drop zones -->
         <div class="col-span-4 drop-zones grid grid-rows-8 gap-2">
-          <div v-for="zone in zones" :key="zone.id"
-            class="drop-zone bg-vw-50 w-full flex items-center justify-center"
+          <div v-for="zone in zones" :key="zone.id" class="drop-zone bg-vw-50 w-full flex items-center justify-center"
             :data-zone-id="zone.id">
             <div class="car-container w-full h-full flex items-center justify-center">
-              <div v-if="zone.car" class="car-item flex items-center justify-center" :data-car-id="zone.car.id">
+              <div v-if="zone.car" class="car-item flex items-center justify-center" :data-car-id="zone.car.id"
+                @touchstart="startDrag($event, zone.car)" @touchmove="onDrag" @touchend="endDrag">
                 <img :src="zone.car.image" :alt="zone.car.name" class="max-w-full max-h-full object-contain">
               </div>
             </div>
@@ -177,11 +202,7 @@ const preventDefaultTouchMove = (e: TouchEvent) => {
       </div>
     </div>
 
-    <TimeUpDialog
-      v-if="showTimeUpDialog"
-      :message="timeUpMessage"
-      @continue="handleContinue"
-    />
+    <TimeUpDialog v-if="showTimeUpDialog" :message="timeUpMessage" @continue="handleContinue" />
     <Timer :duration="timerDuration" :onTimeUp="handleTimeUp" :key="timerKey" />
   </PublicLayout>
 </template>
