@@ -15,7 +15,7 @@ import Logo50Years from '@/assets/50ans-logo.svg'
 .header-container::before {
 content: '';
   position: absolute;
-  top: 50%;
+  top: 42%;
   left: 0;
   right: 0;
   border-top: 2px solid white;

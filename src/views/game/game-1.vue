@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed, onUnmounted } from 'vue'
+import { ref, onMounted, computed, onUnmounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { Sortable } from '@shopify/draggable'
 import PublicLayout from '@/layouts/PublicLayout.vue'
@@ -39,7 +39,7 @@ const resetGame = () => {
   zones.value.forEach(zone => zone.car = null)
 }
 
-const checkAnswers = () => {
+watch(isAllCarsPlaced, (newValue: boolean) => {
   if (isAllCarsPlaced.value) {
     const allCorrect = zones.value.every(zone => zone.car && zone.car.year === zone.year)
 
@@ -50,11 +50,11 @@ const checkAnswers = () => {
       resetGame()
     }
   }
-}
+})
 
 const showTimeUpDialog = ref(false)
 const timeUpMessage = ref('')
-const timerDuration = ref(5)
+const timerDuration = ref(50)
 const timerKey = ref(0)
 
 const handleTimeUp = () => {
@@ -135,39 +135,41 @@ const preventDefaultTouchMove = (e: TouchEvent) => {
 </script>
 
 <template>
-  <PublicLayout>
-    <div
-      class="game1-screen flex flex-col items-center gap-4 overflow-hidden touch-none">
-      <div class="flex gap-1">
-        <div class="initial-cars-wrapper flex flex-col justify-center">
+  <PublicLayout class="h-screen flex flex-col">
+    <div class="game1-screen flex-grow flex flex-col items-center justify-between p-4">
+      <div class="game-container grid grid-cols-12 w-full">
+        <!-- Left column: Initial cars -->
+        <div class="col-span-4 flex flex-col justify-center">
           <div class="flex flex-col justify-between pb-1 drop-zone initial-cars-container" :data-zone-id="0">
-            <div v-for="car in initialList" :key="car.id" class="car-item flex flex-col items-center justify-center"
+            <div v-for="car in initialList" :key="car.id" class="car-item flex flex-col items-center justify-center mb-2"
               :data-car-id="car.id">
-              <img :src="car.image" :alt="car.name" class="car-image object-contain mb-0.5">
+              <img :src="car.image" :alt="car.name" class="car-image object-contain w-full">
             </div>
           </div>
         </div>
 
-        <div class="drop-zones flex flex-col items-center justify-center p-1">
-          <div class="flex flex-col justify-between gap-1">
-            <div v-for="zone in zones" :key="zone.id"
-              class="drop-zone flex-1 p-1 bg-sky-700 min-h-[150px] flex flex-col items-center justify-center"
-              :data-zone-id="zone.id">
-              <p class="text-center font-semibold text-xs absolute top-1">{{ zone.year }}</p>
-              <div class="car-container">
-                <div v-if="zone.car" class="car-item flex items-center justify-center" :data-car-id="zone.car.id">
-                  <img :src="zone.car.image" :alt="zone.car.name" class="max-w-full max-h-full object-contain">
-                </div>
+        <!-- Middle column: Timeline -->
+        <div class="col-span-4 timeline relative flex flex-col items-center justify-between">
+          <div v-for="zone in zones" :key="zone.id" class="year-marker flex items-center w-full justify-center pr-4">
+            <span class="text-white font-bold text-[1rem]">{{ zone.year }}</span>
+          </div>
+        </div>
+
+        <!-- Right column: Drop zones -->
+        <div class="col-span-4 drop-zones grid grid-rows-8 gap-2">
+          <div v-for="zone in zones" :key="zone.id"
+            class="drop-zone bg-vw-blue-50 w-full flex items-center justify-center"
+            :data-zone-id="zone.id">
+            <div class="car-container w-full h-full flex items-center justify-center">
+              <div v-if="zone.car" class="car-item flex items-center justify-center" :data-car-id="zone.car.id">
+                <img :src="zone.car.image" :alt="zone.car.name" class="max-w-full max-h-full object-contain">
               </div>
             </div>
           </div>
         </div>
       </div>
-
-      <div class="text-center">
-        <button @click="checkAnswers" :disabled="!isAllCarsPlaced" class="text-base">Submit your answer</button>
-      </div>
     </div>
+
     <TimeUpDialog
       v-if="showTimeUpDialog"
       :message="timeUpMessage"
@@ -178,10 +180,53 @@ const preventDefaultTouchMove = (e: TouchEvent) => {
 </template>
 
 <style scoped>
+.game1-screen {
+  background-color: #00205b; /* VW dark blue background */
+}
+
+.game-container {
+  position: relative;
+}
+
 .drop-zone {
-  min-width: 60px;
-  /* Fixed height */
   position: relative;
   overflow: hidden;
+}
+
+.bg-vw-blue-50 {
+  background-color: #73b3e7; /* VW light blue for drop zones */
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  width: 2px;
+  background-color: white;
+  transform: translateX(-50%);
+}
+
+.year-marker {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+}
+
+/* Adjust car image sizes */
+.car-image, .car-item img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.drop-zones {
+  height: 100%;
+}
+
+.drop-zone {
+  height: 100%;
 }
 </style>
