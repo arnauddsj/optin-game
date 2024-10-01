@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import PublicLayout from '@/layouts/Public.vue'
+import PublicLayout from '@/layouts/PublicLayout.vue'
 
 const router = useRouter()
 

@@ -2,7 +2,7 @@
 import { ref, onMounted, computed, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { Sortable } from '@shopify/draggable'
-import PublicLayout from '@/layouts/Public.vue'
+import PublicLayout from '@/layouts/PublicLayout.vue'
 import TimeUpDialog from '@/components/TimeUpDialog.vue'
 import Timer from '@/components/Timer.vue'
 
@@ -16,14 +16,14 @@ interface Car {
 const router = useRouter()
 
 const cars = ref<Car[]>([
-  { id: 1, name: 'Voiture 1', year: 1908, image: '/cars/voiture-01.png' },
-  { id: 2, name: 'Voiture 2', year: 1938, image: '/cars/voiture-02.png' },
-  { id: 3, name: 'Voiture 3', year: 1959, image: '/cars/voiture-03.png' },
-  { id: 4, name: 'Voiture 4', year: 1964, image: '/cars/voiture-04.png' },
-  { id: 5, name: 'Voiture 5', year: 1989, image: '/cars/voiture-05.png' },
-  { id: 6, name: 'Voiture 6', year: 1974, image: '/cars/voiture-06.png' },
-  { id: 7, name: 'Voiture 7', year: 1973, image: '/cars/voiture-07.png' },
-  { id: 8, name: 'Voiture 8', year: 1975, image: '/cars/voiture-08.png' }
+  { id: 1, name: 'Voiture 1', year: 1908, image: '/cars/voiture-1.png' },
+  { id: 2, name: 'Voiture 2', year: 1938, image: '/cars/voiture-2.png' },
+  { id: 3, name: 'Voiture 3', year: 1959, image: '/cars/voiture-3.png' },
+  { id: 4, name: 'Voiture 4', year: 1964, image: '/cars/voiture-4.png' },
+  { id: 5, name: 'Voiture 5', year: 1989, image: '/cars/voiture-5.png' },
+  { id: 6, name: 'Voiture 6', year: 1974, image: '/cars/voiture-6.png' },
+  { id: 7, name: 'Voiture 7', year: 1973, image: '/cars/voiture-7.png' },
+  { id: 8, name: 'Voiture 8', year: 1975, image: '/cars/voiture-8.png' }
 ])
 
 const zones = ref(cars.value.map(car => ({ id: car.id, year: car.year, car: null as Car | null })))
@@ -125,7 +125,7 @@ const updateZones = (carId: number, newZoneId: number, oldZoneId: number) => {
 }
 
 const preventDefaultTouchMove = (e: TouchEvent) => {
-  if (e.target instanceof Element && e.target.closest('.game-screen')) {
+  if (e.target instanceof Element && e.target.closest('.game1-screen')) {
     e.preventDefault()
   }
 }
@@ -135,21 +135,19 @@ const preventDefaultTouchMove = (e: TouchEvent) => {
 <template>
   <PublicLayout>
     <div
-      class="game-screen w-full flex flex-col items-center gap-4 h-screen bg-sky-800 text-slate-50 p-4 overflow-hidden touch-none">
-      <div class="flex gap-1 h-full">
-
-        <div class="initial-cars-wrapper flex flex-col w-full justify-center">
+      class="game1-screen flex flex-col items-center gap-4 overflow-hidden touch-none">
+      <div class="flex gap-1">
+        <div class="initial-cars-wrapper flex flex-col justify-center">
           <div class="flex flex-col justify-between pb-1 drop-zone initial-cars-container" :data-zone-id="0">
             <div v-for="car in initialList" :key="car.id" class="car-item flex flex-col items-center justify-center"
               :data-car-id="car.id">
               <img :src="car.image" :alt="car.name" class="car-image object-contain mb-0.5">
-              <p class="text-xs">{{ car.name }}</p>
             </div>
           </div>
         </div>
 
-        <div class="drop-zones w-full flex flex-col items-center justify-center p-1">
-          <div class="flex flex-col justify-between w-full gap-1">
+        <div class="drop-zones flex flex-col items-center justify-center p-1">
+          <div class="flex flex-col justify-between gap-1">
             <div v-for="zone in zones" :key="zone.id"
               class="drop-zone flex-1 p-1 bg-sky-700 min-h-[150px] flex flex-col items-center justify-center"
               :data-zone-id="zone.id">
@@ -157,7 +155,6 @@ const preventDefaultTouchMove = (e: TouchEvent) => {
               <div class="car-container">
                 <div v-if="zone.car" class="car-item flex items-center justify-center" :data-car-id="zone.car.id">
                   <img :src="zone.car.image" :alt="zone.car.name" class="max-w-full max-h-full object-contain">
-                  <p class="text-xs">{{ zone.car.name }}</p>
                 </div>
               </div>
             </div>

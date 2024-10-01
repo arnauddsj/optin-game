@@ -2,7 +2,7 @@
 import { ref, onMounted, computed, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { Sortable } from '@shopify/draggable'
-import PublicLayout from '@/layouts/Public.vue'
+import PublicLayout from '@/layouts/PublicLayout.vue'
 
 interface Car {
   id: number
