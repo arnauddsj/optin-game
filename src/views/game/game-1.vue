@@ -165,32 +165,33 @@ onMounted(() => {
   document.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false })
 })
 </script>
-
 <template>
   <PublicLayout class="h-screen flex flex-col">
-    <div class="game1-screen flex-grow flex flex-col items-center justify-between">
-      <div class="game-container grid grid-cols-12 w-full h-full">
+    <div class="game1-screen flex-grow flex flex-col items-center justify-between p-4 overflow-hidden">
+      <div class="game-container grid grid-cols-12 w-full h-full gap-2">
         <!-- Left column: Initial cars -->
-        <div class="col-span-4 flex flex-col justify-center">
+        <div class="col-span-3 flex flex-col justify-center overflow-y-auto">
           <div class="flex flex-col justify-between drop-zone initial-cars-container h-full" :data-zone-id="0">
-            <div v-for="car in initialList" :key="car.id" class="car-item flex flex-col items-center justify-center"
-              :data-car-id="car.id" @touchstart="startDrag($event, car)" @touchmove="onDrag" @touchend="endDrag">
+            <div v-for="car in initialList" :key="car.id"
+              class="car-item flex flex-col items-center justify-center mb-2" :data-car-id="car.id"
+              @touchstart="startDrag($event, car)" @touchmove="onDrag" @touchend="endDrag">
               <img :src="car.image" :alt="car.name" class="car-image object-contain w-full">
             </div>
           </div>
         </div>
 
         <!-- Middle column: Timeline -->
-        <div class="col-span-4 timeline relative flex flex-col items-center justify-between">
-          <div v-for="zone in zones" :key="zone.id" class="year-marker flex items-center w-full justify-center pr-4">
-            <span class="year-text text-white font-bold text-[1rem]">{{ zone.year }}</span>
+        <div class="col-span-6 timeline relative flex flex-col items-center justify-between">
+          <div class="absolute h-full w-0.5 bg-white left-1/2 transform -translate-x-1/2"></div>
+          <div v-for="zone in zones" :key="zone.id" class="year-marker flex items-center w-full justify-center">
+            <span class="year-text text-white font-bold text-lg">{{ zone.year }}</span>
           </div>
         </div>
 
         <!-- Right column: Drop zones -->
-        <div class="col-span-4 drop-zones grid grid-rows-8 gap-2">
-          <div v-for="zone in zones" :key="zone.id" class="drop-zone bg-vw-50 w-full flex items-center justify-center"
-            :data-zone-id="zone.id">
+        <div class="col-span-3 drop-zones grid grid-rows-8 gap-2 overflow-y-auto">
+          <div v-for="zone in zones" :key="zone.id"
+            class="drop-zone bg-vw-light w-full flex items-center justify-center" :data-zone-id="zone.id">
             <div class="car-container w-full h-full flex items-center justify-center">
               <div v-if="zone.car" class="car-item flex items-center justify-center" :data-car-id="zone.car.id"
                 @touchstart="startDrag($event, zone.car)" @touchmove="onDrag" @touchend="endDrag">
@@ -208,54 +209,37 @@ onMounted(() => {
 </template>
 
 <style scoped>
-
 .game-container {
-  position: relative;
+  height: calc(100vh - 10rem);
 }
 
 .drop-zone {
   position: relative;
   overflow: hidden;
+  border-radius: 8px;
 }
 
-
-.timeline::before {
-  content: '';
-  position: absolute;
-  top: 10px;
-  bottom: 10px;
-  width: 2px;
-  background-color: white;
-  transform: translateX(-50%);
+.timeline {
+  position: relative;
 }
 
 .year-marker {
   position: relative;
   z-index: 1;
   height: 100%;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0;
 }
 
 .year-text {
   position: relative;
   z-index: 2;
-}
-
-.year-text::after {
-  @apply bg-vw-500;
-  content: '';
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 120%;
-  height: 120%;
-  z-index: -1;
+  background-color: var(--vw-dark);
+  padding: 0.25rem 0.5rem;
   border-radius: 4px;
 }
 
-/* Adjust car image sizes */
-.car-image, .car-item img {
+.car-image,
+.car-item img {
   max-width: 100%;
   max-height: 100%;
   width: auto;
@@ -263,18 +247,10 @@ onMounted(() => {
   object-fit: contain;
 }
 
+.initial-cars-container,
 .drop-zones {
-  height: 100%;
-}
-
-.drop-zone {
-  height: 100%;
-}
-
-.initial-cars-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  max-height: calc(100vh - 12rem);
+  /* Adjust to ensure it doesn't overflow */
 }
 
 .car-item {
@@ -282,6 +258,18 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: grab;
 }
 
+@media (min-width: 768px) {
+  .year-text {
+    font-size: 1.25rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .year-text {
+    font-size: 1.5rem;
+  }
+}
 </style>

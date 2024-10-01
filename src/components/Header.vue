@@ -5,8 +5,8 @@ import Logo50Years from '@/assets/50ans-logo.svg'
 <template>
   <div class="header-container">
     <Logo50Years class="years-logo absolute" />
-    <div class="logo-wrapper h-[80px] w-[80px]">
-      <Logo class="logovw p-[18px]" />
+    <div class="logo-wrapper h-[100px] w-[100px]">
+      <Logo class="logovw p-[20px]" />
     </div>
   </div>
 </template>
@@ -15,7 +15,7 @@ import Logo50Years from '@/assets/50ans-logo.svg'
 .header-container::before {
 content: '';
   position: absolute;
-  top: 42%;
+  top: 48%;
   left: 0;
   right: 0;
   border-top: 2px solid white;
@@ -28,7 +28,7 @@ content: '';
 }
 
 .logo-wrapper {
-  @apply bg-vw-500;
+  @apply bg-vw-dark;
   position: relative;
   z-index: 1;
   right: 25px; 
@@ -36,9 +36,9 @@ content: '';
 }
 
 .years-logo{
-  top: 50px;
+  top: 55px;
   left: 1.2rem;
-  height: 5vw;
+  height: 4vw;
   width: auto;
 
 }

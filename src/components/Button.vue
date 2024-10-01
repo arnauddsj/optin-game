@@ -20,7 +20,7 @@ const handleClick = () => {
 </script>
 
 <template>
-  <button @click="handleClick" class="bg-vw-50 text-white text-xl font-medium py-4 px-8 w-3/4 max-w-md">
+  <button @click="handleClick" class="bg-vw-light text-white text-3xl font-medium py-4 px-8 w-3/4 max-w-md">
     {{ cta }}
   </button>
 </template>

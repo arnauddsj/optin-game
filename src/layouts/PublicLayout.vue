@@ -1,10 +1,14 @@
 <script setup lang="ts">
 import Header from '@/components/Header.vue'
+import Footer from '@/components/Footer.vue'
 </script>
 
 <template>
-  <Header />
-  <div class="flex flex-col flex-1 pt-4 pb-14 px-6 justify-center gap-[5rem]">
-    <slot />
+  <div class="flex flex-col">
+    <Header />
+    <main class="flex-grow flex flex-col justify-center items-center px-4 py-8">
+      <slot />
+    </main>
+    <Footer />
   </div>
 </template>

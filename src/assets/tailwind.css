@@ -17,12 +17,6 @@
   font-style: bold;
 }
 
-/* Apply the custom font */
-body {
-  @apply bg-vw-500 text-white;
-  font-family: 'VWHead', sans-serif;
-}
-
 h1 {
   font-family: 'VWHead', sans-serif;
   font-weight: 700;
