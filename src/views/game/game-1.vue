@@ -166,56 +166,56 @@ onMounted(() => {
 })
 </script>
 <template>
-  <PublicLayout class="h-screen flex flex-col items-center">
-    <div class="flex flex-col items-center justify-between p-4 overflow-hidden">
-      <div class="game-container grid grid-cols-3 w-full gap-2">
+  <PublicLayout>
+    <div class="flex flex-col h-full">
+      <div class="game-container flex-grow grid grid-cols-3 gap-2 p-4">
         <!-- Left column: Initial cars -->
-        <div class="col-span-1 flex flex-col justify-center drop-zones">
-          <div class="grid grid-rows-8 gap-5 justify-between drop-zone initial-cars-container" :data-zone-id="0">
-            <div v-for="car in initialList" :key="car.id"
-              class="car-item flex flex-col items-center justify-center mb-2" :data-car-id="car.id"
-              @touchstart="startDrag($event, car)" @touchmove="onDrag" @touchend="endDrag">
-              <img :src="car.image" :alt="car.name" class="car-image object-contain w-full">
+        <div class="col-span-1 flex flex-col">
+          <div class="grid grid-rows-8 gap-5 h-full">
+            <div v-for="car in initialList" :key="car.id" class="car-item flex items-center justify-center"
+              :data-car-id="car.id" @touchstart="startDrag($event, car)" @touchmove="onDrag" @touchend="endDrag">
+              <img :src="car.image" :alt="car.name" class="car-image object-contain w-full h-full max-h-full">
             </div>
           </div>
         </div>
 
         <!-- Middle column: Timeline -->
-        <div class="col-span-1 timeline relative items-center grid grid-rows-8">
-          <div class="absolute h-[80%] w-0.5 bg-white left-1/2 transform"></div>
-          <div v-for="zone in zones" :key="zone.id" class="year-marker flex items-center w-full justify-center">
-            <span class="year-text text-white font-bold text-2xl">{{ zone.year }}</span>
+        <div class="col-span-1 timeline relative flex flex-col">
+          <div class="absolute h-full w-0.5 bg-white left-1/2 transform -translate-x-1/2"></div>
+          <div v-for="zone in zones" :key="zone.id" class="year-marker flex items-center justify-center flex-grow">
+            <span class="year-text text-white font-bold text-2xl bg-vw-dark px-2 py-1">{{
+              zone.year }}</span>
           </div>
         </div>
 
         <!-- Right column: Drop zones -->
-        <div class="col-span-1 drop-zones grid grid-rows-8 gap-3">
-          <div v-for="zone in zones" :key="zone.id"
-            class="drop-zone bg-vw-light w-full flex items-center justify-center" :data-zone-id="zone.id">
-            <div class="car-container w-full h-full flex items-center justify-center">
-              <div v-if="zone.car" class="car-item flex items-center justify-center" :data-car-id="zone.car.id"
-                @touchstart="startDrag($event, zone.car)" @touchmove="onDrag" @touchend="endDrag">
-                <img :src="zone.car.image" :alt="zone.car.name" class="max-w-full max-h-full object-contain">
-              </div>
+        <div class="col-span-1 drop-zones grid auto-rows-fr gap-2">
+          <div v-for="zone in zones" :key="zone.id" class="drop-zone bg-vw-light flex items-center justify-center"
+            :data-zone-id="zone.id">
+            <div v-if="zone.car" class="car-item flex items-center justify-center w-full h-full"
+              :data-car-id="zone.car.id" @touchstart="startDrag($event, zone.car)" @touchmove="onDrag"
+              @touchend="endDrag">
+              <img :src="zone.car.image" :alt="zone.car.name" class="object-contain w-full h-full">
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <TimeUpDialog v-if="showTimeUpDialog" :message="timeUpMessage" @continue="handleContinue" />
-    <Timer :duration="timerDuration" :onTimeUp="handleTimeUp" :key="timerKey" />
+      <TimeUpDialog v-if="showTimeUpDialog" :message="timeUpMessage" @continue="handleContinue" />
+      <Timer :duration="timerDuration" :onTimeUp="handleTimeUp" :key="timerKey" />
+    </div>
   </PublicLayout>
 </template>
 
 <style scoped>
 .game-container {
-  height: calc(100vh - 10rem);
+  min-height: 0;
+  /* Allow the container to shrink if needed */
+  grid-template-rows: repeat(auto-fit, minmax(0, max(110vw, 15vh)));
 }
 
 .drop-zone {
   position: relative;
-  overflow: hidden;
 }
 
 .timeline {
@@ -225,53 +225,19 @@ onMounted(() => {
 .year-marker {
   position: relative;
   z-index: 1;
-  height: 100%;
-  padding: 0.5rem 0;
 }
 
 .year-text {
-  @apply bg-vw-dark;
   position: relative;
   z-index: 2;
-  border-radius: 4px;
-  display: inline-block;
-}
-
-.year-text::after {
-  @apply bg-vw-dark;
-  content: '';
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 20px;
-  height: 35px;
-  z-index: -1;
-}
-
-.car-image,
-.car-item img {
-  max-width: 100%;
-  max-height: 100%;
-  width: auto;
-  height: auto;
-  object-fit: contain;
-}
-
-.initial-cars-container,
-.drop-zones {
-  max-height: calc(100vh - 18rem);
-}
-
-.initial-cars-container,
-.drop-zones {
-  max-height: calc(100vh - 18rem);
 }
 
 .car-item {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   cursor: grab;
+}
+
+.car-image {
+  max-height: 100%;
+  object-fit: contain;
 }
 </style>
