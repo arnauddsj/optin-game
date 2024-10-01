@@ -25,33 +25,50 @@ const cars = ref<Car[]>([
   { id: 8, name: 'Voiture 8', year: 2019, image: '/cars/voiture-8.png' }
 ])
 
-const zones = ref(cars.value.map(car => ({ id: car.id, year: car.year, car: null as Car | null })))
-const initialList = ref<Car[]>([])
+// Update the zones ref to include initial zones
+const zones = ref([
+  ...cars.value.map(car => ({ id: car.id, year: car.year, car: null as Car | null })),
+  ...Array(8).fill(null).map((_, index) => ({ id: index + 9, year: 0, car: null as Car | null }))
+])
 
 const draggedCar = ref<Car | null>(null)
 const draggedElement = ref<HTMLElement | null>(null)
 
+// Update isAllCarsPlaced computed property
 const isAllCarsPlaced = computed(() => {
-  return initialList.value.length === 0 && zones.value.every(zone => zone.car !== null)
+  return zones.value.slice(0, 8).every(zone => zone.car !== null) &&
+         zones.value.slice(8).every(zone => zone.car === null)
 })
 
+// Update resetGame function
 const resetGame = () => {
-  initialList.value = [...cars.value].sort(() => Math.random() - 0.5)
-  zones.value.forEach(zone => zone.car = null)
+  const shuffledCars = [...cars.value].sort(() => Math.random() - 0.5)
+  zones.value = zones.value.map((zone, index) => {
+    if (index < 8) {
+      return { ...zone, car: null }
+    } else {
+      return { ...zone, car: shuffledCars[index - 8] || null }
+    }
+  })
 }
 
+// Update watch function
 watch(isAllCarsPlaced, (newValue: boolean) => {
   if (newValue) {
-    const allCorrect = zones.value.every(zone => zone.car && zone.car.year === zone.year)
+    const allCorrect = zones.value.slice(0, 8).every(zone => zone.car && zone.car.year === zone.year)
     if (allCorrect) {
       router.push('/success-game1')
     } else {
       alert("Some cars are not in the correct year. Try again!")
-      zones.value.forEach(zone => {
-        if (zone.car && zone.car.year !== zone.year) {
-          initialList.value.push(zone.car)
-          zone.car = null
+      zones.value = zones.value.map((zone, index) => {
+        if (index < 8 && zone.car && zone.car.year !== zone.year) {
+          const emptyInitialZone = zones.value.findIndex((z, i) => i >= 8 && z.car === null)
+          if (emptyInitialZone !== -1) {
+            zones.value[emptyInitialZone].car = zone.car
+          }
+          return { ...zone, car: null }
         }
+        return zone
       })
     }
   }
@@ -139,31 +156,34 @@ const endDrag = (event: TouchEvent) => {
   }
 }
 
+// Update updateZones function
 const updateZones = (carId: number, newZoneId: number) => {
   const car = cars.value.find(c => c.id === carId)
   if (!car) return
 
-  zones.value = zones.value.map(zone => {
-    if (zone.car && zone.car.id === carId) {
-      return { ...zone, car: null }
-    }
-    return zone
-  })
-  initialList.value = initialList.value.filter(c => c.id !== carId)
+  const oldZone = zones.value.find(zone => zone.car && zone.car.id === carId)
+  const newZone = zones.value.find(zone => zone.id === newZoneId)
 
-  if (newZoneId !== 0) {
-    zones.value = zones.value.map(zone => {
-      if (zone.id === newZoneId) {
-        if (zone.car) {
-          initialList.value.push(zone.car)
-        }
-        return { ...zone, car }
-      }
-      return zone
-    })
-  } else {
-    initialList.value.push(car)
+  if (!newZone) return
+
+  if (oldZone) {
+    oldZone.car = null
   }
+
+  if (newZone.car) {
+    // Swap cars
+    if (oldZone) {
+      oldZone.car = newZone.car
+    } else {
+      // Find an empty initial zone if the car was dragged from outside
+      const emptyInitialZone = zones.value.find((zone, index) => index >= 8 && zone.car === null)
+      if (emptyInitialZone) {
+        emptyInitialZone.car = newZone.car
+      }
+    }
+  }
+
+  newZone.car = car
 }
 
 onMounted(() => {
@@ -177,11 +197,13 @@ onMounted(() => {
     <div class="flex flex-col h-full">
       <div class="game-container flex-grow grid grid-cols-3 gap-2 p-4">
         <!-- Left column: Initial cars -->
-        <div class="col-span-1 flex flex-col">
-          <div class="grid grid-rows-8 gap-5 h-full">
-            <div v-for="car in initialList" :key="car.id" class="car-item flex items-center justify-center"
-              :data-car-id="car.id" @touchstart="startDrag($event, car)" @touchmove="onDrag" @touchend="endDrag">
-              <img :src="car.image" :alt="car.name" class="car-image object-contain w-full h-full max-h-full">
+        <div class="col-span-1 drop-zones grid auto-rows-fr gap-2">
+          <div v-for="zone in zones.slice(8)" :key="zone.id" class="drop-zone  flex items-center justify-center"
+            :data-zone-id="zone.id">
+            <div v-if="zone.car" class="car-item flex items-center justify-center w-full h-full"
+              :data-car-id="zone.car.id" @touchstart="startDrag($event, zone.car)" @touchmove="onDrag"
+              @touchend="endDrag">
+              <img :src="zone.car.image" :alt="zone.car.name" class="object-contain w-full h-full">
             </div>
           </div>
         </div>
@@ -189,7 +211,7 @@ onMounted(() => {
         <!-- Middle column: Timeline -->
         <div class="col-span-1 timeline relative flex flex-col">
           <div class="absolute h-full w-0.5 bg-white left-1/2 transform -translate-x-1/2"></div>
-          <div v-for="zone in zones" :key="zone.id" class="year-marker flex items-center justify-center flex-grow">
+          <div v-for="zone in zones.slice(0, 8)" :key="zone.id" class="year-marker flex items-center justify-center flex-grow">
             <span class="year-text text-white font-bold text-2xl bg-vw-dark px-2 py-1">{{
               zone.year }}</span>
           </div>
@@ -197,7 +219,7 @@ onMounted(() => {
 
         <!-- Right column: Drop zones -->
         <div class="col-span-1 drop-zones grid auto-rows-fr gap-2">
-          <div v-for="zone in zones" :key="zone.id" class="drop-zone bg-vw-light flex items-center justify-center"
+          <div v-for="zone in zones.slice(0, 8)" :key="zone.id" class="drop-zone bg-vw-light flex items-center justify-center"
             :data-zone-id="zone.id">
             <div v-if="zone.car" class="car-item flex items-center justify-center w-full h-full"
               :data-car-id="zone.car.id" @touchstart="startDrag($event, zone.car)" @touchmove="onDrag"
