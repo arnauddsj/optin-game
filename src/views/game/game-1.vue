@@ -144,11 +144,11 @@ const preventDefaultTouchMove = (e: TouchEvent) => {
 <template>
   <PublicLayout class="h-screen flex flex-col">
     <div class="game1-screen flex-grow flex flex-col items-center justify-between">
-      <div class="game-container grid grid-cols-12 w-full">
+      <div class="game-container grid grid-cols-12 w-full h-full">
         <!-- Left column: Initial cars -->
         <div class="col-span-4 flex flex-col justify-center">
-          <div class="flex flex-col justify-between drop-zone initial-cars-container" :data-zone-id="0">
-            <div v-for="car in initialList" :key="car.id" class="car-item flex flex-col items-center justify-center mb-4"
+          <div class="flex flex-col justify-between drop-zone initial-cars-container h-full" :data-zone-id="0">
+            <div v-for="car in initialList" :key="car.id" class="car-item flex flex-col items-center justify-center"
               :data-car-id="car.id">
               <img :src="car.image" :alt="car.name" class="car-image object-contain w-full">
             </div>
@@ -249,4 +249,18 @@ const preventDefaultTouchMove = (e: TouchEvent) => {
 .drop-zone {
   height: 100%;
 }
+
+.initial-cars-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.car-item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 </style>
