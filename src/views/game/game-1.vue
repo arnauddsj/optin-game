@@ -44,30 +44,32 @@ const checkAnswers = () => {
     const allCorrect = zones.value.every(zone => zone.car && zone.car.year === zone.year)
 
     if (allCorrect) {
-      router.push('/optin')
+      router.push('/success-game1')
     } else {
       alert("Some cars are not in the correct year. Try again!")
       resetGame()
     }
-  } else {
-    alert("Please place all cars before submitting.")
   }
 }
 
 const showTimeUpDialog = ref(false)
 const timeUpMessage = ref('')
-const timerDuration = ref(45)
+const timerDuration = ref(5)
+const timerKey = ref(0)
 
 const handleTimeUp = () => {
-  timeUpMessage.value = timerDuration.value === 45 ? "45 seconds have passed!" : "15 seconds have passed!"
+  timeUpMessage.value = `${timerDuration.value} seconds have passed!`
   showTimeUpDialog.value = true
 }
 
-const continueGame = () => {
+const resetGameState = () => {
+  resetGame()
   showTimeUpDialog.value = false
-  if (timeUpMessage.value.includes('45')) {
-    timerDuration.value = 15
-  }
+  timerKey.value++ // Increment the key to force Timer re-render
+}
+
+const handleContinue = () => {
+  resetGameState()
 }
 
 onMounted(() => {
@@ -169,9 +171,9 @@ const preventDefaultTouchMove = (e: TouchEvent) => {
     <TimeUpDialog
       v-if="showTimeUpDialog"
       :message="timeUpMessage"
-      :onContinue="continueGame"
+      @continue="handleContinue"
     />
-    <Timer :duration="timerDuration" :onTimeUp="handleTimeUp" />
+    <Timer :duration="timerDuration" :onTimeUp="handleTimeUp" :key="timerKey" />
   </PublicLayout>
 </template>
 

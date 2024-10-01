@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { ref, onMounted, onUnmounted, computed, watch } from 'vue'
 
 const props = defineProps<{
   duration: number
   onTimeUp: () => void
+  key: number // Add this prop to force re-render
 }>()
 
 const timeLeft = ref(props.duration)
@@ -20,7 +21,16 @@ const strokeDashoffset = computed(() => {
   return circumference * progress
 })
 
-onMounted(() => {
+// Watch for changes in the key prop to reset the timer
+watch(() => props.key, () => {
+  timeLeft.value = props.duration
+  if (intervalId.value) {
+    clearInterval(intervalId.value)
+  }
+  startTimer()
+})
+
+const startTimer = () => {
   intervalId.value = setInterval(() => {
     if (timeLeft.value > 0) {
       timeLeft.value--
@@ -29,6 +39,10 @@ onMounted(() => {
       props.onTimeUp()
     }
   }, 1000)
+}
+
+onMounted(() => {
+  startTimer()
 })
 
 onUnmounted(() => {

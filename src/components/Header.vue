@@ -1,15 +1,17 @@
 <script setup lang="ts">
 import Logo from '@/assets/logo-vw.svg'
+import Logo50Years from '@/assets/50ans-logo.svg'
 </script>
 <template>
   <div class="header-container">
+    <Logo50Years class="years-logo absolute" />
     <div class="logo-wrapper h-[120px] w-[100px]">
-      <Logo class="logovw h-[120px] w-[100px] p-[20px]" />
+      <Logo class="logovw p-[20px]" />
     </div>
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .header-container::before {
 content: '';
   position: absolute;
@@ -32,5 +34,13 @@ content: '';
   z-index: 1;
   right: 25px; 
   margin-left: auto;
+}
+
+.years-logo{
+  top: 70px;
+  left: 1.2rem;
+  height: 5vw;
+  width: auto;
+
 }
 </style>
