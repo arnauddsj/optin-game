@@ -75,7 +75,7 @@ watch(isAllCarsPlaced, (newValue: boolean) => {
 })
 
 const showTimeUpDialog = ref(false)
-const timerDuration = ref(2)
+const timerDuration = ref(45)
 const timerKey = ref(0)
 
 const handleTimeUp = () => {
@@ -193,9 +193,9 @@ onMounted(() => {
 <template>
   <PublicLayout>
     <div class="flex flex-col h-full">
-      <div class="game-container flex-grow grid grid-cols-3 gap-2 p-4">
+      <div class="game-container flex-grow grid grid-cols-3 gap-2 p-4 justify-self: center">
         <!-- Left column: Initial cars -->
-        <div class="col-span-1 drop-zones grid auto-rows-fr gap-2">
+        <div class="col-span-1 drop-zones grid grid-rows-8 gap-2">
           <div v-for="zone in zones.slice(8)" :key="zone.id" class="drop-zone  flex items-center justify-center"
             :data-zone-id="zone.id">
             <div v-if="zone.car" class="car-item flex items-center justify-center w-full h-full"
@@ -216,7 +216,7 @@ onMounted(() => {
         </div>
 
         <!-- Right column: Drop zones -->
-        <div class="col-span-1 drop-zones grid auto-rows-fr gap-2">
+        <div class="col-span-1 drop-zones grid grid-rows-8 gap-2">
           <div v-for="zone in zones.slice(0, 8)" :key="zone.id" class="drop-zone bg-vw-light flex items-center justify-center"
             :data-zone-id="zone.id">
             <div v-if="zone.car" class="car-item flex items-center justify-center w-full h-full"
@@ -236,9 +236,9 @@ onMounted(() => {
 
 <style scoped>
 .game-container {
-  min-height: 0;
   /* Allow the container to shrink if needed */
-  grid-template-rows: repeat(auto-fit, minmax(0, max(110vw, 15vh)));
+  grid-template-rows: repeat(8, minmax(0, max(130vw, 15vh)));
+  height: 100%;
 }
 
 .drop-zone {
