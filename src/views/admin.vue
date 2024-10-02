@@ -85,17 +85,17 @@ const clearUserData = () => {
 
     <div class="mb-6">
       <button @click="downloadUserData"
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4">
+        class="bg-vw-light text-white font-bold py-2 px-4">
         Télécharger les Données OPT-IN
       </button>
-      <button @click="clearUserData" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+      <button @click="clearUserData" class=" text-red-500 text-xs p-0 m-0">
         Effacer les Données OPT-IN
       </button>
     </div>
 
-    <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <div class="rounded px-8 pt-6 pb-8 mb-4">
       <h2 class="text-xl font-semibold mb-4">Données Stockées</h2>
-      <div v-if="userData.length === 0" class="text-gray-500">
+      <div v-if="userData.length === 0" class="">
         Aucune donnée disponible.
       </div>
       <div v-else class="overflow-x-auto">
@@ -130,22 +130,22 @@ const clearUserData = () => {
           </thead>
           <tbody>
             <tr v-for="user in userData" :key="user.id">
-              <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+              <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-vw-dark">
                 {{ user.nom }}
               </td>
-              <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+              <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-vw-dark">
                 {{ user.prenom }}
               </td>
-              <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+              <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-vw-dark">
                 {{ user.email }}
               </td>
-              <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+              <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-vw-dark">
                 {{ user.telephone }}
               </td>
-              <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+              <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-vw-dark">
                 {{ user.consentMarketing ? 'Oui' : 'Non' }}
               </td>
-              <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+              <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-vw-dark">
                 {{ user.timestamp }}
               </td>
             </tr>

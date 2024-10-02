@@ -3,6 +3,7 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import * as z from 'zod'
 import Airtable from 'airtable'
+import PublicLayout from '@/layouts/PublicLayout.vue'
 
 const router = useRouter()
 const submissionStatus = ref('')
@@ -159,26 +160,28 @@ const onSubmit = async () => {
 </script>
 
 <template>
-  <div class="flex items-center justify-center min-h-screen bg-sky-800 text-slate-50">
-    <div class="w-full max-w-[800px] flex flex-col items-center">
-      <h1 class="text-2xl font-bold text-center mb-1">Félicitations ! Vous êtes arrivé à la fin !</h1>
-      <h3 class="text-xl font-bold text-center mb-6">Entrez vos coordonnées et tentez de gagner un prix !</h3>
-      <form @submit.prevent="onSubmit" class="w-full flex flex-col gap-5 max-w-[600px]">
+  <PublicLayout>
+    <div class="flex flex-col justify-center gap-5 w-[80vw]">
+      <div class="flex flex-col gap-2">
+        <h2 class="text-base">Félicitations vous avez gagné ! </h2>
+        <h2 class="text-base"><span class="font-bold">Remplissez et envoyez le formulaire</span> afin d’avoir une chance
+          d’être tiré au sort pour gagner votre lot.</h2>
+        </div>
+      <form @submit.prevent="onSubmit" class="flex flex-col gap-4 max-w-[600px]">
         <div v-for="field in ['nom', 'prenom', 'email', 'telephone']" :key="field" class="flex flex-col">
-          <label :for="field" class="mb-1">{{ fieldLabels[field] }}</label>
+          <label :for="field" class="text-xs mb-[5px]">{{ fieldLabels[field] }}</label>
           <input :id="field" v-model="values[field]" :type="field === 'email' ? 'email' : 'text'"
-            :placeholder="fieldPlaceholders[field]" class="p-2 rounded text-sky-800" />
-          <p class="text-sm text-sky-50 mt-1">{{ field === 'telephone' ? 'Entrez votre numéro de téléphone (format: 0677849988 ou 06 77 84 99 88)' : `Entrez votre ${fieldLabels[field].toLowerCase()}` }}</p>
+            :placeholder="fieldPlaceholders[field]" class="p-1 text-vw-dark" />
           <p v-if="hasSubmitted && errors[field]" class="text-sm text-red-400 mt-1">{{ errors[field] }}</p>
         </div>
-        <div class="flex items-start space-x-3 rounded-md border p-4 text-sky-800">
+        <div class="flex items-start space-x-3 rounded-md border p-4 ">
           <input id="consentMarketing" v-model="values.consentMarketing" type="checkbox" class="mt-1" />
           <div class="space-y-1 leading-none">
-            <label for="consentMarketing" class="text-sky-50 font-bold">
+            <label for="consentMarketing" class="font-bold">
               J'accepte de recevoir des communications marketing de [Nom du Salon] et de ses partenaires, y compris
               Volkswagen.
             </label>
-            <p class="text-sm text-sky-50">
+            <p class="text-sm ">
               Vous pouvez vous désabonner à tout moment. Veuillez lire notre Politique de Confidentialité pour plus
               d'informations.
             </p>
@@ -186,11 +189,13 @@ const onSubmit = async () => {
         </div>
         <p v-if="hasSubmitted && errors.consentMarketing" class="text-sm text-red-400 mt-1">{{ errors.consentMarketing
           }}</p>
-        <button type="submit" class="bg-blue-500 text-white p-2 rounded">
-          Soumettre
-        </button>
+        <div class="inline-block">
+          <button type="submit" class="bg-vw-light text-white text-2xl font-medium py-1 px-8">
+            Envoyer
+          </button>
+        </div>
       </form>
       <p v-if="submissionStatus" class="mt-4 text-green-400">{{ submissionStatus }}</p>
     </div>
-  </div>
+  </PublicLayout>
 </template>

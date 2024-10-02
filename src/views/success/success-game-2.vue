@@ -1,15 +1,21 @@
 <script setup lang="ts">
 import PublicLayout from '@/layouts/PublicLayout.vue'
-import { useRouter } from 'vue-router'
-import Button from '@/components/Button.vue'
-
-const router = useRouter()
+import Button from "@/components/Button.vue"
 </script>
 
 <template>
   <PublicLayout>
-    Success Game 2
-    <button @click="router.push('/game2')">Retourner au jeu</button>
+    <div class="flex flex-col h-full">
+      <div class="flex flex-col flex-1 justify-center p-10">
+        <div class="content flex flex-col gap-10">
+          <h2 class="text-2xl">
+            Félicitations pour cette deuxième épreuve, <span class="font-bold">vous avez débloqué un indice</span> pour
+            l’épreuve finale !
+          </h2>
+            <Button cta="Épreuve suivante" link="/intro-game3" />
+        </div>
+      </div>
+    </div>
   </PublicLayout>
 </template>
 

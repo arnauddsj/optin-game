@@ -14,14 +14,13 @@ interface Album {
   image: string
   isCorrect: boolean
   isSelected: boolean
-  hasBeenSelected: boolean
 }
 
 const albums = ref<Album[]>([
-  { id: 1, name: 'In Utero', artist: 'Nirvana', image: '/covers/nirvana.jpg', isCorrect: false, isSelected: false, hasBeenSelected: false },
-  { id: 2, name: 'Le Grand Bleu', artist: 'Eric Serra', image: '/covers/grandbleu.jpg', isCorrect: false, isSelected: false, hasBeenSelected: false },
-  { id: 3, name: "(What's the Story) Morning Glory?", artist: 'Oasis', image: '/covers/oasis.jpg', isCorrect: true, isSelected: false, hasBeenSelected: false },
-  { id: 4, name: 'Born in the U.S.A.', artist: 'Bruce Springsteen', image: '/covers/bruce.jpg', isCorrect: true, isSelected: false, hasBeenSelected: false },
+  { id: 1, name: 'In Utero', artist: 'Nirvana', image: '/covers/nirvana.jpg', isCorrect: false, isSelected: false },
+  { id: 2, name: 'Le Grand Bleu', artist: 'Eric Serra', image: '/covers/grandbleu.jpg', isCorrect: false, isSelected: false },
+  { id: 3, name: "(What's the Story) Morning Glory?", artist: 'Oasis', image: '/covers/oasis.jpg', isCorrect: true, isSelected: false },
+  { id: 4, name: 'Born in the U.S.A.', artist: 'Bruce Springsteen', image: '/covers/bruce.jpg', isCorrect: true, isSelected: false },
 ])
 
 const isCorrectSelection = computed(() => {
@@ -31,7 +30,6 @@ const isCorrectSelection = computed(() => {
 
 const toggleAlbum = (album: Album) => {
   album.isSelected = !album.isSelected
-  album.hasBeenSelected = true
 
   if (isCorrectSelection.value) {
     router.push('/success-game2')
@@ -49,7 +47,6 @@ const handleTimeUp = () => {
 const resetGameState = () => {
   albums.value.forEach(album => {
     album.isSelected = false
-    album.hasBeenSelected = false
   })
   showTimeUpDialog.value = false
   timerKey.value++
@@ -63,13 +60,15 @@ const handleContinue = () => {
 <template>
   <PublicLayout>
     <div class="flex flex-col flex-grow px-10 justify-center">
-      <h2 class="text-xl font-bold mb-4">Parmi les 4 pochettes d'album ci-dessous, lesquelles correspondent
+      <h2 class="text-base mb-8">Parmi les 4 pochettes d'album ci-dessous, sélectionnez celles qui correspondent
         à la <span class="font-bold">période de construction de la Golf 2 GTI (1984-1992)</span></h2>
       <div class="grid grid-cols-2 gap-4 mb-4">
         <div v-for="album in albums" :key="album.id" class="album-cover" :class="{ 'selected': album.isSelected }">
-          <img :src="album.image" :alt="album.name" class="w-full h-auto cursor-pointer" @click="toggleAlbum(album)"
-            :style="{ transform: album.isSelected ? 'scale(1.1)' : 'scale(1)' }">
-          <p class="text-center mt-2">{{ album.name }} - {{ album.artist }}</p>
+          <div class="flex flex-col items-center">
+            <img :src="album.image" :alt="album.name" class="cursor-pointer" @click="toggleAlbum(album)"
+              :style="{ transform: album.isSelected ? 'scale(1.1)' : 'scale(1)' }">
+            <p class="text-center mt-2">{{ album.name }} - {{ album.artist }}</p>
+          </div>
         </div>
       </div>
       <TimeUpDialog v-if="showTimeUpDialog" @continue="handleContinue" />
@@ -79,12 +78,14 @@ const handleContinue = () => {
 </template>
 
 <style scoped>
-.album-cover {
+img {
+  width: 280px;
+  height: auto;
   transition: all 0.3s ease;
 }
 
-.album-cover:hover img {
-  transform: scale(1.05);
+.album-cover {
+  transition: all 0.3s ease;
 }
 
 .album-cover.selected img {

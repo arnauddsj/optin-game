@@ -13,7 +13,6 @@ import SuccessGame2 from '@/views/success/success-game-2.vue'
 import SuccessGame3 from '@/views/success/success-game-3.vue'
 import SuccessGame4 from '@/views/success/success-game-4.vue'
 import OptInForm from '@/views/optin.vue'
-import OptInSuccess from '@/views/optin-success.vue'
 import AdminScreen from '@/views/admin.vue'
 import IntroGame from '@/views/intro/intro-game.vue'
 
@@ -35,7 +34,6 @@ const router = createRouter({
     { path: '/success-game3', component: SuccessGame3 },
     { path: '/success-game4', component: SuccessGame4 },
     { path: '/optin', component: OptInForm },
-    { path: '/optin-success', component: OptInSuccess },
     { path: '/admin', component: AdminScreen },
   ]
 })
