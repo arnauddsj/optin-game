@@ -7,7 +7,7 @@ const router = useRouter()
 
 onMounted(() => {
     setTimeout(() => {
-      router.push('/')
+      router.push('/intro-game')
     }, 2000)
 })
 

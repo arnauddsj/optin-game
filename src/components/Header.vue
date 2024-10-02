@@ -25,6 +25,7 @@ content: '';
   width: 100%;
   position: relative;
   z-index: 1;
+  margin-top: 1rem;
 }
 
 .logo-wrapper {

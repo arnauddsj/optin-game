@@ -15,11 +15,13 @@ import SuccessGame4 from '@/views/success/success-game-4.vue'
 import OptInForm from '@/views/optin.vue'
 import OptInSuccess from '@/views/optin-success.vue'
 import AdminScreen from '@/views/admin.vue'
+import IntroGame from '@/views/intro/intro-game.vue'
 
 const router = createRouter({
   history: createWebHistory(),
   routes: [
     { path: '/', component: home },
+    { path: '/intro-game', component: IntroGame },
     { path: '/game1', component: Game1 },
     { path: '/game2', component: Game2 },
     { path: '/game3', component: Game3 },
