@@ -3,9 +3,9 @@ import Header from '@/components/Header.vue'
 </script>
 
 <template>
-  <div class="flex flex-col">
+  <div class="flex flex-col h-screen">
     <Header />
-    <main class="flex-grow flex flex-col justify-center items-center px-4 py-8">
+    <main class="flex-grow flex flex-col justify-center items-center pb-12">
       <slot />
     </main>
   </div>

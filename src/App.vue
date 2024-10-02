@@ -9,8 +9,12 @@ import { RouterView } from 'vue-router'
 </template>
 
 <style>
+:root {
+  /* Set the root font size */
+  font-size: 26px
+}
+
 body {
   @apply bg-vw-dark text-white font-vw;
-  font-size: 26px;
 }
 </style>

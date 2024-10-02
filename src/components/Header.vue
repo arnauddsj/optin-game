@@ -7,7 +7,7 @@ import Logo50Years from '@/assets/50ans-logo.svg'
     <Logo50Years class="years-logo absolute" />
     <div class="logo-wrapper h-[100px] w-[100px]">
       <Logo class="logovw p-[20px]" />
-    </div>
+    </div>  
   </div>
 </template>
 

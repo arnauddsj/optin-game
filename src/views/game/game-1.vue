@@ -75,12 +75,10 @@ watch(isAllCarsPlaced, (newValue: boolean) => {
 })
 
 const showTimeUpDialog = ref(false)
-const timeUpMessage = ref('')
-const timerDuration = ref(50)
+const timerDuration = ref(2)
 const timerKey = ref(0)
 
 const handleTimeUp = () => {
-  timeUpMessage.value = `${timerDuration.value} seconds have passed!`
   showTimeUpDialog.value = true
 }
 
@@ -230,7 +228,7 @@ onMounted(() => {
         </div>
       </div>
 
-      <TimeUpDialog v-if="showTimeUpDialog" :message="timeUpMessage" @continue="handleContinue" />
+      <TimeUpDialog v-if="showTimeUpDialog" @continue="handleContinue" />
       <Timer :duration="timerDuration" :onTimeUp="handleTimeUp" :key="timerKey" />
     </div>
   </PublicLayout>
