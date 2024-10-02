@@ -5,8 +5,8 @@ import Logo50Years from '@/assets/50ans-logo.svg'
 <template>
   <div class="header-container">
     <Logo50Years class="years-logo absolute" />
-    <div class="logo-wrapper h-[100px] w-[100px]">
-      <Logo class="logovw p-[20px]" />
+    <div class="logo-wrapper h-[100px] w-[100px] p-[20px]">
+      <Logo class="" />
     </div>  
   </div>
 </template>
@@ -32,7 +32,7 @@ content: '';
   @apply bg-vw-dark;
   position: relative;
   z-index: 1;
-  right: 40px; 
+  right: 60px; 
   margin-left: auto;
 }
 
