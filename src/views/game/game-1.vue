@@ -209,7 +209,8 @@ onMounted(() => {
         <!-- Middle column: Timeline -->
         <div class="col-span-1 timeline relative flex flex-col">
           <div class="absolute h-full w-0.5 bg-white left-1/2 transform -translate-x-1/2"></div>
-          <div v-for="zone in zones.slice(0, 8)" :key="zone.id" class="year-marker flex items-center justify-center flex-grow">
+          <div v-for="zone in zones.slice(0, 8)" :key="zone.id"
+            class="year-marker flex items-center justify-center flex-grow">
             <span class="year-text text-white font-bold text-2xl bg-vw-dark px-2 py-1">{{
               zone.year }}</span>
           </div>
@@ -217,8 +218,8 @@ onMounted(() => {
 
         <!-- Right column: Drop zones -->
         <div class="col-span-1 drop-zones grid grid-rows-8 gap-2">
-          <div v-for="zone in zones.slice(0, 8)" :key="zone.id" class="drop-zone bg-vw-light flex items-center justify-center"
-            :data-zone-id="zone.id">
+          <div v-for="zone in zones.slice(0, 8)" :key="zone.id"
+            class="drop-zone bg-vw-light flex items-center justify-center" :data-zone-id="zone.id">
             <div v-if="zone.car" class="car-item flex items-center justify-center w-full h-full"
               :data-car-id="zone.car.id" @touchstart="startDrag($event, zone.car)" @touchmove="onDrag"
               @touchend="endDrag">
@@ -230,6 +231,7 @@ onMounted(() => {
 
       <TimeUpDialog v-if="showTimeUpDialog" @continue="handleContinue" />
       <Timer :duration="timerDuration" :onTimeUp="handleTimeUp" :key="timerKey" />
+      <div class="absolute bottom-0 left-0 right-0"><button class="text-sm font-regular" @click="router.push('/success-game1')">next</button></div>
     </div>
   </PublicLayout>
 </template>

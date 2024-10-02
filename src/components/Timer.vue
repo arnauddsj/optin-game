@@ -11,12 +11,12 @@ const timeLeft = ref(props.duration)
 const intervalId = ref<number | null>(null)
 
 const strokeDasharray = computed(() => {
-  const circumference = 2 * Math.PI * 20 // 20 is the new radius of our circle (half of 40)
+  const circumference = 2 * Math.PI * 24 // Increased from 20 to 24 (20 * 1.2)
   return `${circumference} ${circumference}`
 })
 
 const strokeDashoffset = computed(() => {
-  const circumference = 2 * Math.PI * 20 // Update this to 20 as well
+  const circumference = 2 * Math.PI * 24 // Increased from 20 to 24 (20 * 1.2)
   const progress = 1 - timeLeft.value / props.duration
   return circumference * progress
 })
@@ -54,11 +54,11 @@ onUnmounted(() => {
 
 <template>
   <div class="circular-timer">
-    <svg width="50" height="50" viewBox="0 0 50 50">
-      <circle cx="25" cy="25" r="20" fill="none" stroke="#ffffff" stroke-width="2" stroke-opacity="0.3" />
-      <circle cx="25" cy="25" r="20" fill="none" stroke="#ffffff" stroke-width="2" :stroke-dasharray="strokeDasharray"
-        :stroke-dashoffset="strokeDashoffset" transform="rotate(-90 25 25)" />
-      <text x="25" y="25" text-anchor="middle" dy="4" font-size="12" fill="#ffffff">
+    <svg width="60" height="60" viewBox="0 0 60 60"> <!-- Increased from 50x50 to 60x60 -->
+      <circle cx="30" cy="30" r="24" fill="none" stroke="#ffffff" stroke-width="2" stroke-opacity="0.3" /> <!-- Updated cx, cy, and r -->
+      <circle cx="30" cy="30" r="24" fill="none" stroke="#ffffff" stroke-width="2" :stroke-dasharray="strokeDasharray"
+        :stroke-dashoffset="strokeDashoffset" transform="rotate(-90 30 30)" /> <!-- Updated cx, cy, r, and transform -->
+      <text x="30" y="30" text-anchor="middle" dy="5" font-size="14" fill="#ffffff"> <!-- Updated x, y, dy, and font-size -->
         {{ timeLeft }}
       </text>
     </svg>
@@ -68,7 +68,7 @@ onUnmounted(() => {
 <style scoped>
 .circular-timer {
   position: fixed;
-  bottom: 10px; /* Reduced from 20px */
+  bottom: 12px; /* Increased from 10px to 12px */
   left: 50%;
   transform: translateX(-50%);
 }

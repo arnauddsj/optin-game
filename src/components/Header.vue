@@ -32,13 +32,13 @@ content: '';
   @apply bg-vw-dark;
   position: relative;
   z-index: 1;
-  right: 25px; 
+  right: 40px; 
   margin-left: auto;
 }
 
 .years-logo{
   top: 55px;
-  left: 1.2rem;
+  left: 40px;
   height: 4vw;
   width: auto;
 

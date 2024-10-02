@@ -10,8 +10,8 @@ import Button from "@/components/Button.vue"
         <div class="content flex flex-col gap-10">
           <h1 class="text-3xl font-bold">50 ans d'histoire</h1>
           <h2 class="text-2xl">
-            VW a produit 8 évolutions de l'iconique Golf GTI depuis 1976, saurez-vous les reconnaître et les placer dans
-            la frise chronologique suivante ?
+            VW a produit 8 évolutions de l'iconique Golf GTI depuis 1976, saurez-vous les reconnaître et <span
+              class="font-bold">les placer dans la frise chronologique suivante</span> ?
           </h2>
           <Button cta="Commencer" link="/game1" />
         </div>

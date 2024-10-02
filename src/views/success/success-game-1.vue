@@ -5,13 +5,20 @@ import Button from "@/components/Button.vue"
 
 <template>
   <PublicLayout>
-    <div class="flex-grow flex flex-col justify-center">
-      <h2 class="text-2xl mb-8">
-        Félicitations pour cette première épreuve, vous avez débloqué un indice pour l’épreuve finale !
-      </h2>
-      <Button cta="Commencer" link="/game1" />
+    <div class="flex flex-col h-full">
+      <div class="flex flex-col flex-1 justify-center p-10">
+        <div class="content flex flex-col gap-10">
+          <h2 class="text-2xl">
+            Félicitations pour cette première épreuve, <span class="font-bold">vous avez débloqué un indice</span> pour l’épreuve finale !
+          </h2>
+          <Button cta="Commencer" link="/intro-game2" />
+        </div>
+      </div>
+
     </div>
   </PublicLayout>
 </template>
 
-<style scoped></style>
+<style scoped>
+
+</style>
