@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, RouteLocationNormalized, NavigationGuardNext } from 'vue-router'
 import home from '@/views/home.vue'
 import Game1 from '@/views/game/game-1.vue'
 import Game2 from '@/views/game/game-2.vue'
@@ -16,26 +16,41 @@ import OptInForm from '@/views/optin.vue'
 import AdminScreen from '@/views/admin.vue'
 import IntroGame from '@/views/intro/intro-game.vue'
 
+const routes = [
+  { path: '/', component: home },
+  { path: '/intro-game', component: IntroGame },
+  { path: '/game1', component: Game1 },
+  { path: '/game2', component: Game2 },
+  { path: '/game3', component: Game3 },
+  { path: '/game4', component: Game4 },
+  { path: '/intro-game1', component: IntroGame1 },
+  { path: '/intro-game2', component: IntroGame2 },
+  { path: '/intro-game3', component: IntroGame3 },
+  { path: '/intro-game4', component: IntroGame4 },
+  { path: '/success-game1', component: SuccessGame1 },
+  { path: '/success-game2', component: SuccessGame2 },
+  { path: '/success-game3', component: SuccessGame3 },
+  { path: '/success-game4', component: SuccessGame4 },
+  { path: '/optin', component: OptInForm },
+  {
+    path: '/admin',
+    name: 'Admin',
+    component: AdminScreen,
+    beforeEnter: (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
+      const password = prompt('Enter admin password:')
+      if (password === 'admin') {
+        next()
+      } else {
+        alert('Incorrect password')
+        next(false)
+      }
+    }
+  }
+]
+
 const router = createRouter({
   history: createWebHistory(),
-  routes: [
-    { path: '/', component: home },
-    { path: '/intro-game', component: IntroGame },
-    { path: '/game1', component: Game1 },
-    { path: '/game2', component: Game2 },
-    { path: '/game3', component: Game3 },
-    { path: '/game4', component: Game4 },
-    { path: '/intro-game1', component: IntroGame1 },
-    { path: '/intro-game2', component: IntroGame2 },
-    { path: '/intro-game3', component: IntroGame3 },
-    { path: '/intro-game4', component: IntroGame4 },
-    { path: '/success-game1', component: SuccessGame1 },
-    { path: '/success-game2', component: SuccessGame2 },
-    { path: '/success-game3', component: SuccessGame3 },
-    { path: '/success-game4', component: SuccessGame4 },
-    { path: '/optin', component: OptInForm },
-    { path: '/admin', component: AdminScreen },
-  ]
+  routes
 })
 
 export default router

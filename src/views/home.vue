@@ -26,6 +26,10 @@ const toggleFullscreen = () => {
   }
 }
 
+const goToAdmin = () => {
+  router.push('/admin')
+}
+
 onMounted(() => {
   document.addEventListener('fullscreenchange', () => {
     isFullscreen.value = !!document.fullscreenElement
@@ -43,6 +47,7 @@ onMounted(() => {
       <button @click="startGame" class="bg-vw-light text-white text-xl font-medium py-2 px-4 rounded-full">
         2 - Démarrer le jeu
       </button>
+      <button @click="goToAdmin">Admin</button>
     </div>
   </PublicLayout>
 </template>

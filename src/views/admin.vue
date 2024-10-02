@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-
+import { useRouter } from 'vue-router'
 interface UserData {
   id?: number
   nom: string
@@ -11,6 +11,7 @@ interface UserData {
   timestamp: string
 }
 
+const router = useRouter()
 const userData = ref<UserData[]>([])
 let db: IDBDatabase
 
@@ -80,72 +81,69 @@ const clearUserData = () => {
 </script>
 
 <template>
-  <div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold mb-6">Tableau de Bord Administrateur</h1>
-
-    <div class="mb-6">
-      <button @click="downloadUserData"
-        class="bg-vw-light text-white font-bold py-2 px-4">
-        Télécharger les Données OPT-IN
+  <div class="container mx-auto px-2 py-4">
+    <h1 class="text-2xl font-bold mb-4">Tableau de bord Administrateur</h1>
+    <div class="flex gap-2 mb-4">
+      <button @click="router.push('/')"
+        class="bg-vw-light text-white rounded-none font-bold py-1 px-2 text-sm">
+        Retour
       </button>
-      <button @click="clearUserData" class=" text-red-500 text-xs p-0 m-0">
-        Effacer les Données OPT-IN
+      <button @click="downloadUserData"
+        class="ring ring-vw-light text-vw-light rounded-none font-bold py-1 px-2 text-sm">
+        Télécharger les données
+      </button>
+      <button @click="clearUserData" class="text-red-500 text-xs p-0 m-0 ml-2">
+        Effacer les données
       </button>
     </div>
 
-    <div class="rounded px-8 pt-6 pb-8 mb-4">
-      <h2 class="text-xl font-semibold mb-4">Données Stockées</h2>
-      <div v-if="userData.length === 0" class="">
+    <div class="rounded px-2 pt-4 pb-4 mb-4">
+      <h2 class="text-lg font-semibold mb-2">Données Stockées</h2>
+      <div v-if="userData.length === 0" class="text-sm">
         Aucune donnée disponible.
       </div>
       <div v-else class="overflow-x-auto">
-        <table class="min-w-full leading-normal">
+        <table class="w-full leading-tight text-xs">
           <thead>
             <tr>
-              <th
-                class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+              <th class="p-1 border-b border-gray-200 bg-gray-100 text-left font-semibold text-gray-600 uppercase">
                 Nom
               </th>
-              <th
-                class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+              <th class="p-1 border-b border-gray-200 bg-gray-100 text-left font-semibold text-gray-600 uppercase">
                 Prénom
               </th>
-              <th
-                class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+              <th class="p-1 border-b border-gray-200 bg-gray-100 text-left font-semibold text-gray-600 uppercase">
                 Email
               </th>
-              <th
-                class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                Téléphone
+              <th class="p-1 border-b border-gray-200 bg-gray-100 text-left font-semibold text-gray-600 uppercase">
+                Tél.
               </th>
-              <th
-                class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                Consentement Marketing
+              <th class="p-1 border-b border-gray-200 bg-gray-100 text-left font-semibold text-gray-600 uppercase">
+                Cons. Mkt
               </th>
-              <th
-                class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                Horodatage
+              <th class="p-1 border-b border-gray-200 bg-gray-100 text-left font-semibold text-gray-600 uppercase">
+                Date
               </th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="user in userData" :key="user.id">
-              <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-vw-dark">
+              <td class="p-1 border-b border-gray-200 bg-white text-vw-dark">
                 {{ user.nom }}
               </td>
-              <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-vw-dark">
+              <td class="p-1 border-b border-gray-200 bg-white text-vw-dark">
                 {{ user.prenom }}
               </td>
-              <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-vw-dark">
+              <td class="p-1 border-b border-gray-200 bg-white text-vw-dark">
                 {{ user.email }}
               </td>
-              <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-vw-dark">
+              <td class="p-1 border-b border-gray-200 bg-white text-vw-dark">
                 {{ user.telephone }}
               </td>
-              <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-vw-dark">
+              <td class="p-1 border-b border-gray-200 bg-white text-vw-dark">
                 {{ user.consentMarketing ? 'Oui' : 'Non' }}
               </td>
-              <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-vw-dark">
+              <td class="p-1 border-b border-gray-200 bg-white text-vw-dark">
                 {{ user.timestamp }}
               </td>
             </tr>
