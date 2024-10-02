@@ -4,6 +4,15 @@ import { useRouter } from 'vue-router'
 import PublicLayout from '@/layouts/PublicLayout.vue'
 import TimeUpDialog from '@/components/TimeUpDialog.vue'
 import Timer from '@/components/Timer.vue'
+import { 
+  ToastProvider, 
+  ToastRoot, 
+  ToastTitle, 
+  ToastDescription, 
+  ToastViewport, 
+  ToastAction,
+  ToastClose
+} from 'radix-vue'
 
 interface Car {
   id: number
@@ -52,6 +61,22 @@ const resetGame = () => {
   })
 }
 
+const showToast = ref(false)
+const toastMessage = ref('')
+const toastType = ref('success')
+
+const showSuccessToast = (message: string) => {
+  toastMessage.value = message
+  toastType.value = 'success'
+  showToast.value = true
+}
+
+const showErrorToast = (message: string) => {
+  toastMessage.value = message
+  toastType.value = 'error'
+  showToast.value = true
+}
+
 // Update watch function
 watch(isAllCarsPlaced, (newValue: boolean) => {
   if (newValue) {
@@ -59,7 +84,8 @@ watch(isAllCarsPlaced, (newValue: boolean) => {
     if (allCorrect) {
       router.push('/success-game1')
     } else {
-      alert("Some cars are not in the correct year. Try again!")
+      const incorrectCount = zones.value.slice(0, 8).filter(zone => zone.car && zone.car.year !== zone.year).length
+      showErrorToast(`${incorrectCount} emplacement(s) sont incorrects.`)
       zones.value = zones.value.map((zone, index) => {
         if (index < 8 && zone.car && zone.car.year !== zone.year) {
           const emptyInitialZone = zones.value.findIndex((z, i) => i >= 8 && z.car === null)
@@ -192,55 +218,74 @@ onMounted(() => {
 </script>
 <template>
   <PublicLayout>
-    <div class="flex flex-col h-full">
-      <div class="game-container flex-grow grid grid-cols-3 gap-2 p-4 justify-self: center">
-        <!-- Left column: Initial cars -->
-        <div class="col-span-1 drop-zones grid grid-rows-8 gap-2">
-          <div v-for="zone in zones.slice(8)" :key="zone.id" class="drop-zone  flex items-center justify-center"
-            :data-zone-id="zone.id">
-            <div v-if="zone.car" class="car-item flex items-center justify-center w-full h-full"
-              :data-car-id="zone.car.id" @touchstart="startDrag($event, zone.car)" @touchmove="onDrag"
-              @touchend="endDrag">
-              <img :src="zone.car.image" :alt="zone.car.name" class="object-contain w-full h-full">
+    <ToastProvider>
+      <div class="flex flex-col">
+        <div class="game-container flex-grow grid grid-cols-3 gap-s p-4 justify-self: center">
+          <!-- Left column: Initial cars -->
+          <div class="col-span-1 drop-zones grid grid-rows-8 gap-2">
+            <div v-for="zone in zones.slice(8)" :key="zone.id" class="drop-zone  flex items-center justify-center"
+              :data-zone-id="zone.id">
+              <div v-if="zone.car" class="car-item flex items-center justify-center w-full h-full"
+                :data-car-id="zone.car.id" @touchstart="startDrag($event, zone.car)" @touchmove="onDrag"
+                @touchend="endDrag">
+                <img :src="zone.car.image" :alt="zone.car.name" class="object-contain w-full h-full">
+              </div>
+            </div>
+          </div>
+
+          <!-- Middle column: Timeline -->
+          <div class="col-span-1 timeline relative flex flex-col">
+            <div class="absolute h-full w-0.5 bg-white left-1/2 transform -translate-x-1/2"></div>
+            <div v-for="zone in zones.slice(0, 8)" :key="zone.id"
+              class="year-marker flex items-center justify-center flex-grow">
+              <span class="year-text text-white font-bold text-2xl bg-vw-dark px-2 py-1">{{
+                zone.year }}</span>
+            </div>
+          </div>
+
+          <!-- Right column: Drop zones -->
+          <div class="col-span-1 drop-zones grid grid-rows-8 gap-2">
+            <div v-for="zone in zones.slice(0, 8)" :key="zone.id"
+              class="drop-zone bg-vw-light flex items-center justify-center" :data-zone-id="zone.id">
+              <div v-if="zone.car" class="car-item flex items-center justify-center w-full h-full"
+                :data-car-id="zone.car.id" @touchstart="startDrag($event, zone.car)" @touchmove="onDrag"
+                @touchend="endDrag">
+                <img :src="zone.car.image" :alt="zone.car.name" class="object-contain w-full h-full">
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- Middle column: Timeline -->
-        <div class="col-span-1 timeline relative flex flex-col">
-          <div class="absolute h-full w-0.5 bg-white left-1/2 transform -translate-x-1/2"></div>
-          <div v-for="zone in zones.slice(0, 8)" :key="zone.id"
-            class="year-marker flex items-center justify-center flex-grow">
-            <span class="year-text text-white font-bold text-2xl bg-vw-dark px-2 py-1">{{
-              zone.year }}</span>
-          </div>
-        </div>
-
-        <!-- Right column: Drop zones -->
-        <div class="col-span-1 drop-zones grid grid-rows-8 gap-2">
-          <div v-for="zone in zones.slice(0, 8)" :key="zone.id"
-            class="drop-zone bg-vw-light flex items-center justify-center" :data-zone-id="zone.id">
-            <div v-if="zone.car" class="car-item flex items-center justify-center w-full h-full"
-              :data-car-id="zone.car.id" @touchstart="startDrag($event, zone.car)" @touchmove="onDrag"
-              @touchend="endDrag">
-              <img :src="zone.car.image" :alt="zone.car.name" class="object-contain w-full h-full">
-            </div>
-          </div>
-        </div>
+        <TimeUpDialog v-if="showTimeUpDialog" @continue="handleContinue" />
+        <Timer :duration="timerDuration" :onTimeUp="handleTimeUp" :key="timerKey" />
+        <div class="absolute bottom-0 left-0 right-0"><button class="text-sm font-regular"
+            @click="router.push('/success-game1')">next</button></div>
+        <button class="text-sm font-regular" @click="showToast = true">show toast</button>
       </div>
 
-      <TimeUpDialog v-if="showTimeUpDialog" @continue="handleContinue" />
-      <Timer :duration="timerDuration" :onTimeUp="handleTimeUp" :key="timerKey" />
-      <div class="absolute bottom-0 left-0 right-0"><button class="text-sm font-regular" @click="router.push('/success-game1')">next</button></div>
-    </div>
+      <ToastRoot v-model:open="showToast" :duration="5000" 
+        class="bg-white rounded-md p-[15px] grid [grid-template-areas:_'title_action'_'description_action'] grid-cols-[auto_max-content] gap-x-[15px] items-center data-[state=open]:animate-slideIn data-[state=closed]:animate-hide data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=cancel]:translate-x-0 data-[swipe=cancel]:transition-[transform_200ms_ease-out] data-[swipe=end]:animate-swipeOut">
+        <ToastTitle class="[grid-area:_title] mb-[5px] text-vw-dark text-xl">
+          Continuez !
+        </ToastTitle>
+        <ToastDescription class="[grid-area:_description] m-0 text-vw-dark text-[13px] leading-[1.3]">
+          {{ 8 - zones.slice(0, 8).filter(zone => zone.car !== null).length }} emplacement(s) sont incorrects.
+        </ToastDescription>
+        <ToastAction class="[grid-area:_action]" as-child alt-text="Fermer">
+          <button class="bg-vw-light text-white text-xs py-[5px] px-[5px] whitespace-nowrap">
+            OK
+          </button>
+        </ToastAction>
+      </ToastRoot>
+
+      <ToastViewport class="fixed top-0 left-0 flex flex-col p-6 gap-2 max-w-[100vw] m-0 list-none z-[50] outline-none" />
+    </ToastProvider>
   </PublicLayout>
 </template>
 
 <style scoped>
 .game-container {
-  /* Allow the container to shrink if needed */
-  grid-template-rows: repeat(8, minmax(0, max(130vw, 15vh)));
-  height: 100%;
+  grid-template-rows: repeat(auto-fit, minmax(0, max(105vw, 15vh)));
 }
 
 .drop-zone {
@@ -266,7 +311,41 @@ onMounted(() => {
 }
 
 .car-image {
-  max-height: 100%;
   object-fit: contain;
+}
+
+@keyframes hide {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes swipeOut {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-100%);
+  }
+}
+
+.data-[state=open]:animate-slideIn {
+  animation: slideIn 300ms ease-out;
+}
+
+.data-[state=closed]:animate-swipeOut {
+  animation: swipeOut 100ms ease-out;
 }
 </style>
