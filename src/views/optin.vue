@@ -12,17 +12,38 @@ const hasSubmitted = ref(false)
 // Initialize Airtable
 const base = new Airtable({ apiKey: import.meta.env.VITE_AIR_TABLE_API_KEY }).base(import.meta.env.VITE_AIR_TABLE_BASE_ID as string)
 
+// Add this custom error map
+const customErrorMap: z.ZodErrorMap = (issue, ctx) => {
+  if (issue.code === z.ZodIssueCode.invalid_type) {
+    return { message: "Veuillez renseigner ce champ" };
+  }
+  if (issue.code === z.ZodIssueCode.too_small) {
+    return { message: `Ce champ doit comporter au moins ${issue.minimum} caractères` };
+  }
+  if (issue.code === z.ZodIssueCode.invalid_string) {
+    if (issue.validation === "email") {
+      return { message: "Adresse email invalide" };
+    }
+    if (issue.validation === "regex") {
+      return { message: "Format invalide" };
+    }
+  }
+  return { message: ctx.defaultError };
+};
+
+// Set the custom error map
+z.setErrorMap(customErrorMap);
+
 const formSchema = z.object({
-  nom: z.string().min(2, 'Le nom doit comporter au moins 2 caractères'),
-  prenom: z.string().min(2, 'Le prénom doit comporter au moins 2 caractères'),
-  email: z.string().email('Adresse email invalide'),
-  telephone: z.string().regex(/^[0-9+() ]+$/, 'Numéro de téléphone invalide (seulºs les chiffres, espaces, +, (, et ) sont autorisés)'),
+  nom: z.string().min(2),
+  prenom: z.string().min(2),
+  email: z.string().email(),
+  telephone: z.string().regex(/^[0-9+() ]+$/),
   consentMarketing: z.boolean().optional(),
   consentData: z.boolean().refine(value => value === true, {
     message: 'Vous devez accepter que Volkswagen puisse traiter vos données personnelles'
   })
 })
-
 
 interface FormValues {
   [key: string]: string | boolean;
@@ -171,21 +192,26 @@ const onSubmit = async () => {
         <h2 class="text-xl">Félicitations vous avez gagné ! </h2>
         <h2 class="text-xl"><span class="font-bold">Remplissez et envoyez le formulaire</span> afin d’avoir une chance
           d’être tiré au sort pour gagner votre lot.</h2>
-        </div>
+      </div>
       <form @submit.prevent="onSubmit" class="flex flex-col gap-4 max-w-[600px]">
         <div v-for="field in ['nom', 'prenom', 'email', 'telephone']" :key="field" class="flex flex-col">
           <label :for="field" class="text-xs mb-[5px]">{{ fieldLabels[field] }}</label>
-          <input 
-            :id="field" 
-            v-model="values[field]" 
-            :type="field === 'email' ? 'email' : 'text'"
-            :placeholder="fieldPlaceholders[field]" 
-            class="p-1 text-vw-dark" 
-            autocomplete="off"
-          />
+          <input :id="field" v-model="values[field]" :type="field === 'email' ? 'email' : 'text'"
+            :placeholder="fieldPlaceholders[field]" class="p-1 text-vw-dark" autocomplete="off" />
           <p v-if="hasSubmitted && errors[field]" class="text-sm text-red-400 mt-1">{{ errors[field] }}</p>
         </div>
         <div class="flex flex-col space-y-4 py-4">
+          <div class="flex items-start space-x-3">
+            <input id="consentData" v-model="values.consentData" type="checkbox" class="mt-1 big-checkbox" />
+            <div class="flex flex-col leading-none">
+              <label for="consentData" class="text-xs">
+                J'autorise Volkswagen à traiter mes données personnelles. <span class="text-red-400">*</span>
+              </label>
+            </div>
+          </div>
+          <p v-if="hasSubmitted && errors.consentData" class="text-sm text-red-400 mt-1">
+            {{ errors.consentData }}
+          </p>
           <div class="flex items-start space-x-3">
             <input id="consentMarketing" v-model="values.consentMarketing" type="checkbox" class="mt-1 big-checkbox" />
             <div class="flex flex-col space-y-1 leading-none">
@@ -194,25 +220,16 @@ const onSubmit = async () => {
               </label>
             </div>
           </div>
-          <div class="flex items-start space-x-3">
-            <input id="consentData" v-model="values.consentData" type="checkbox" class="mt-1 big-checkbox" />
-            <div class="flex flex-col leading-none">
-              <label for="consentData" class="text-xs">
-                J'autorise Volkswagen à traiter mes données personnelles.
-              </label>
-            </div>
-          </div>
+
+          <p class="text-xs mt-2"><span class="text-red-400">*</span> Champ obligatoire</p>
         </div>
-        <p v-if="hasSubmitted && errors.consentMarketing" class="text-sm text-red-400 mt-1">
-          {{ errors.consentMarketing }}
-        </p>
         <div class="inline-block">
           <button type="submit" class="bg-vw-light text-white text-2xl font-medium py-1 px-8">
             Envoyer
           </button>
         </div>
       </form>
-      <p v-if="submissionStatus" class="mt-4 text-green-400">{{ submissionStatus }}</p>
+      <p v-if="submissionStatus" class="mt-4 text-xl font-bold text-vw-light">{{ submissionStatus }}</p>
     </div>
   </PublicLayout>
 </template>
