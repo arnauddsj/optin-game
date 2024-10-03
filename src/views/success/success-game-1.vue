@@ -9,9 +9,9 @@ import Button from "@/components/Button.vue"
       <div class="flex flex-col flex-1 justify-center p-10">
         <div class="content flex flex-col gap-10">
           <h2 class="text-2xl">
-            Félicitations pour cette première épreuve, <span class="font-bold">vous avez débloqué un indice</span> pour l’épreuve finale !
+            Félicitations pour cette première épreuve !
           </h2>
-          <Button cta="Commencer" link="/intro-game2" />
+          <Button cta="Épreuve suivante" link="/intro-game2" />
         </div>
       </div>
 
