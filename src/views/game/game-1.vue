@@ -4,6 +4,13 @@ import { useRouter } from 'vue-router'
 import PublicLayout from '@/layouts/PublicLayout.vue'
 import TimeUpDialog from '@/components/TimeUpDialog.vue'
 import Timer from '@/components/Timer.vue'
+import {
+  ToastProvider,
+  ToastRoot,
+  ToastTitle,
+  ToastDescription,
+  ToastViewport,
+} from 'radix-vue'
 
 interface Car {
   id: number
@@ -37,7 +44,7 @@ const draggedElement = ref<HTMLElement | null>(null)
 // Update isAllCarsPlaced computed property
 const isAllCarsPlaced = computed(() => {
   return zones.value.slice(0, 8).every(zone => zone.car !== null) &&
-         zones.value.slice(8).every(zone => zone.car === null)
+    zones.value.slice(8).every(zone => zone.car === null)
 })
 
 // Update resetGame function
@@ -52,10 +59,14 @@ const resetGame = () => {
   })
 }
 
+const showToast = ref(false)
 const toastMessage = ref('')
+const toastType = ref<'error' | 'success' | 'info'>('info')
 
 const showErrorToast = (message: string) => {
   toastMessage.value = message
+  toastType.value = 'error'
+  showToast.value = true
 }
 
 // Update watch function
@@ -63,7 +74,7 @@ watch(isAllCarsPlaced, (newValue: boolean) => {
   if (newValue) {
     const allCorrect = zones.value.slice(0, 8).every(zone => zone.car && zone.car.year === zone.year)
     if (allCorrect) {
-      router.push('/success-game1')
+      router.push('/intro-game2')
     } else {
       const incorrectCount = zones.value.slice(0, 8).filter(zone => zone.car && zone.car.year !== zone.year).length
       showErrorToast(`${incorrectCount} emplacements sont incorrects.`)
@@ -106,11 +117,11 @@ const startDrag = (event: TouchEvent, car: Car) => {
   // Create a new element for dragging
   const ghostElement = draggedElement.value.cloneNode(true) as HTMLElement
   ghostElement.style.position = 'fixed'
-  ghostElement.style.width = '250px' 
-  ghostElement.style.height = '250px' 
+  ghostElement.style.width = '250px'
+  ghostElement.style.height = '250px'
   ghostElement.style.zIndex = '1000'
-  ghostElement.style.opacity = '0.8' 
-  ghostElement.style.pointerEvents = 'none'  
+  ghostElement.style.opacity = '0.8'
+  ghostElement.style.pointerEvents = 'none'
 
   document.body.appendChild(ghostElement)
   draggedElement.value = ghostElement
@@ -143,12 +154,12 @@ const endDrag = (event: TouchEvent) => {
         touch.clientY >= rect.top &&
         touch.clientY <= rect.bottom
       ) {
-        droppedZone = zone as Element
+        droppedZone = zone
       }
     })
 
     if (droppedZone) {
-      const zoneId = parseInt((droppedZone as HTMLElement).getAttribute('data-zone-id') ?? '0')
+      const zoneId = parseInt((droppedZone as HTMLElement).dataset.zoneId!)
       updateZones(draggedCar.value.id, zoneId)
     } else {
       updateZones(draggedCar.value.id, 0)
@@ -198,6 +209,7 @@ onMounted(() => {
 </script>
 <template>
   <PublicLayout>
+    <ToastProvider>
       <div class="flex flex-col">
         <div class="game-container flex-grow grid grid-cols-3 gap-s p-4 justify-self: center">
           <!-- Left column: Initial cars -->
@@ -238,9 +250,24 @@ onMounted(() => {
         <TimeUpDialog v-if="showTimeUpDialog" @continue="handleContinue" />
         <Timer :duration="timerDuration" :onTimeUp="handleTimeUp" :key="timerKey" />
         <div class="absolute bottom-0 left-0 right-0"><button class="text-sm font-regular outline-none"
-            @click="router.push('/success-game1')">next</button>
+            @click="router.push('/intro-game2')">next</button>
+          <button class="text-xs font-regular outline-none" @click="showToast = true">show toast</button>
         </div>
       </div>
+
+      <ToastRoot v-model:open="showToast" :duration="5000"
+        class="bg-white p-[15px] grid [grid-template-areas:_'title_action'_'description_action'] grid-cols-[auto_max-content] gap-x-[15px] items-center data-[state=open]:animate-slideIn data-[state=closed]:animate-hide data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=cancel]:translate-x-0 data-[swipe=cancel]:transition-[transform_200ms_ease-out] data-[swipe=end]:animate-swipeOut">
+        <ToastTitle class="[grid-area:_title] mb-[5px] text-vw-dark text-xl">
+          Continuez !
+        </ToastTitle>
+        <ToastDescription class="[grid-area:_description] m-0 text-vw-dark text-xs">
+          {{ 8 - zones.slice(0, 8).filter(zone => zone.car !== null).length }} emplacement(s) sont incorrects.
+        </ToastDescription>
+      </ToastRoot>
+
+      <ToastViewport
+        class="fixed top-0 left-0 flex flex-col p-6 gap-2 max-w-[100vw] m-0 list-none z-[50] outline-none" />
+    </ToastProvider>
   </PublicLayout>
 </template>
 
@@ -274,6 +301,4 @@ onMounted(() => {
 .car-image {
   object-fit: contain;
 }
-
-
 </style>

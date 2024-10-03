@@ -41,13 +41,14 @@ onMounted(() => {
   <PublicLayout>
     <div class="flex flex-col justify-center p-16 text-2xl gap-12">
       <p>Ceci est la page d'initialisation du jeu. Appuyez sur le bouton passer en plein écran puis Démarrez le jeu.</p>
-      <button @click="toggleFullscreen" class="bg-vw-light text-white text-xl font-medium py-2 px-4 rounded-full">
+      <button @click="toggleFullscreen"
+        class="bg-vw-light text-white text-xl font-medium py-2 px-4 rounded-full outline-none">
         {{ isFullscreen ? 'Quitter le plein écran' : '1 - Passer en plein écran' }}
       </button>
-      <button @click="startGame" class="bg-vw-light text-white text-xl font-medium py-2 px-4 rounded-full">
+      <button @click="startGame" class="bg-vw-light text-white text-xl font-medium py-2 px-4 rounded-full outline-none">
         2 - Démarrer le jeu
       </button>
-      <button @click="goToAdmin">Admin</button>
+      <button class="self-center max-w-[200px] py-2 px-4 outline-vw-light" @click="goToAdmin">Admin</button>
     </div>
   </PublicLayout>
 </template>
