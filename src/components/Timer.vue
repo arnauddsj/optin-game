@@ -8,7 +8,7 @@ const props = defineProps<{
 }>()
 
 const timeLeft = ref(props.duration)
-const intervalId = ref<number | null>(null)
+const intervalId = ref<NodeJS.Timeout | null>(null)
 
 const strokeDasharray = computed(() => {
   const circumference = 2 * Math.PI * 24 // Increased from 20 to 24 (20 * 1.2)
@@ -38,7 +38,7 @@ const startTimer = () => {
       clearInterval(intervalId.value!)
       props.onTimeUp()
     }
-  }, 1000)
+  }, 1000) as NodeJS.Timeout
 }
 
 onMounted(() => {

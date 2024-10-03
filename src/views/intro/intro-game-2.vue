@@ -1,15 +1,6 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
 import PublicLayout from '@/layouts/PublicLayout.vue'
 import Button from "@/components/Button.vue"
-
-const showToast = ref(false)
-
-onMounted(() => {
-  setTimeout(() => {
-    showToast.value = true
-  }, 500)
-})
 </script>
 
 <template>

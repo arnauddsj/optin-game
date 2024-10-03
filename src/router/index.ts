@@ -30,7 +30,7 @@ const routes = [
     path: '/admin',
     name: 'Admin',
     component: AdminScreen,
-    beforeEnter: (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
+    beforeEnter: (_to: RouteLocationNormalized, _from: RouteLocationNormalized, next: NavigationGuardNext) => {
       const password = prompt('Enter admin password:')
       if (password === 'admin') {
         next()

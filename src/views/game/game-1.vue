@@ -52,13 +52,10 @@ const resetGame = () => {
   })
 }
 
-const showToast = ref(false)
 const toastMessage = ref('')
 
 const showErrorToast = (message: string) => {
   toastMessage.value = message
-  toastType.value = 'error'
-  showToast.value = true
 }
 
 // Update watch function

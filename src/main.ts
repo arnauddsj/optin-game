@@ -7,18 +7,18 @@ function openFullscreen() {
   const elem = document.documentElement
   if (elem.requestFullscreen) {
     elem.requestFullscreen()
-  } else if (elem.webkitRequestFullscreen) { /* Safari */
-    elem.webkitRequestFullscreen()
-  } else if (elem.msRequestFullscreen) { /* IE11 */
-    elem.msRequestFullscreen()
+  } else if ((elem as any).webkitRequestFullscreen) { /* Safari */
+    (elem as any).webkitRequestFullscreen()
+  } else if ((elem as any).msRequestFullscreen) { /* IE11 */
+    (elem as any).msRequestFullscreen()
   }
 }
 
 function lockOrientation() {
-  if (screen.orientation && screen.orientation.lock) {
-    screen.orientation.lock('portrait').catch(function (error) {
-      console.log(error)
-    })
+  if (screen.orientation && 'lock' in screen.orientation) {
+    (screen.orientation as any).lock('portrait').catch((error: unknown) => {
+      console.log(error);
+    });
   }
 }
 
