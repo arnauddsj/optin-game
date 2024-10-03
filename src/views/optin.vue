@@ -95,7 +95,7 @@ const saveToAirtable = async (values: any) => {
     const now = new Date()
     const formattedDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
 
-    await base('Table 1').create([
+    await base('Golf').create([
       {
         fields: {
           Nom: values.nom,
@@ -103,6 +103,7 @@ const saveToAirtable = async (values: any) => {
           Email: values.email,
           Telephone: values.telephone,
           ConsentMarketing: values.consentMarketing,
+          ConsentData: values.consentData,
           Timestamp: formattedDate,
         },
       },
@@ -138,7 +139,7 @@ const onSubmit = async () => {
     // Attempt to save to Airtable
     try {
       await saveToAirtable(values.value)
-      submissionStatus.value = 'Soumission enregistrée avec succès !'
+      submissionStatus.value = 'Participation enregistrée avec succès !'
     } catch (error) {
       console.error('Erreur lors de la sauvegarde sur Airtable:', error)
       submissionStatus.value = 'Sauvegardé localement. Échec de la sauvegarde sur Airtable.'
