@@ -11,7 +11,7 @@ import { RouterView } from 'vue-router'
 <style lang="scss">
 :root {
   /* Set the root font size */
-  font-size: 26px
+  font-size: 35px
 }
 
 .ToastRoot[data-swipe='move'] {

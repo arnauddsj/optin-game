@@ -273,7 +273,7 @@ onMounted(() => {
 
 <style scoped>
 .game-container {
-  grid-template-rows: repeat(auto-fit, minmax(0, max(105vw, 15vh)));
+  grid-template-rows: repeat(auto-fit, minmax(0, max(135vw, 15vh)));
 }
 
 .drop-zone {

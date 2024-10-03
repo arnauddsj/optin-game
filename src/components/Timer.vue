@@ -11,12 +11,12 @@ const timeLeft = ref(props.duration)
 const intervalId = ref<NodeJS.Timeout | null>(null)
 
 const strokeDasharray = computed(() => {
-  const circumference = 2 * Math.PI * 24 // Increased from 20 to 24 (20 * 1.2)
+  const circumference = 2 * Math.PI * 36 // Increased from 24 to 36
   return `${circumference} ${circumference}`
 })
 
 const strokeDashoffset = computed(() => {
-  const circumference = 2 * Math.PI * 24 // Increased from 20 to 24 (20 * 1.2)
+  const circumference = 2 * Math.PI * 36 // Increased from 24 to 36
   const progress = 1 - timeLeft.value / props.duration
   return circumference * progress
 })
@@ -54,11 +54,11 @@ onUnmounted(() => {
 
 <template>
   <div class="circular-timer">
-    <svg width="60" height="60" viewBox="0 0 60 60"> <!-- Increased from 50x50 to 60x60 -->
-      <circle cx="30" cy="30" r="24" fill="none" stroke="#ffffff" stroke-width="2" stroke-opacity="0.3" /> <!-- Updated cx, cy, and r -->
-      <circle cx="30" cy="30" r="24" fill="none" stroke="#ffffff" stroke-width="2" :stroke-dasharray="strokeDasharray"
-        :stroke-dashoffset="strokeDashoffset" transform="rotate(-90 30 30)" /> <!-- Updated cx, cy, r, and transform -->
-      <text x="30" y="30" text-anchor="middle" dy="5" font-size="14" fill="#ffffff"> <!-- Updated x, y, dy, and font-size -->
+    <svg width="90" height="90" viewBox="0 0 90 90"> <!-- Increased from 60x60 to 90x90 -->
+      <circle cx="45" cy="45" r="36" fill="none" stroke="#ffffff" stroke-width="3" stroke-opacity="0.3" /> <!-- Updated cx, cy, r, and stroke-width -->
+      <circle cx="45" cy="45" r="36" fill="none" stroke="#ffffff" stroke-width="3" :stroke-dasharray="strokeDasharray"
+        :stroke-dashoffset="strokeDashoffset" transform="rotate(-90 45 45)" /> <!-- Updated cx, cy, r, stroke-width, and transform -->
+      <text x="45" y="45" text-anchor="middle" dy="7" font-size="21" fill="#ffffff"> <!-- Updated x, y, dy, and font-size -->
         {{ timeLeft }}
       </text>
     </svg>
@@ -68,7 +68,7 @@ onUnmounted(() => {
 <style scoped>
 .circular-timer {
   position: fixed;
-  bottom: 12px; /* Increased from 10px to 12px */
+  bottom: 18px; /* Increased from 12px to 18px */
   left: 50%;
   transform: translateX(-50%);
 }
