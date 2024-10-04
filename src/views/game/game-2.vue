@@ -4,40 +4,42 @@ import { useRouter } from 'vue-router'
 import PublicLayout from '@/layouts/PublicLayout.vue'
 import TimeUpDialog from '@/components/TimeUpDialog.vue'
 import Timer from '@/components/Timer.vue'
+import { useGameStore } from '@/stores/gameStore'
 
+const gameStore = useGameStore()
 const router = useRouter()
 
 interface Album {
   id: number
   name: string
-  artist: string
   image: string
   isCorrect: boolean
   isSelected: boolean
 }
 
-const albums = ref<Album[]>([
-  { id: 1, name: 'In Utero', artist: 'Nirvana', image: '/covers/nirvana.jpg', isCorrect: false, isSelected: false },
-  { id: 2, name: 'Le Grand Bleu', artist: 'Eric Serra', image: '/covers/grandbleu.jpg', isCorrect: false, isSelected: false },
-  { id: 3, name: "(What's the Story) Morning Glory?", artist: 'Oasis', image: '/covers/oasis.jpg', isCorrect: true, isSelected: false },
-  { id: 4, name: 'Born in the U.S.A.', artist: 'Bruce Springsteen', image: '/covers/bruce.jpg', isCorrect: true, isSelected: false },
+const golfs = ref<Album[]>([
+  { id: 1, name: 'Golf GTD', image: '/jeu2/golf-gtd.webp', isCorrect: false, isSelected: false },
+  { id: 2, name: 'Golf R', image: '/jeu2/golf-r.webp', isCorrect: false, isSelected: false },
+  { id: 3, name: "Golf SW", image: '/jeu2/golf-sw.webp', isCorrect: true, isSelected: false },
+  { id: 4, name: 'Golf GTE.', image: '/jeu2/golf-gte.webp', isCorrect: false, isSelected: false },
 ])
 
 const isCorrectSelection = computed(() => {
-  const selectedAlbums = albums.value.filter(album => album.isSelected)
-  return selectedAlbums.length === 2 && selectedAlbums.every(album => album.isCorrect)
+  const selectedAlbums = golfs.value.filter(golf => golf.isSelected)
+  return selectedAlbums.length === 2 && selectedAlbums.every(golf => golf.isCorrect)
 })
 
-const toggleAlbum = (album: Album) => {
-  album.isSelected = !album.isSelected
+const toggleAlbum = (golf: Album) => {
+  golf.isSelected = !golf.isSelected
 
   if (isCorrectSelection.value) {
+    gameStore.incrementWins()
     router.push('/success-game2')
   }
 }
 
 const showTimeUpDialog = ref(false)
-const timerDuration = ref(30)
+const timerDuration = ref(15)
 const timerKey = ref(0)
 
 const handleTimeUp = () => {
@@ -45,8 +47,8 @@ const handleTimeUp = () => {
 }
 
 const resetGameState = () => {
-  albums.value.forEach(album => {
-    album.isSelected = false
+  golfs.value.forEach(golf => {
+    golf.isSelected = false
   })
   showTimeUpDialog.value = false
   timerKey.value++
@@ -54,23 +56,25 @@ const resetGameState = () => {
 
 const handleContinue = () => {
   resetGameState()
+  router.push('/intro-game3')
 }
 </script>
 
 <template>
   <PublicLayout>
     <div class="flex flex-col flex-grow px-10 justify-center">
-      <h2 class="text-base mb-8">Parmi les 4 pochettes d'album ci-dessous, sélectionnez celles qui correspondent
-        à la <span class="font-bold">période de construction de la Golf 2 GTI (1984-1992)</span></h2>
+      <h2 class="text-2xl mb-10 px-2">Parmi ces propositions, quelle version <span class="font-bold">n’est pas un modèle
+          sportif</span> de la Golf ?</h2>
       <div class="grid grid-cols-2 gap-4 mb-4">
-        <div v-for="album in albums" :key="album.id" class="album-cover" :class="{ 'selected': album.isSelected }">
+        <div v-for="golf in golfs" :key="golf.id" class="golf" :class="{ 'selected': golf.isSelected }">
           <div class="flex flex-col items-center">
-            <img :src="album.image" :alt="album.name" class="cursor-pointer" @click="toggleAlbum(album)"
-              :style="{ transform: album.isSelected ? 'scale(1.1)' : 'scale(1)' }">
-            <p class="text-center mt-2">{{ album.name }} - {{ album.artist }}</p>
+            <img :src="golf.image" :alt="golf.name" class="cursor-pointer" @click="toggleAlbum(golf)"
+              :style="{ transform: golf.isSelected ? 'scale(1.1)' : 'scale(1)' }">
+            <p class="text-center mt-2">{{ golf.name }}</p>
           </div>
         </div>
       </div>
+      <Button cta="Valider" @click="handleContinue" />
       <TimeUpDialog v-if="showTimeUpDialog" @continue="handleContinue" />
       <Timer :duration="timerDuration" :onTimeUp="handleTimeUp" :key="timerKey" />
     </div>
@@ -79,16 +83,16 @@ const handleContinue = () => {
 
 <style scoped>
 img {
-  width: 280px;
+  width:380px;
   height: auto;
   transition: all 0.3s ease;
 }
 
-.album-cover {
+.golf {
   transition: all 0.3s ease;
 }
 
-.album-cover.selected img {
+.golf-cover.selected img {
   outline: 4px solid #00B0F0;
   /* VW light blue color */
   outline-offset: 4px;

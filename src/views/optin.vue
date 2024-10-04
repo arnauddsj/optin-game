@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import * as z from 'zod'
 import Airtable from 'airtable'
+import { useGameStore } from '@/stores/gameStore'
 import PublicLayout from '@/layouts/PublicLayout.vue'
 
 const router = useRouter()
@@ -90,6 +91,9 @@ onMounted(() => {
   }
 })
 
+const gameStore = useGameStore()
+
+// Update saveLocally function
 const saveLocally = (values: any) => {
   const now = new Date()
   const formattedDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
@@ -97,6 +101,7 @@ const saveLocally = (values: any) => {
   const userData = {
     ...values,
     timestamp: formattedDate,
+    gamesWon: gameStore.gamesWon,
   }
 
   const transaction = db.transaction(['submissions'], 'readwrite')
@@ -111,6 +116,7 @@ const saveLocally = (values: any) => {
   }
 }
 
+// Update saveToAirtable function
 const saveToAirtable = async (values: any) => {
   try {
     const now = new Date()
@@ -125,6 +131,7 @@ const saveToAirtable = async (values: any) => {
           Telephone: values.telephone,
           ConsentMarketing: values.consentMarketing,
           ConsentData: values.consentData,
+          GamesWon: gameStore.gamesWon,
           Timestamp: formattedDate,
         },
       },
@@ -179,7 +186,7 @@ const onSubmit = async () => {
 
     setTimeout(() => {
       submissionStatus.value = ''
-      router.push('/')
+      router.push('/intro-game')
     }, 2000)
   }
 }
@@ -189,9 +196,7 @@ const onSubmit = async () => {
   <PublicLayout>
     <div class="flex flex-col justify-center gap-5 w-[80vw] px-5">
       <div class="flex flex-col gap-2">
-        <h2 class="text-xl">Félicitations vous avez gagné ! </h2>
-        <h2 class="text-xl"><span class="font-bold">Remplissez et envoyez le formulaire</span> afin d’avoir une chance
-          d’être tiré au sort pour gagner votre lot.</h2>
+        <h2 class="text-xl"><span v-if="gameStore.gamesWon > 0">Félicitations !</span> Vous avez gagné {{ gameStore.gamesWon }} étape{{ gameStore.gamesWon > 1 ? 's' : '' }} sur 3. Remplissez et envoyez le formulaire afin d'avoir une chance d'être tiré au sort pour gagner votre lot.</h2>
       </div>
       <form @submit.prevent="onSubmit" class="flex flex-col gap-4 max-w-[600px]">
         <div v-for="field in ['nom', 'prenom', 'email', 'telephone']" :key="field" class="flex flex-col">

@@ -11,6 +11,7 @@ import {
   ToastDescription,
   ToastViewport,
 } from 'radix-vue'
+import { useGameStore } from '@/stores/gameStore'
 
 interface Car {
   id: number
@@ -22,14 +23,14 @@ interface Car {
 const router = useRouter()
 
 const cars = ref<Car[]>([
-  { id: 1, name: 'Voiture 1', year: 1974, image: '/cars/voiture-1.png' },
-  { id: 2, name: 'Voiture 2', year: 1983, image: '/cars/voiture-2.png' },
-  { id: 3, name: 'Voiture 3', year: 1991, image: '/cars/voiture-3.png' },
-  { id: 4, name: 'Voiture 4', year: 1997, image: '/cars/voiture-4.png' },
-  { id: 5, name: 'Voiture 5', year: 2003, image: '/cars/voiture-5.png' },
-  { id: 6, name: 'Voiture 6', year: 2008, image: '/cars/voiture-6.png' },
-  { id: 7, name: 'Voiture 7', year: 2012, image: '/cars/voiture-7.png' },
-  { id: 8, name: 'Voiture 8', year: 2019, image: '/cars/voiture-8.png' }
+  { id: 1, name: 'Voiture 1', year: 1974, image: '/jeu1/voiture-1.png' },
+  { id: 2, name: 'Voiture 2', year: 1983, image: '/jeu1/voiture-2.png' },
+  { id: 3, name: 'Voiture 3', year: 1991, image: '/jeu1/voiture-3.png' },
+  { id: 4, name: 'Voiture 4', year: 1997, image: '/jeu1/voiture-4.png' },
+  { id: 5, name: 'Voiture 5', year: 2003, image: '/jeu1/voiture-5.png' },
+  { id: 6, name: 'Voiture 6', year: 2008, image: '/jeu1/voiture-6.png' },
+  { id: 7, name: 'Voiture 7', year: 2012, image: '/jeu1/voiture-7.png' },
+  { id: 8, name: 'Voiture 8', year: 2019, image: '/jeu1/voiture-8.png' }
 ])
 
 // Update the zones ref to include initial zones
@@ -69,12 +70,15 @@ const showErrorToast = (message: string) => {
   showToast.value = true
 }
 
+const gameStore = useGameStore()
+
 // Update watch function
 watch(isAllCarsPlaced, (newValue: boolean) => {
   if (newValue) {
     const allCorrect = zones.value.slice(0, 8).every(zone => zone.car && zone.car.year === zone.year)
     if (allCorrect) {
-      router.push('/intro-game2')
+      gameStore.incrementWins()
+      router.push('/success-game1')
     } else {
       const incorrectCount = zones.value.slice(0, 8).filter(zone => zone.car && zone.car.year !== zone.year).length
       showErrorToast(`${incorrectCount} emplacements sont incorrects.`)
@@ -100,14 +104,11 @@ const handleTimeUp = () => {
   showTimeUpDialog.value = true
 }
 
-const resetGameState = () => {
+const handleContinue = () => {
   resetGame()
   showTimeUpDialog.value = false
   timerKey.value++
-}
-
-const handleContinue = () => {
-  resetGameState()
+  router.push('/intro-game2')
 }
 
 const startDrag = (event: TouchEvent, car: Car) => {

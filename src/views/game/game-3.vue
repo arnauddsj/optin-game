@@ -4,6 +4,9 @@ import { useRouter } from 'vue-router'
 import PublicLayout from '@/layouts/PublicLayout.vue'
 import TimeUpDialog from '@/components/TimeUpDialog.vue'
 import Timer from '@/components/Timer.vue'
+import { useGameStore } from '@/stores/gameStore'
+
+const gameStore = useGameStore()
 
 const router = useRouter()
 
@@ -31,12 +34,13 @@ const toggleAlbum = (album: Album) => {
   album.isSelected = !album.isSelected
 
   if (isCorrectSelection.value) {
+    gameStore.incrementWins()
     router.push('/success-game3')
   }
 }
 
 const showTimeUpDialog = ref(false)
-const timerDuration = ref(30)
+const timerDuration = ref(15)
 const timerKey = ref(0)
 
 const handleTimeUp = () => {
@@ -54,14 +58,16 @@ const resetGameState = () => {
 
 const handleContinue = () => {
   resetGameState()
+  router.push('/optin')
 }
 </script>
 
 <template>
   <PublicLayout>
     <div class="flex flex-col flex-grow px-10 justify-center">
-      <h2 class="text-base mb-8">Parmi les 4 pochettes d'album ci-dessous, sélectionnez celles qui correspondent
-        à la <span class="font-bold">période de construction de la Golf 2 GTI (1984-1992)</span></h2>
+      <h2 class="text-base mb-8">Parmi ces technologies, laquelle vous permet d'effectuer des <span class="font-bold">
+          recherches vocales ?
+        </span></h2>
       <div class="grid grid-cols-2 gap-4 mb-4">
         <div v-for="album in albums" :key="album.id" class="album-cover" :class="{ 'selected': album.isSelected }">
           <div class="flex flex-col items-center">

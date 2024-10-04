@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory, RouteLocationNormalized, NavigationGuardNext } from 'vue-router'
+import { useGameStore } from '@/stores/gameStore'
 import home from '@/views/home.vue'
 import Game1 from '@/views/game/game-1.vue'
 import Game2 from '@/views/game/game-2.vue'
@@ -45,6 +46,17 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes
+})
+
+router.beforeEach((to: RouteLocationNormalized, _from: RouteLocationNormalized, next: NavigationGuardNext) => {
+  const gameStore = useGameStore()
+
+  // Reset the store when navigating to these routes
+  if (to.path === '/' || to.path === '/intro-game') {
+    gameStore.resetWins()
+  }
+
+  next()
 })
 
 export default router

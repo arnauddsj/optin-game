@@ -5,9 +5,10 @@ import Button from '@/components/Button.vue'
 
 <template>
   <PublicLayout>
-    <div class="flex flex-col justify-center p-16 text-2xl gap-12">
-      <p>Pour les 50 ans de la Golf, tentez de remporter un weekend tous frais payés au volant de la dernière Golf GTI 8
-        !</p>
+    <div class="flex flex-col justify-center p-16 text-3xl gap-12">
+      <p>Pour les 50 ans de la Golf, tentez de remporter un <span class="font-bold">bon d’achat d’une valeur de
+          100€</span>
+        sur la boutique en ligne Volkswagen.</p>
       <Button cta="Jouer" link="/intro-game1" />
     </div>
   </PublicLayout>
