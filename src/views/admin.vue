@@ -9,6 +9,7 @@ interface UserData {
   telephone: string
   consentMarketing: boolean
   timestamp: string
+  gamesWon: number
 }
 
 const router = useRouter()
@@ -51,7 +52,11 @@ const loadUserData = () => {
 }
 
 const downloadUserData = () => {
-  const dataStr = JSON.stringify(userData.value, null, 2)
+  const dataToDownload = userData.value.map(user => ({
+    ...user,
+    consentMarketing: user.consentMarketing ?? false
+  }))
+  const dataStr = JSON.stringify(dataToDownload, null, 2)
   const dataBlob = new Blob([dataStr], { type: 'application/json' })
   const url = URL.createObjectURL(dataBlob)
   const link = document.createElement('a')
@@ -116,13 +121,10 @@ const clearUserData = () => {
                 Email
               </th>
               <th class="p-1 border-b border-gray-200 bg-gray-100 text-left font-semibold text-gray-600 uppercase">
-                Tél.
-              </th>
-              <th class="p-1 border-b border-gray-200 bg-gray-100 text-left font-semibold text-gray-600 uppercase">
-                Cons. Mkt
-              </th>
-              <th class="p-1 border-b border-gray-200 bg-gray-100 text-left font-semibold text-gray-600 uppercase">
                 Date
+              </th>
+              <th class="p-1 border-b border-gray-200 bg-gray-100 text-left font-semibold text-gray-600 uppercase">
+                Jeux gagnés
               </th>
             </tr>
           </thead>
@@ -138,13 +140,10 @@ const clearUserData = () => {
                 {{ user.email }}
               </td>
               <td class="p-1 border-b border-gray-200 bg-white text-vw-dark">
-                {{ user.telephone }}
-              </td>
-              <td class="p-1 border-b border-gray-200 bg-white text-vw-dark">
-                {{ user.consentMarketing ? 'Oui' : 'Non' }}
-              </td>
-              <td class="p-1 border-b border-gray-200 bg-white text-vw-dark">
                 {{ user.timestamp }}
+              </td>
+              <td class="p-1 border-b border-gray-200 bg-white text-vw-dark">
+                {{ user.gamesWon }}
               </td>
             </tr>
           </tbody>

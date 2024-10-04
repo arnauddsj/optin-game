@@ -101,7 +101,7 @@ const saveLocally = (values: any) => {
   const userData = {
     ...values,
     timestamp: formattedDate,
-    gamesWon: gameStore.gamesWon,
+    'Jeux gagnés': gameStore.gamesWon,
   }
 
   const transaction = db.transaction(['submissions'], 'readwrite')
@@ -131,7 +131,7 @@ const saveToAirtable = async (values: any) => {
           Telephone: values.telephone,
           ConsentMarketing: values.consentMarketing,
           ConsentData: values.consentData,
-          GamesWon: gameStore.gamesWon,
+          'Jeux gagnés': gameStore.gamesWon,
           Timestamp: formattedDate,
         },
       },
