@@ -5,12 +5,12 @@ import PublicLayout from '@/layouts/PublicLayout.vue'
 import TimeUpDialog from '@/components/TimeUpDialog.vue'
 import Timer from '@/components/Timer.vue'
 import { useGameStore } from '@/stores/gameStore'
+import { ToastProvider, ToastRoot, ToastTitle, ToastDescription, ToastViewport } from 'radix-vue'
 
 const gameStore = useGameStore()
-
 const router = useRouter()
 
-interface Album {
+interface Tech {
   id: number
   name: string
   image: string
@@ -18,29 +18,42 @@ interface Album {
   isSelected: boolean
 }
 
-const albums = ref<Album[]>([
-  { id: 1, name: 'ESP', image: '/covers/nirvana.jpg', isCorrect: false, isSelected: false},
-  { id: 2, name: 'ABS', image: '/covers/grandbleu.jpg', isCorrect: false, isSelected: false},
-  { id: 3, name: "Airbag frontal", image: '/covers/oasis.jpg', isCorrect: true, isSelected: false},
-  { id: 4, name: 'Airbags latéraux', image: '/covers/bruce.jpg', isCorrect: true, isSelected: false},
+const techs = ref<Tech[]>([
+  { id: 1, name: '4 Motion', image: '/jeu3/4motion.png', isCorrect: false, isSelected: false},
+  { id: 2, name: 'ChatGPT', image: '/jeu3/ChatGPT.png', isCorrect: true, isSelected: false},
+  { id: 3, name: 'ABS', image: '/jeu3/ABS.png', isCorrect: false, isSelected: false},
+  { id: 4, name: "ESP", image: '/jeu3/ESP.png', isCorrect: false, isSelected: false},
 ])
 
 const isCorrectSelection = computed(() => {
-  const selectedAlbums = albums.value.filter(album => album.isSelected)
-  return selectedAlbums.length === 2 && selectedAlbums.every(album => album.isCorrect)
+  const selectedTechs = techs.value.filter(tech => tech.isSelected)
+  return selectedTechs.length === 1 && selectedTechs[0].name === 'ChatGPT'
 })
 
-const toggleAlbum = (album: Album) => {
-  album.isSelected = !album.isSelected
+const toggleChoice = (tech: Tech) => {
+  tech.isSelected = !tech.isSelected
+}
 
+const showToast = ref(false)
+
+const validateSelection = () => {
   if (isCorrectSelection.value) {
     gameStore.incrementWins()
     router.push('/success-game3')
+  } else {
+    showToast.value = true
+    resetSelection()
   }
 }
 
+const resetSelection = () => {
+  techs.value.forEach(tech => {
+    tech.isSelected = false
+  })
+}
+
 const showTimeUpDialog = ref(false)
-const timerDuration = ref(15)
+const timerDuration = ref(55)
 const timerKey = ref(0)
 
 const handleTimeUp = () => {
@@ -48,10 +61,7 @@ const handleTimeUp = () => {
 }
 
 const resetGameState = () => {
-  albums.value.forEach(album => {
-    album.isSelected = false
-
-  })
+  resetSelection()
   showTimeUpDialog.value = false
   timerKey.value++
 }
@@ -64,22 +74,40 @@ const handleContinue = () => {
 
 <template>
   <PublicLayout>
-    <div class="flex flex-col flex-grow px-10 justify-center">
-      <h2 class="text-base mb-8">Parmi ces technologies, laquelle vous permet d'effectuer des <span class="font-bold">
-          recherches vocales ?
-        </span></h2>
-      <div class="grid grid-cols-2 gap-4 mb-4">
-        <div v-for="album in albums" :key="album.id" class="album-cover" :class="{ 'selected': album.isSelected }">
-          <div class="flex flex-col items-center">
-            <img :src="album.image" :alt="album.name" class="cursor-pointer" @click="toggleAlbum(album)"
-              :style="{ transform: album.isSelected ? 'scale(1.1)' : 'scale(1)' }">
-            <p class="text-center mt-2">{{ album.name }} </p>
+    <ToastProvider>
+      <div class="flex flex-col flex-grow px-10 justify-center">
+        <h2 class="text-base mb-8">Parmi ces technologies, lesquelles vous permettent d'effectuer des <span class="font-bold">
+            recherches vocales ?
+          </span></h2>
+        <div class="grid grid-cols-2 gap-4 mb-4 auto-rows-fr">
+          <div v-for="tech in techs" :key="tech.id" class="tech flex flex-col items-center h-full" :class="{ 'selected': tech.isSelected }">
+            <div class="flex flex-col flex-grow items-center justify-center">
+              <div class="flex flex-grow items-center justify-center">
+                <img :src="tech.image" :alt="tech.name" class="cursor-pointer" @click="toggleChoice(tech)"
+                :style="{ transform: tech.isSelected ? 'scale(1.1)' : 'scale(1)' }" :class="{ 'chatGPT': tech.name === 'ChatGPT' }">
+              </div>
+              <p class="text-center mt-2">{{ tech.name }} </p>
+            </div>
           </div>
         </div>
+        <button class="bg-vw-blue text-white py-2 px-4 rounded mt-4" @click="validateSelection">Valider</button>
+        <TimeUpDialog v-if="showTimeUpDialog" @continue="handleContinue" />
+        <Timer :duration="timerDuration" :onTimeUp="handleTimeUp" :key="timerKey" />
       </div>
-      <TimeUpDialog v-if="showTimeUpDialog" @continue="handleContinue" />
-      <Timer :duration="timerDuration" :onTimeUp="handleTimeUp" :key="timerKey" />
-    </div>
+
+      <ToastRoot v-model:open="showToast" :duration="3000"
+        class="bg-white p-[15px] grid [grid-template-areas:_'title_action'_'description_action'] grid-cols-[auto_max-content] gap-x-[15px] items-center data-[state=open]:animate-slideIn data-[state=closed]:animate-hide data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=cancel]:translate-x-0 data-[swipe=cancel]:transition-[transform_200ms_ease-out] data-[swipe=end]:animate-swipeOut">
+        <ToastTitle class="[grid-area:_title] mb-[5px] text-vw-dark text-xl">
+          Essayez encore !
+        </ToastTitle>
+        <ToastDescription class="[grid-area:_description] m-0 text-vw-dark text-xs">
+          Votre sélection n'est pas correcte.
+        </ToastDescription>
+      </ToastRoot>
+
+      <ToastViewport
+        class="fixed top-0 left-0 flex flex-col p-6 gap-2 max-w-[100vw] m-0 list-none z-[50] outline-none" />
+    </ToastProvider>
   </PublicLayout>
 </template>
 
@@ -90,13 +118,36 @@ img {
   transition: all 0.3s ease;
 }
 
-.album-cover {
+.tech {
   transition: all 0.3s ease;
 }
 
-.album-cover.selected img {
+.tech.selected img {
   outline: 4px solid #00B0F0;
   /* VW light blue color */
   outline-offset: 4px;
+}
+
+.chatGPT {
+  width: 200px;
+}
+
+.tech {
+  height: 10rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.tech > div {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+img {
+  max-height: 200px; /* Adjust this value as needed */
+  width: auto;
+  object-fit: contain;
 }
 </style>
