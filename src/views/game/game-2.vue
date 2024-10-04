@@ -78,7 +78,8 @@ const handleContinue = () => {
   <PublicLayout>
     <ToastProvider>
       <div class="flex flex-col flex-grow px-10 justify-center">
-        <h2 class="text-2xl mb-10 px-2">Parmi ces propositions, quelle version <span class="font-bold">n’est pas un modèle
+        <h2 class="text-2xl mb-10 px-2">Parmi ces propositions, quelle version <span class="font-bold">n’est pas un
+            modèle
             sportif</span> de la Golf ?</h2>
         <div class="grid grid-cols-2 gap-4 mb-4">
           <div v-for="golf in golfs" :key="golf.id" class="golf" :class="{ 'selected': golf.isSelected }">
@@ -89,7 +90,8 @@ const handleContinue = () => {
             </div>
           </div>
         </div>
-        <button class="bg-vw-blue text-white py-2 px-4 rounded mt-4" @click="validateSelection">Valider</button>
+        <button class="bg-vw-light text-white text-2xl font-medium py-1 px-8 whitespace-nowrap outline-none mt-10"
+          @click="validateSelection">Valider</button>
         <TimeUpDialog v-if="showTimeUpDialog" @continue="handleContinue" />
         <Timer :duration="timerDuration" :onTimeUp="handleTimeUp" :key="timerKey" />
       </div>

@@ -53,7 +53,7 @@ const resetSelection = () => {
 }
 
 const showTimeUpDialog = ref(false)
-const timerDuration = ref(55)
+const timerDuration = ref(15)
 const timerKey = ref(0)
 
 const handleTimeUp = () => {
@@ -76,21 +76,24 @@ const handleContinue = () => {
   <PublicLayout>
     <ToastProvider>
       <div class="flex flex-col flex-grow px-10 justify-center">
-        <h2 class="text-base mb-8">Parmi ces technologies, lesquelles vous permettent d'effectuer des <span class="font-bold">
+        <h2 class="text-base mb-8">Parmi ces technologies, lesquelles vous permettent d'effectuer des <span
+            class="font-bold">
             recherches vocales ?
           </span></h2>
         <div class="grid grid-cols-2 gap-4 mb-4 auto-rows-fr">
-          <div v-for="tech in techs" :key="tech.id" class="tech flex flex-col items-center h-full" :class="{ 'selected': tech.isSelected }">
+          <div v-for="tech in techs" :key="tech.id" class="tech flex flex-col items-center h-full"
+            :class="{ 'selected': tech.isSelected }">
             <div class="flex flex-col flex-grow items-center justify-center">
               <div class="flex flex-grow items-center justify-center">
                 <img :src="tech.image" :alt="tech.name" class="cursor-pointer" @click="toggleChoice(tech)"
-                :style="{ transform: tech.isSelected ? 'scale(1.1)' : 'scale(1)' }" :class="{ 'chatGPT': tech.name === 'ChatGPT' }">
+                  :style="{ transform: tech.isSelected ? 'scale(1.1)' : 'scale(1)' }"
+                  :class="{ 'chatGPT': tech.name === 'ChatGPT' }">
               </div>
               <p class="text-center mt-2">{{ tech.name }} </p>
             </div>
           </div>
         </div>
-        <button class="bg-vw-blue text-white py-2 px-4 rounded mt-4" @click="validateSelection">Valider</button>
+        <button class="bg-vw-light text-white text-2xl font-medium py-1 px-8 whitespace-nowrap outline-none mt-10" @click="validateSelection">Valider</button>
         <TimeUpDialog v-if="showTimeUpDialog" @continue="handleContinue" />
         <Timer :duration="timerDuration" :onTimeUp="handleTimeUp" :key="timerKey" />
       </div>
