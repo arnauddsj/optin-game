@@ -5,10 +5,13 @@ import * as z from 'zod'
 import Airtable from 'airtable'
 import { useGameStore } from '@/stores/gameStore'
 import PublicLayout from '@/layouts/PublicLayout.vue'
+import LegalDialog from '@/components/LegalDialog.vue'
 
 const router = useRouter()
 const submissionStatus = ref('')
 const hasSubmitted = ref(false)
+const isSaving = ref(false)
+const isLegalDialogOpen = ref(false)
 
 // Initialize Airtable
 const base = new Airtable({ apiKey: import.meta.env.VITE_AIR_TABLE_API_KEY }).base(import.meta.env.VITE_AIR_TABLE_BASE_ID as string)
@@ -162,6 +165,7 @@ const validateForm = (): boolean => {
 
 const onSubmit = async () => {
   if (validateForm()) {
+    isSaving.value = true
     // Always save locally
     saveLocally(values.value)
 
@@ -172,6 +176,8 @@ const onSubmit = async () => {
     } catch (error) {
       console.error('Erreur lors de la sauvegarde sur Airtable:', error)
       submissionStatus.value = 'Sauvegardé localement. Échec de la sauvegarde sur Airtable.'
+      isSaving.value = false
+      router.push('/success-optin')
     }
 
     // Reset form
@@ -184,11 +190,8 @@ const onSubmit = async () => {
       consentData: false
     }
     hasSubmitted.value = false
-
-    setTimeout(() => {
-      submissionStatus.value = ''
-      router.push('/intro-game')
-    }, 2000)
+    isSaving.value = false
+    router.push('/success-optin')
   }
 }
 </script>
@@ -197,7 +200,9 @@ const onSubmit = async () => {
   <PublicLayout>
     <div class="flex flex-col justify-center gap-5 w-[80vw] px-5">
       <div class="flex flex-col gap-2">
-        <h2 class="text-xl"><span v-if="gameStore.gamesWon > 0">Félicitations !</span> Vous avez gagné {{ gameStore.gamesWon }} étape{{ gameStore.gamesWon > 1 ? 's' : '' }} sur 3. Remplissez et envoyez le formulaire afin d'avoir une chance d'être tiré au sort pour gagner votre lot.</h2>
+        <h2 class="text-xl"><span v-if="gameStore.gamesWon > 0">Félicitations !</span> Vous avez gagné {{
+          gameStore.gamesWon }} étape{{ gameStore.gamesWon > 1 ? 's' : '' }} sur 3. Remplissez et envoyez le formulaire
+          afin d'avoir une chance d'être tiré au sort pour gagner votre lot.</h2>
       </div>
       <form @submit.prevent="onSubmit" class="flex flex-col gap-4 max-w-[600px]">
         <div v-for="field in ['nom', 'prenom', 'email', 'telephone']" :key="field" class="flex flex-col">
@@ -209,9 +214,10 @@ const onSubmit = async () => {
         <div class="flex flex-col space-y-4 py-4">
           <div class="flex items-start space-x-3">
             <input id="consentData" v-model="values.consentData" type="checkbox" class="mt-1 big-checkbox" />
-            <div class="flex flex-col leading-none">
+            <div class="flex">
               <label for="consentData" class="text-xs">
-                J'autorise Volkswagen à traiter mes données personnelles. <span class="text-red-400">*</span>
+                J'autorise Volkswagen à traiter mes données personnelles.<span class="text-red-400 ml-1">*</span>
+                <LegalDialog class="m-0 p-0" />.
               </label>
             </div>
           </div>
@@ -220,7 +226,7 @@ const onSubmit = async () => {
           </p>
           <div class="flex items-start space-x-3">
             <input id="consentMarketing" v-model="values.consentMarketing" type="checkbox" class="mt-1 big-checkbox" />
-            <div class="flex flex-col space-y-1 leading-none">
+            <div class="flex flex-col leading-none">
               <label for="consentMarketing" class="text-xs">
                 J'accepte de recevoir des communications marketing.
               </label>
@@ -242,7 +248,8 @@ const onSubmit = async () => {
 
 <style scoped>
 .big-checkbox {
-  width: 1.5rem;
-  height: 1.5rem;
+  min-width: 1.5rem;
+  min-height: 1.5rem;
 }
+
 </style>

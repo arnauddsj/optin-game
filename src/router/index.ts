@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory, RouteLocationNormalized, NavigationGuardNext } from 'vue-router'
 import { useGameStore } from '@/stores/gameStore'
+import { useRouter } from 'vue-router'
 import home from '@/views/home.vue'
 import Game1 from '@/views/game/game-1.vue'
 import Game2 from '@/views/game/game-2.vue'
@@ -13,7 +14,7 @@ import SuccessGame3 from '@/views/success/success-game-3.vue'
 import OptInForm from '@/views/optin.vue'
 import AdminScreen from '@/views/admin.vue'
 import IntroGame from '@/views/intro/intro-game.vue'
-import { useRouter } from 'vue-router'
+import SuccessOptin from '@/views/success/success-optin.vue'
 
 const routes = [
   { path: '/', component: home },
@@ -28,6 +29,7 @@ const routes = [
   { path: '/success-game2', component: SuccessGame2 },
   { path: '/success-game3', component: SuccessGame3 },
   { path: '/optin', component: OptInForm },
+  { path: '/success-optin', component: SuccessOptin },
   {
     path: '/admin',
     name: 'Admin',
