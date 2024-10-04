@@ -8,8 +8,9 @@ interface UserData {
   email: string
   telephone: string
   consentMarketing: boolean
+  consentData: boolean
   timestamp: string
-  gamesWon: number
+  'Jeux gagnés': number
 }
 
 const router = useRouter()
@@ -21,7 +22,7 @@ onMounted(() => {
 })
 
 const initDB = () => {
-  const request = indexedDB.open('OptInDatabase', 3)  // Make sure this matches the version in your form
+  const request = indexedDB.open('OptInDatabase', 4)  // Make sure this matches the version in your form
   request.onerror = (event) => {
     console.error("Erreur IndexedDB:", event)
   }
@@ -47,7 +48,12 @@ const loadUserData = () => {
     console.error("Erreur lors du chargement des données:", event)
   }
   request.onsuccess = () => {
-    userData.value = request.result
+    console.log("Raw data from IndexedDB:", request.result)
+    userData.value = request.result.map((item: any) => ({
+      ...item,
+      'Jeux gagnés': item['Jeux gagnés'] || 0,
+    }))
+    console.log("Processed userData:", userData.value)
   }
 }
 
@@ -79,7 +85,7 @@ const clearUserData = () => {
     }
     request.onsuccess = () => {
       userData.value = []
-      console.log("Toutes les données ont été effacées avec succès")
+      console.log("Toutes les données ont été effaces avec succès")
     }
   }
 }
@@ -143,7 +149,7 @@ const clearUserData = () => {
                 {{ user.timestamp }}
               </td>
               <td class="p-1 border-b border-gray-200 bg-white text-vw-dark">
-                {{ user.gamesWon }}
+                {{ user['Jeux gagnés'] }}
               </td>
             </tr>
           </tbody>

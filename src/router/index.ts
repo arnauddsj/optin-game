@@ -13,6 +13,7 @@ import SuccessGame3 from '@/views/success/success-game-3.vue'
 import OptInForm from '@/views/optin.vue'
 import AdminScreen from '@/views/admin.vue'
 import IntroGame from '@/views/intro/intro-game.vue'
+import { useRouter } from 'vue-router'
 
 const routes = [
   { path: '/', component: home },
@@ -32,12 +33,13 @@ const routes = [
     name: 'Admin',
     component: AdminScreen,
     beforeEnter: (_to: RouteLocationNormalized, _from: RouteLocationNormalized, next: NavigationGuardNext) => {
+      const router = useRouter()
       const password = prompt('Enter admin password:')
       if (password === 'admin') {
         next()
       } else {
         alert('Incorrect password')
-        next(false)
+        router.push('/')
       }
     }
   }

@@ -72,7 +72,7 @@ const errors = ref<Partial<Record<keyof FormValues, string>>>({})
 let db: IDBDatabase
 
 onMounted(() => {
-  const request = indexedDB.open('OptInDatabase', 3)  // Keep the version number
+  const request = indexedDB.open('OptInDatabase', 4)  // Keep the version number
   request.onerror = (event) => {
     console.error("Erreur IndexedDB:", event)
   }
@@ -87,6 +87,7 @@ onMounted(() => {
       store.createIndex('telephone', 'telephone', { unique: false })
       store.createIndex('consentMarketing', 'consentMarketing', { unique: false })
       store.createIndex('consentData', 'consentData', { unique: false })
+      store.createIndex('gamesWon', 'gamesWon', { unique: false })
     }
   }
 })
