@@ -252,7 +252,6 @@ onMounted(() => {
         <Timer :duration="timerDuration" :onTimeUp="handleTimeUp" :key="timerKey" />
         <div class="absolute bottom-0 left-0 right-0"><button class="text-sm font-regular outline-none"
             @click="router.push('/intro-game2')">next</button>
-          <button class="text-xs font-regular outline-none" @click="showToast = true">show toast</button>
         </div>
       </div>
 
