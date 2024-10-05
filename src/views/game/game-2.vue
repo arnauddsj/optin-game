@@ -22,7 +22,7 @@ const golfs = ref<Golf[]>([
   { id: 1, name: 'Golf GTD', image: '/jeu2/golf-gtd.webp', isCorrect: false, isSelected: false },
   { id: 2, name: 'Golf R', image: '/jeu2/golf-r.webp', isCorrect: false, isSelected: false },
   { id: 3, name: "Golf SW", image: '/jeu2/golf-sw.webp', isCorrect: true, isSelected: false },
-  { id: 4, name: 'Golf GTE.', image: '/jeu2/golf-gte.webp', isCorrect: false, isSelected: false },
+  { id: 4, name: 'Golf GTE', image: '/jeu2/golf-gte.webp', isCorrect: false, isSelected: false },
 ])
 
 const isCorrectSelection = computed(() => {
@@ -78,19 +78,19 @@ const handleContinue = () => {
   <PublicLayout>
     <ToastProvider>
       <div class="flex flex-col flex-grow px-10 justify-center">
-        <h2 class="text-2xl mb-10 px-2">Parmi ces propositions, quelle version <span class="font-bold">n’est pas un
-            modèle
-            sportif</span> de la Golf ?</h2>
-        <div class="grid grid-cols-2 gap-4 mb-4">
-          <div v-for="golf in golfs" :key="golf.id" class="golf" :class="{ 'selected': golf.isSelected }">
-            <div class="flex flex-col items-center">
+        <h2 class="text-2xl mb-[4rem] px-2">Parmi ces propositions, quelle version <span class="font-bold">n’est pas un
+            modèle sportif</span> de la Golf ?</h2>
+        <div class="grid grid-cols-2 gap-x-6 gap-y-10 mb-4">
+          <div v-for="golf in golfs" :key="golf.id" class="golf flex flex-col items-center h-full"
+            :class="{ 'selected': golf.isSelected }">
+            <div class="flex flex-col flex-grow items-center">
               <img :src="golf.image" :alt="golf.name" class="cursor-pointer" @click="toggleChoice(golf)"
-                :style="{ transform: golf.isSelected ? 'scale(1.1)' : 'scale(1)' }">
+                :style="{ transform: golf.isSelected ? 'scale(1.05)' : 'scale(1)' }">
               <p class="text-center mt-2">{{ golf.name }}</p>
             </div>
           </div>
         </div>
-        <button class="bg-vw-light text-white text-2xl font-medium py-1 px-8 whitespace-nowrap outline-none mt-10"
+        <button class="bg-vw-light text-white text-2xl font-medium py-1 px-8 whitespace-nowrap outline-none mt-[2rem]"
           @click="validateSelection">Valider</button>
         <TimeUpDialog v-if="showTimeUpDialog" @continue="handleContinue" />
         <Timer :duration="timerDuration" :onTimeUp="handleTimeUp" :key="timerKey" />
@@ -115,7 +115,7 @@ const handleContinue = () => {
 <style scoped>
 img {
   width: 380px;
-  height: auto;
+  height: 170px;
   transition: all 0.3s ease;
 }
 

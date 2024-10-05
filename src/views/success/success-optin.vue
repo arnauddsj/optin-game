@@ -2,11 +2,14 @@
 import PublicLayout from '@/layouts/PublicLayout.vue'
 import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import Button from "@/components/Button.vue"
 
 const router = useRouter()
 
 onMounted(() => {
-  router.push('/intro-game')
+  setTimeout(() => {
+    router.push('/intro-game')
+  }, 5000)
 })
 </script>
 
@@ -16,10 +19,11 @@ onMounted(() => {
       <div class="flex flex-col flex-1 justify-center p-10">
         <div class="content flex flex-col gap-10">
           <h2 class="text-2xl">
-            Merci,
+            <span class="font-bold">Merci,</span>
             <br /><br />
             nous avons bien reçu votre participation.
           </h2>
+          <Button cta="Relancer le jeu" link="/intro-game" />
         </div>
       </div>
     </div>

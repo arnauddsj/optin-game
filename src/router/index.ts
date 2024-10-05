@@ -37,7 +37,7 @@ const routes = [
     beforeEnter: (_to: RouteLocationNormalized, _from: RouteLocationNormalized, next: NavigationGuardNext) => {
       const router = useRouter()
       const password = prompt('Enter admin password:')
-      if (password === 'admin') {
+      if (password === 'advw50x') {
         next()
       } else {
         alert('Incorrect password')

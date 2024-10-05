@@ -11,7 +11,6 @@ const router = useRouter()
 const submissionStatus = ref('')
 const hasSubmitted = ref(false)
 const isSaving = ref(false)
-const isLegalDialogOpen = ref(false)
 
 // Initialize Airtable
 const base = new Airtable({ apiKey: import.meta.env.VITE_AIR_TABLE_API_KEY }).base(import.meta.env.VITE_AIR_TABLE_BASE_ID as string)
@@ -236,7 +235,7 @@ const onSubmit = async () => {
           <p class="text-xs mt-2"><span class="text-red-400">*</span> Champ obligatoire</p>
         </div>
         <div class="inline-block">
-          <button type="submit" class="bg-vw-light text-white text-2xl font-medium py-1 px-8">
+          <button :disabled="isSaving" type="submit" class="bg-vw-light text-white text-2xl font-medium py-1 px-8">
             Envoyer
           </button>
         </div>
