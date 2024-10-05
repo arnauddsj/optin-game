@@ -5,15 +5,15 @@ import Logo50Years from '@/assets/50ans-logo.svg'
 <template>
   <div class="header-container">
     <Logo50Years class="years-logo absolute" />
-    <div class="logo-wrapper h-[100px] w-[100px] p-[20px]">
+    <div class="logo-wrapper h-[130px] w-[130px] p-[20px]">
       <Logo class="" />
-    </div>  
+    </div>
   </div>
 </template>
 
 <style scoped lang="scss">
 .header-container::before {
-content: '';
+  content: '';
   position: absolute;
   top: 48%;
   left: 0;
@@ -32,12 +32,12 @@ content: '';
   @apply bg-vw-dark;
   position: relative;
   z-index: 1;
-  right: 60px; 
+  right: 60px;
   margin-left: auto;
 }
 
-.years-logo{
-  top: 55px;
+.years-logo {
+  top: 80px;
   left: 40px;
   height: 4vw;
   width: auto;
