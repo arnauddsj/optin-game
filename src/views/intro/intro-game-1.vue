@@ -15,7 +15,7 @@ import Button from "@/components/Button.vue"
           <Button cta="Commencer" link="/game1" />
         </div>
       </div>
-          <img src="/ui/jeu1.jpg" alt="golf" class="w-full" />
+          <img src="/ui/jeu1.webp" alt="golf" class="w-full" />
     </div>
   </PublicLayout>
 </template>

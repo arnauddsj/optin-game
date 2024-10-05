@@ -11,6 +11,6 @@ import Button from '@/components/Button.vue'
         sur la boutique en ligne Volkswagen.</p>
       <Button cta="Jouer" link="/intro-game1" />
     </div>
-    <img src="/ui/intro.png" alt="lots" class="w-full" />
+    <img src="/ui/intro.webp" alt="lots" class="w-full" />
   </PublicLayout>
-</template>
+</template>  
