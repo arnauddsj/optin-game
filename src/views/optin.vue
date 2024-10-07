@@ -6,6 +6,7 @@ import Airtable from 'airtable'
 import { useGameStore } from '@/stores/gameStore'
 import PublicLayout from '@/layouts/PublicLayout.vue'
 import LegalDialog from '@/components/LegalDialog.vue'
+import { useMotion } from '@vueuse/motion'
 
 const router = useRouter()
 const submissionStatus = ref('')
@@ -162,6 +163,92 @@ const validateForm = (): boolean => {
   }
 }
 
+const titleRef = ref(null)
+const subtitleRef = ref(null)
+const submitButtonRef = ref(null)
+const requiredFieldRef = ref(null)
+
+const titleMotion = useMotion(titleRef, {
+  initial: { opacity: 0, y: -20 },
+  enter: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { 
+      duration: 500, 
+      delay: 200, 
+      ease: 'easeOut' 
+    } 
+  },
+})
+
+const subtitleMotion = useMotion(subtitleRef, {
+  initial: { opacity: 0, y: -20 },
+  enter: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { 
+      duration: 500, 
+      delay: 400, 
+      ease: 'easeOut' 
+    } 
+  },
+})
+
+const formFields = ref(['nom', 'prenom', 'email', 'telephone'])
+const consentFields = ref(['consentData', 'consentMarketing'])
+
+const createFieldMotion = (index: number) => ({
+  initial: { opacity: 0, y: 20 },
+  enter: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { 
+      duration: 500, 
+      delay: 600 + index * 200,
+      ease: 'easeOut' 
+    } 
+  },
+})
+
+const createConsentMotion = (index: number) => ({
+  initial: { opacity: 0, x: -20 },
+  enter: { 
+    opacity: 1, 
+    x: 0, 
+    transition: { 
+      duration: 500, 
+      delay: 600 + (formFields.value.length + index) * 200,
+      ease: 'easeOut' 
+    } 
+  },
+})
+
+const requiredFieldMotion = useMotion(requiredFieldRef, {
+  initial: { opacity: 0, y: 20 },
+  enter: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { 
+      duration: 500, 
+      delay: 600 + (formFields.value.length + consentFields.value.length) * 200,
+      ease: 'easeOut' 
+    } 
+  },
+})
+
+const submitButtonMotion = useMotion(submitButtonRef, {
+  initial: { opacity: 0, scale: 0.9 },
+  enter: { 
+    opacity: 1, 
+    scale: 1, 
+    transition: { 
+      duration: 500, 
+      delay: 800 + (formFields.value.length + consentFields.value.length) * 200, 
+      ease: 'easeOut' 
+    } 
+  },
+})
+
 const onSubmit = async () => {
   if (validateForm()) {
     isSaving.value = true
@@ -199,42 +286,40 @@ const onSubmit = async () => {
   <PublicLayout>
     <div class="flex flex-col justify-center gap-5 w-[80vw] px-5">
       <div class="flex flex-col gap-2">
-        <h2 class="text-xl"><span v-if="gameStore.gamesWon > 0">Félicitations !</span> Vous avez gagné {{
-          gameStore.gamesWon }} étape{{ gameStore.gamesWon > 1 ? 's' : '' }} sur 3. Remplissez et envoyez le formulaire
-          afin d'avoir une chance d'être tiré au sort pour gagner votre lot.</h2>
+        <h2 class="text-xl" ref="titleRef" v-motion="titleMotion">
+          <span v-if="gameStore.gamesWon > 0">Félicitations !</span>
+        </h2>
+        <h2 class="text-xl" ref="subtitleRef" v-motion="subtitleMotion">
+          Vous avez gagné {{ gameStore.gamesWon }} étape{{ gameStore.gamesWon > 1 ? 's' : '' }} sur 3. Remplissez et envoyez le formulaire
+          afin d'avoir une chance d'être tiré au sort pour gagner votre lot.
+        </h2>
       </div>
       <form @submit.prevent="onSubmit" class="flex flex-col gap-4 max-w-[600px]">
-        <div v-for="field in ['nom', 'prenom', 'email', 'telephone']" :key="field" class="flex flex-col">
+        <div v-for="(field, index) in formFields" :key="field" class="flex flex-col" v-motion="createFieldMotion(index)">
           <label :for="field" class="text-xs mb-[5px]">{{ fieldLabels[field] }}</label>
           <input :id="field" v-model="values[field]" :type="field === 'email' ? 'email' : 'text'"
             :placeholder="fieldPlaceholders[field]" class="p-1 text-vw-dark" autocomplete="off" />
           <p v-if="hasSubmitted && errors[field]" class="text-sm text-red-400 mt-1">{{ errors[field] }}</p>
         </div>
         <div class="flex flex-col space-y-4 py-4">
-          <div class="flex items-start space-x-3">
-            <input id="consentData" v-model="values.consentData" type="checkbox" class="mt-1 big-checkbox" />
+          <div v-for="(field, index) in consentFields" :key="field" class="flex items-start space-x-3" v-motion="createConsentMotion(index)">
+            <input :id="field" v-model="values[field]" type="checkbox" class="mt-1 big-checkbox" />
             <div class="flex">
-              <label for="consentData" class="text-xs">
-                J'autorise Volkswagen à traiter mes données personnelles.<span class="text-red-400 ml-1">*</span>
-                <LegalDialog class="m-0 p-0" />.
+              <label :for="field" class="text-xs">
+                {{ field === 'consentData' ? "J'autorise Volkswagen à traiter mes données personnelles." : "J'accepte de recevoir des communications marketing." }}
+                <span v-if="field === 'consentData'" class="text-red-400 ml-1">*</span>
+                <LegalDialog v-if="field === 'consentData'" class="m-0 p-0" />.
               </label>
             </div>
           </div>
           <p v-if="hasSubmitted && errors.consentData" class="text-sm text-red-400 mt-1">
             {{ errors.consentData }}
           </p>
-          <div class="flex items-start space-x-3">
-            <input id="consentMarketing" v-model="values.consentMarketing" type="checkbox" class="mt-1 big-checkbox" />
-            <div class="flex flex-col leading-none">
-              <label for="consentMarketing" class="text-xs">
-                J'accepte de recevoir des communications marketing.
-              </label>
-            </div>
-          </div>
-
-          <p class="text-xs mt-2"><span class="text-red-400">*</span> Champ obligatoire</p>
+          <p class="text-xs mt-2" ref="requiredFieldRef" v-motion="requiredFieldMotion">
+            <span class="text-red-400">*</span> Champ obligatoire
+          </p>
         </div>
-        <div class="inline-block">
+        <div class="inline-block" ref="submitButtonRef" v-motion="submitButtonMotion">
           <button :disabled="isSaving" type="submit" class="bg-vw-light text-white text-2xl font-medium py-1 px-8">
             Envoyer
           </button>

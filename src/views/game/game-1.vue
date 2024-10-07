@@ -12,6 +12,7 @@ import {
   ToastViewport,
 } from 'radix-vue'
 import { useGameStore } from '@/stores/gameStore'
+import { useMotion } from '@vueuse/motion'
 
 interface Car {
   id: number
@@ -202,6 +203,19 @@ const updateZones = (carId: number, newZoneId: number) => {
   newZone.car = car
 }
 
+// Add this new function to create a staggered animation for cars
+const createCarAnimation = (index: number) => ({
+  initial: { opacity: 0, y: 50 },
+  enter: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: index * 100, // Stagger the animation
+      duration: 500,
+    },
+  },
+})
+
 onMounted(() => {
   resetGame()
   document.body.style.overscrollBehavior = 'none'
@@ -215,11 +229,12 @@ onMounted(() => {
         <div class="game-container flex-grow grid grid-cols-3 gap-s p-4 justify-self: center">
           <!-- Left column: Initial cars -->
           <div class="col-span-1 drop-zones grid grid-rows-8 gap-2">
-            <div v-for="zone in zones.slice(8)" :key="zone.id" class="drop-zone  flex items-center justify-center"
+            <div v-for="(zone, index) in zones.slice(8)" :key="zone.id" class="drop-zone flex items-center justify-center"
               :data-zone-id="zone.id">
               <div v-if="zone.car" class="car-item flex items-center justify-center w-full h-full"
                 :data-car-id="zone.car.id" @touchstart="startDrag($event, zone.car)" @touchmove="onDrag"
-                @touchend="endDrag">
+                @touchend="endDrag"
+                v-motion="createCarAnimation(index)">
                 <img :src="zone.car.image" :alt="zone.car.name" class="object-contain w-full h-full">
               </div>
             </div>
@@ -228,17 +243,20 @@ onMounted(() => {
           <!-- Middle column: Timeline -->
           <div class="col-span-1 timeline relative flex flex-col">
             <div class="absolute h-full w-0.5 bg-white left-1/2 transform -translate-x-1/2"></div>
-            <div v-for="zone in zones.slice(0, 8)" :key="zone.id"
+            <div v-for="(zone, index) in zones.slice(0, 8)" :key="zone.id"
               class="year-marker flex items-center justify-center flex-grow">
-              <span class="year-text text-white font-bold text-2xl bg-vw-dark px-2 py-1">{{
-                zone.year }}</span>
+              <span class="year-text text-white font-bold text-2xl bg-vw-dark px-2 py-1"
+                v-motion="{ initial: { opacity: 0, x: -20 }, enter: { opacity: 1, x: 0, transition: { delay: index * 50, duration: 300 } } }">
+                {{ zone.year }}
+              </span>
             </div>
           </div>
 
           <!-- Right column: Drop zones -->
           <div class="col-span-1 drop-zones grid grid-rows-8 gap-2">
             <div v-for="zone in zones.slice(0, 8)" :key="zone.id"
-              class="drop-zone bg-vw-light flex items-center justify-center" :data-zone-id="zone.id">
+              class="drop-zone bg-vw-light flex items-center justify-center" :data-zone-id="zone.id"
+              v-motion="{ initial: { opacity: 0, scale: 0.8 }, enter: { opacity: 1, scale: 1, transition: { duration: 300 } } }">
               <div v-if="zone.car" class="car-item flex items-center justify-center w-full h-full"
                 :data-car-id="zone.car.id" @touchstart="startDrag($event, zone.car)" @touchmove="onDrag"
                 @touchend="endDrag">

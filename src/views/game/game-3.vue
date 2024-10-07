@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useMotion } from '@vueuse/motion'
 import PublicLayout from '@/layouts/PublicLayout.vue'
 import TimeUpDialog from '@/components/TimeUpDialog.vue'
 import Timer from '@/components/Timer.vue'
@@ -70,31 +71,88 @@ const handleContinue = () => {
   resetGameState()
   router.push('/optin')
 }
+
+const title = ref(null)
+const techContainer = ref(null)
+const validateButton = ref(null)
+
+const titleMotion = useMotion(title, {
+  initial: { opacity: 0, y: -20 },
+  enter: { opacity: 1, y: 0, transition: { duration: 800, ease: 'easeOut' } },
+})
+
+const techContainerMotion = useMotion(techContainer, {
+  initial: { opacity: 0, y: 20 },
+  enter: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { 
+      duration: 800, 
+      delay: 100,
+      ease: 'easeOut'
+    } 
+  },
+})
+
+const validateButtonMotion = useMotion(validateButton, {
+  initial: { opacity: 0, y: 20, scale: 0.95 },
+  enter: { 
+    opacity: 1, 
+    y: 0, 
+    scale: 1, 
+    transition: { 
+      duration: 600, 
+      delay: 1200,
+      ease: 'easeOut'
+    } 
+  },
+})
+
+const createTechAnimation = (index: number) => ({
+  initial: { opacity: 0, y: 0, scale: 0.85 },
+  enter: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      delay: 200 + index * 150,
+      duration: 500,
+      ease: 'easeOut',
+    },
+  },
+})
+
+onMounted(() => {
+  document.body.style.overflow = 'hidden'
+})
 </script>
 
 <template>
   <PublicLayout>
     <ToastProvider>
       <div class="flex flex-col flex-grow px-10 justify-center">
-        <h2 class="text-2xl mb-[2rem] px-2">Parmi ces technologies, lesquelles vous permettent d'effectuer des <span
-            class="font-bold">
+        <h2 class="text-2xl mb-[2rem] px-2" ref="title" v-motion="titleMotion">
+          Parmi ces technologies, lesquelles vous permettent d'effectuer des <span class="font-bold">
             recherches vocales ?
-          </span></h2>
-        <div class="grid grid-cols-2 gap-4 mb-4 auto-rows-fr">
-          <div v-for="tech in techs" :key="tech.id" class="tech flex flex-col items-center h-full"
-            :class="{ 'selected': tech.isSelected }">
+          </span>
+        </h2>
+        <div class="grid grid-cols-2 gap-4 mb-4 auto-rows-fr" ref="techContainer" v-motion="techContainerMotion">
+          <div v-for="(tech, index) in techs" :key="tech.id" class="tech flex flex-col items-center h-full"
+            :class="{ 'selected': tech.isSelected }" v-motion="createTechAnimation(index)">
             <div class="flex flex-col flex-grow items-center justify-center">
               <div class="flex flex-grow items-center justify-center">
                 <img :src="tech.image" :alt="tech.name" class="cursor-pointer" @click="toggleChoice(tech)"
                   :style="{ transform: tech.isSelected ? 'scale(1.05)' : 'scale(1)' }"
                   :class="{ 'chatGPT': tech.name === 'ChatGPT' }">
               </div>
-              <p class="text-center mt-2">{{ tech.name }} </p>
+              <p class="text-center mt-2">{{ tech.name }}</p>
             </div>
           </div>
         </div>
         <button class="bg-vw-light text-white text-2xl font-medium py-1 px-8 whitespace-nowrap outline-none mt-[2rem]"
-          @click="validateSelection">Valider</button>
+          @click="validateSelection" ref="validateButton" v-motion="validateButtonMotion">
+          Valider
+        </button>
         <TimeUpDialog v-if="showTimeUpDialog" @continue="handleContinue" />
         <Timer :duration="timerDuration" :onTimeUp="handleTimeUp" :key="timerKey" />
       </div>
