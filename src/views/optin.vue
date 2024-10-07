@@ -174,8 +174,8 @@ const titleMotion = useMotion(titleRef, {
     opacity: 1, 
     y: 0, 
     transition: { 
-      duration: 500, 
-      delay: 200, 
+      duration: 400,
+      delay: 100, 
       ease: 'easeOut' 
     } 
   },
@@ -187,8 +187,8 @@ const subtitleMotion = useMotion(subtitleRef, {
     opacity: 1, 
     y: 0, 
     transition: { 
-      duration: 500, 
-      delay: 400, 
+      duration: 400,
+      delay: 200, // Reduced from 400
       ease: 'easeOut' 
     } 
   },
@@ -203,8 +203,8 @@ const createFieldMotion = (index: number) => ({
     opacity: 1, 
     y: 0, 
     transition: { 
-      duration: 500, 
-      delay: 600 + index * 200,
+      duration: 400,
+      delay: 300 + index * 100,
       ease: 'easeOut' 
     } 
   },
@@ -216,8 +216,8 @@ const createConsentMotion = (index: number) => ({
     opacity: 1, 
     x: 0, 
     transition: { 
-      duration: 500, 
-      delay: 600 + (formFields.value.length + index) * 200,
+      duration: 400,
+      delay: 300 + (formFields.value.length + index) * 100, 
       ease: 'easeOut' 
     } 
   },
@@ -229,8 +229,8 @@ const requiredFieldMotion = useMotion(requiredFieldRef, {
     opacity: 1, 
     y: 0, 
     transition: { 
-      duration: 500, 
-      delay: 600 + (formFields.value.length + consentFields.value.length) * 200,
+      duration: 400,
+      delay: 300 + (formFields.value.length + consentFields.value.length) * 100, 
       ease: 'easeOut' 
     } 
   },
@@ -242,8 +242,8 @@ const submitButtonMotion = useMotion(submitButtonRef, {
     opacity: 1, 
     scale: 1, 
     transition: { 
-      duration: 500, 
-      delay: 800 + (formFields.value.length + consentFields.value.length) * 200, 
+      duration: 400,
+      delay: 400 + (formFields.value.length + consentFields.value.length) * 100, 
       ease: 'easeOut' 
     } 
   },
