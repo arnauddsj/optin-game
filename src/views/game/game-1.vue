@@ -12,7 +12,6 @@ import {
   ToastViewport,
 } from 'radix-vue'
 import { useGameStore } from '@/stores/gameStore'
-import { useMotion } from '@vueuse/motion'
 
 interface Car {
   id: number
