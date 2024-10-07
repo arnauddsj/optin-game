@@ -42,7 +42,7 @@ const formSchema = z.object({
   nom: z.string().min(2),
   prenom: z.string().min(2),
   email: z.string().email(),
-  telephone: z.string().regex(/^[0-9+() ]+$/),
+  telephone: z.string().regex(/^[0-9]{10}$/, 'Le numéro de téléphone doit contenir 10 chiffres'),
   consentMarketing: z.boolean().optional(),
   consentData: z.boolean().refine(value => value === true, {
     message: 'Vous devez accepter que Volkswagen puisse traiter vos données personnelles'

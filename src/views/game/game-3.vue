@@ -132,8 +132,7 @@ onMounted(() => {
     <ToastProvider>
       <div class="flex flex-col flex-grow px-10 justify-center">
         <h2 class="text-2xl mb-[2rem] px-2" ref="title" v-motion="titleMotion">
-          Parmi ces technologies, lesquelles vous permettent d'effectuer des <span class="font-bold">
-            recherches vocales ?
+          Parmi ces technologies, laquelle vous permet d'effectuer des <span class="font-bold"> recherches vocales ?
           </span>
         </h2>
         <div class="grid grid-cols-2 gap-4 mb-4 auto-rows-fr" ref="techContainer" v-motion="techContainerMotion">
