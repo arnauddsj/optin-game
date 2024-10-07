@@ -297,8 +297,16 @@ const onSubmit = async () => {
       <form @submit.prevent="onSubmit" class="flex flex-col gap-4 max-w-[600px]">
         <div v-for="(field, index) in formFields" :key="field" class="flex flex-col" v-motion="createFieldMotion(index)">
           <label :for="field" class="text-xs mb-[5px]">{{ fieldLabels[field] }}</label>
-          <input :id="field" v-model="values[field]" :type="field === 'email' ? 'email' : 'text'"
-            :placeholder="fieldPlaceholders[field]" class="p-1 text-vw-dark" autocomplete="off" />
+          <input 
+            :id="field" 
+            v-model="values[field]" 
+            :type="field === 'email' ? 'email' : 'text'"
+            :inputmode="field === 'telephone' ? 'numeric' : 'text'"
+            :pattern="field === 'telephone' ? '[0-9]*' : undefined"
+            :placeholder="fieldPlaceholders[field]" 
+            class="p-1 text-vw-dark" 
+            autocomplete="off" 
+          />
           <p v-if="hasSubmitted && errors[field]" class="text-sm text-red-400 mt-1">{{ errors[field] }}</p>
         </div>
         <div class="flex flex-col space-y-4 py-4">
