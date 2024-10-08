@@ -267,9 +267,9 @@ onMounted(() => {
 
         <TimeUpDialog v-if="showTimeUpDialog" @continue="handleContinue" />
         <Timer :duration="timerDuration" :onTimeUp="handleTimeUp" :key="timerKey" />
-        <div class="absolute bottom-0 left-0 right-0"><button class="text-sm font-regular outline-none"
+        <!-- <div class="absolute bottom-0 left-0 right-0"><button class="text-sm font-regular outline-none"
             @click="router.push('/intro-game2')">next</button>
-        </div>
+        </div> -->
       </div>
 
       <ToastRoot v-model:open="showToast" :duration="5000"
