@@ -104,7 +104,7 @@ const validateButtonMotion = useMotion(validateButton, {
     scale: 1, 
     transition: { 
       duration: 600, 
-      delay: 1200, // Increased delay to appear after all golf items
+      delay: 1200,
       ease: 'easeOut'
     } 
   },
@@ -117,7 +117,7 @@ const createGolfAnimation = (index: number) => ({
     y: 0,
     scale: 1,
     transition: {
-      delay: 200 + index * 150, // Increased delay between items
+      delay: 200 + index * 150,
       duration: 500,
       ease: 'easeOut',
     },

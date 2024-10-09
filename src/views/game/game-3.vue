@@ -208,7 +208,7 @@ img {
 }
 
 img {
-  max-height: 200px; /* Adjust this value as needed */
+  max-height: 200px;
   width: auto;
   object-fit: contain;
 }

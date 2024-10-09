@@ -13,10 +13,10 @@ const submissionStatus = ref('')
 const hasSubmitted = ref(false)
 const isSaving = ref(false)
 
-// Initialize Airtable
+
 const base = new Airtable({ apiKey: import.meta.env.VITE_AIR_TABLE_API_KEY }).base(import.meta.env.VITE_AIR_TABLE_BASE_ID as string)
 
-// Add this custom error map
+
 const customErrorMap: z.ZodErrorMap = (issue, ctx) => {
   if (issue.code === z.ZodIssueCode.invalid_type) {
     return { message: "Veuillez renseigner ce champ" };
@@ -35,7 +35,7 @@ const customErrorMap: z.ZodErrorMap = (issue, ctx) => {
   return { message: ctx.defaultError };
 };
 
-// Set the custom error map
+
 z.setErrorMap(customErrorMap);
 
 const formSchema = z.object({
@@ -75,7 +75,7 @@ const errors = ref<Partial<Record<keyof FormValues, string>>>({})
 let db: IDBDatabase
 
 onMounted(() => {
-  const request = indexedDB.open('OptInDatabase', 4)  // Keep the version number
+  const request = indexedDB.open('OptInDatabase', 4)  
   request.onerror = (event) => {
     console.error("Erreur IndexedDB:", event)
   }
@@ -97,7 +97,7 @@ onMounted(() => {
 
 const gameStore = useGameStore()
 
-// Update saveLocally function
+
 const saveLocally = (values: any) => {
   const now = new Date()
   const formattedDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
@@ -120,7 +120,7 @@ const saveLocally = (values: any) => {
   }
 }
 
-// Update saveToAirtable function
+
 const saveToAirtable = async (values: any) => {
   try {
     const now = new Date()
@@ -188,7 +188,7 @@ const subtitleMotion = useMotion(subtitleRef, {
     y: 0, 
     transition: { 
       duration: 400,
-      delay: 200, // Reduced from 400
+      delay: 200, 
       ease: 'easeOut' 
     } 
   },
@@ -252,10 +252,10 @@ const submitButtonMotion = useMotion(submitButtonRef, {
 const onSubmit = async () => {
   if (validateForm()) {
     isSaving.value = true
-    // Always save locally
+    
     saveLocally(values.value)
 
-    // Attempt to save to Airtable
+    
     try {
       await saveToAirtable(values.value)
       submissionStatus.value = 'Participation enregistrée avec succès !'
@@ -266,7 +266,7 @@ const onSubmit = async () => {
       router.push('/success-optin')
     }
 
-    // Reset form
+    
     values.value = {
       nom: '',
       prenom: '',

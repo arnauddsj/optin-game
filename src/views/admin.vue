@@ -22,7 +22,7 @@ onMounted(() => {
 })
 
 const initDB = () => {
-  const request = indexedDB.open('OptInDatabase', 4)  // Make sure this matches the version in your form
+  const request = indexedDB.open('OptInDatabase', 4) 
   request.onerror = (event) => {
     console.error("Erreur IndexedDB:", event)
   }

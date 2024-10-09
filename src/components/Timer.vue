@@ -4,24 +4,24 @@ import { ref, onMounted, onUnmounted, computed, watch } from 'vue'
 const props = defineProps<{
   duration: number
   onTimeUp: () => void
-  key: number // Add this prop to force re-render
+  key: number 
 }>()
 
 const timeLeft = ref(props.duration)
 const intervalId = ref<NodeJS.Timeout | null>(null)
 
 const strokeDasharray = computed(() => {
-  const circumference = 2 * Math.PI * 36 // Increased from 24 to 36
+  const circumference = 2 * Math.PI * 36 
   return `${circumference} ${circumference}`
 })
 
 const strokeDashoffset = computed(() => {
-  const circumference = 2 * Math.PI * 36 // Increased from 24 to 36
+  const circumference = 2 * Math.PI * 36 
   const progress = 1 - timeLeft.value / props.duration
   return circumference * progress
 })
 
-// Watch for changes in the key prop to reset the timer
+
 watch(() => props.key, () => {
   timeLeft.value = props.duration
   if (intervalId.value) {
@@ -68,7 +68,7 @@ onUnmounted(() => {
 <style scoped>
 .circular-timer {
   position: fixed;
-  bottom: 18px; /* Increased from 12px to 18px */
+  bottom: 18px;
   left: 50%;
   transform: translateX(-50%);
 }
