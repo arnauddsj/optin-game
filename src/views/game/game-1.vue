@@ -33,7 +33,6 @@ const cars = ref<Car[]>([
   { id: 8, name: 'Voiture 8', year: 2019, image: '/jeu1/voiture-8.png' }
 ])
 
-// Update the zones ref to include initial zones
 const zones = ref([
   ...cars.value.map(car => ({ id: car.id, year: car.year, car: null as Car | null })),
   ...Array(8).fill(null).map((_, index) => ({ id: index + 9, year: 0, car: null as Car | null }))
@@ -42,13 +41,12 @@ const zones = ref([
 const draggedCar = ref<Car | null>(null)
 const draggedElement = ref<HTMLElement | null>(null)
 
-// Update isAllCarsPlaced computed property
 const isAllCarsPlaced = computed(() => {
   return zones.value.slice(0, 8).every(zone => zone.car !== null) &&
     zones.value.slice(8).every(zone => zone.car === null)
 })
 
-// Update resetGame function
+
 const resetGame = () => {
   const shuffledCars = [...cars.value].sort(() => Math.random() - 0.5)
   zones.value = zones.value.map((zone, index) => {
@@ -72,7 +70,7 @@ const showErrorToast = (message: string) => {
 
 const gameStore = useGameStore()
 
-// Update watch function
+
 watch(isAllCarsPlaced, (newValue: boolean) => {
   if (newValue) {
     const allCorrect = zones.value.slice(0, 8).every(zone => zone.car && zone.car.year === zone.year)
@@ -115,7 +113,7 @@ const startDrag = (event: TouchEvent, car: Car) => {
   draggedCar.value = car
   draggedElement.value = event.target as HTMLElement
 
-  // Create a new element for dragging
+  
   const ghostElement = draggedElement.value.cloneNode(true) as HTMLElement
   ghostElement.style.position = 'fixed'
   ghostElement.style.width = '250px'
@@ -130,7 +128,7 @@ const startDrag = (event: TouchEvent, car: Car) => {
   event.preventDefault()
 }
 
-// Update the onDrag function to use the new ghost element
+
 const onDrag = (event: TouchEvent) => {
   if (draggedElement.value) {
     const touch = event.touches[0]
@@ -140,7 +138,7 @@ const onDrag = (event: TouchEvent) => {
   }
 }
 
-// Update the endDrag function to remove the ghost element
+
 const endDrag = (event: TouchEvent) => {
   if (draggedCar.value && draggedElement.value) {
     const dropZones = document.querySelectorAll('.drop-zone')
@@ -166,14 +164,14 @@ const endDrag = (event: TouchEvent) => {
       updateZones(draggedCar.value.id, 0)
     }
 
-    // Remove the ghost element from the DOM
+    
     document.body.removeChild(draggedElement.value)
     draggedCar.value = null
     draggedElement.value = null
   }
 }
 
-// Update updateZones function
+
 const updateZones = (carId: number, newZoneId: number) => {
   const car = cars.value.find(c => c.id === carId)
   if (!car) return
@@ -191,7 +189,7 @@ const updateZones = (carId: number, newZoneId: number) => {
     if (oldZone) {
       oldZone.car = newZone.car
     } else {
-      // Find an empty initial zone if the car was dragged from outside
+      
       const emptyInitialZone = zones.value.find((zone, index) => index >= 8 && zone.car === null)
       if (emptyInitialZone) {
         emptyInitialZone.car = newZone.car
@@ -202,14 +200,14 @@ const updateZones = (carId: number, newZoneId: number) => {
   newZone.car = car
 }
 
-// Add this new function to create a staggered animation for cars
+
 const createCarAnimation = (index: number) => ({
   initial: { opacity: 0, y: 50 },
   enter: {
     opacity: 1,
     y: 0,
     transition: {
-      delay: index * 100, // Stagger the animation
+      delay: index * 100, 
       duration: 500,
     },
   },
