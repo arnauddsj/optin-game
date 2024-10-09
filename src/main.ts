@@ -31,7 +31,6 @@ app.use(pinia)
 app.use(router)
 app.mount('#app')
 
-// Call these functions when the app is mounted
 app.config.globalProperties.$nextTick(() => {
   openFullscreen()
   lockOrientation()

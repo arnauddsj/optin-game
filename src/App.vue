@@ -10,7 +10,6 @@ import { RouterView } from 'vue-router'
 
 <style lang="scss">
 :root {
-  /* Set the root font size */
   font-size: 35px
 }
 
