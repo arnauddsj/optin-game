@@ -36,49 +36,163 @@ const closeDialog = () => {
           </DialogTitle>
           <div class="scrollable-content">
             <p class="text-left p-2">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sed suscipit velit. Quisque ut aliquam velit,
-              non tempus neque. Vivamus nec magna eget nisl vulputate pellentesque. Phasellus rhoncus pulvinar ante,
-              congue tempus neque tristique sit amet. In a dui vitae enim interdum sollicitudin id eget dolor. Ut porta
-              ultricies cursus. Quisque eu mattis turpis. Aliquam scelerisque posuere cursus. Duis faucibus, mi id
-              varius gravida, quam lorem imperdiet est, in cursus mi turpis quis arcu.
+              Règlement du jeu concours Stand Volkswagen Group France – Mondial de l’Auto 2024
+              Pour le challenge «Time Escape – Golf» disponible sur a plateforme https://vw.hivehorizon.com/
+              (inscription et participation).
 
-              Etiam vitae sapien molestie, volutpat est a, pharetra velit. Aenean dignissim faucibus purus vel laoreet.
-              Fusce lobortis velit ut lacinia varius. Cras lobortis ut eros et fermentum. Aliquam sagittis, libero eget
-              efficitur laoreet, arcu massa euismod risus, a molestie neque lectus nec enim. Nam ligula arcu,
-              consectetur quis condimentum non, porttitor vitae nibh. Ut fermentum, eros sit amet scelerisque venenatis,
-              ipsum lectus iaculis sapien, sed auctor turpis orci quis enim. Suspendisse pharetra nibh nec justo
-              tristique, a commodo elit eleifend.
+              ARTICLE 1 – ORGANISATEUR ET DURÉE DU JEU-CONCOURS
+              Volkswagen Group France est une société de droit français dont le siège social est situé 11 avenue de
+              Boursonne 02600 Villers-Cotterets, enregistrée au RCS de Soissons sous le numéro d'entreprise Soissons B
+              832 277 370, organise un jeu-concours intitulé «Time Escape - Golf» sans obligation d’achat dont les
+              gagnants seront désignés par tirage au sort ensuivant les conditions définies ci-après. Le jeu-concours se
+              déroulera du lundi 14 octobre 2024 au dimanche 20 octobre 2024.
 
-              Nam ornare ipsum eget dui congue, non vulputate est aliquam. Aliquam pellentesque sagittis lacinia. Aenean
-              euismod augue ut felis mollis, nec laoreet risus molestie. Proin feugiat facilisis lobortis. Fusce eget
-              accumsan metus, suscipit luctus nisi. Praesent interdum sodales ipsum, in egestas enim euismod at. Integer
-              sollicitudin elit eu lorem consectetur, ut semper nisi consectetur. Pellentesque nec massa ac nisl
-              suscipit sagittis. In accumsan purus vehicula augue bibendum pulvinar in at lacus.
+              ARTICLE 2 – CONDITIONS DE PARTICIPATION AU JEU-CONCOURS
+              2.1. Le jeu-concours est gratuit et exclusivement réservé aux personnes de nationalité française ou
+              résidant en France de minimum 21 ans s’étant inscrit au préalable sur la plateforme
+              https://vw.hivehorizon.com/ à l'exclusion de toutes les personnes ayant participé à l'élaboration du
+              jeu-concours.
+              2.2. La participation au jeu-concours implique l’acceptation irrévocable et sans réserve, des termes et
+              conditions du présent règlement.
+              2.3. Le jeu-concours est limité à une seule participation par personne. La participation au jeu-concours
+              est strictement personnelle et nominative. Il sera attribué un prix unique.
+              2.4. Le non-respect des conditions de participation énoncées dans le présent Règlement entraînera la
+              nullité de la participation du Participant.
 
-              Praesent ultrices eros id nunc condimentum feugiat. Vivamus eu rhoncus elit. Quisque dictum est et auctor
-              volutpat. Nulla eget lorem orci. Sed luctus congue ullamcorper. Quisque fringilla tincidunt lorem, sit
-              amet venenatis felis varius eget. Maecenas iaculis ut magna quis fringilla.
+              ARTICLE 3 – PRINCIPE DE JEU-CONCOURS/MODALITÉS DE PARTICIPATION MECANIQUE
+              Ce jeu se déroule exclusivement sur la plateforme https://vw.hivehorizon.com/ du lundi 14 octobre 2024 au
+              dimanche 20 octobre 2024 comme indiquées dans l’article 1.
+              Pour participer au concours, le visiteur s’inscrit sur la plateforme et participe ensuite à 3 quizz
+              portants sur le véhicule Golf qui lui sont proposés. Seuls les participants ayant répondu correctement aux
+              quizz pourront être tiré au sort.
+              Chaque participant doit confirmer son e-mail et son profil social en cliquant sur le lien reçu dans
+              l’email de confirmation afin de valider définitivement sa participation.
+              Chaque participant doit répondre aux conditions du jeu s'il veut avoir une chance de remporter le lot mis
+              en Jeu.
 
-              Nam vehicula vehicula leo, et suscipit mi mollis id. Etiam eu pharetra nibh, quis ultricies velit. Etiam
-              volutpat arcu at dolor condimentum condimentum. Quisque quis massa gravida, hendrerit elit eget, pulvinar
-              diam. Suspendisse molestie orci vitae purus dictum, id ullamcorper dui laoreet. Vestibulum sed lacus et
-              augue lobortis fringilla gravida vitae lorem. Cras massa erat, laoreet non pretium vel, malesuada a
-              libero. Aliquam sed elementum justo. Nullam blandit ultricies sagittis. In libero nunc, commodo a sagittis
-              nec, maximus ac risus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia
-              curae; Vivamus sed sodales tellus. Aenean eu egestas libero, sed dictum ligula. Fusce at quam vitae odio
-              gravida suscipit sed vitae dui. Mauris bibendum ornare est, ac malesuada felis molestie a. Nullam
-              scelerisque mattis velit, vitae ullamcorper felis gravida quis.
+              ARTICLE 4 – DÉSIGNATION DES GAGNANTS
+              L’Organisateur désignera par tirage au sort 1 gagnant, parmi l’ensemble des personnes s’étant inscrites.
+              Tirage au sort sera effectué le lundi 21 octobre à 14H. Afin de garantir un tirage au sort qui respecte
+              les chances de chacun nous procèderons à un tirage au sort grâce à l’application web plouf-plouf.fr.
+              2 suppléants seront tirés au sort en plus du grand gagnant.
 
-              Etiam eget aliquam elit, sit amet viverra ante. Etiam venenatis efficitur lacus, pellentesque convallis
-              nisi condimentum eu. Integer imperdiet bibendum erat nec hendrerit. Fusce tincidunt nibh purus, eget
-              molestie dolor rhoncus viverra. Suspendisse euismod tellus a luctus eleifend. Etiam feugiat enim ac nibh
-              vestibulum vehicula. Pellentesque eu tempus sem, non faucibus libero. Fusce pulvinar sem vitae diam
-              pellentesque bibendum.
+              ARTICLE 5 – DOTATIONS
+              1 lot unique sera à gagner pour le jeu concours «Time Escape - Golf»
+              Le gagnant se verra proposer :
+              - 1 bon d’achat sur la boutique en ligne Volkswagen Group France
 
-              Nullam eget tristique enim. Vestibulum vehicula nulla dapibus nisi varius facilisis. Sed massa massa,
-              facilisis at ante vel, consectetur euismod mauris. Duis posuere suscipit nisl, ut tincidunt diam ultrices
-              quis. Proin feugiat quam a tristique dapibus. Proin non risus quis ipsum vestibulum rhoncus et id sem. Nam
-              porttitor, eros nec scelerisque tincidunt, mi libero venenatis justo, eu ullamcorper nisl dui vitae velit.
+              Lot d’une valeur de 100€
+
+
+              ARTICLE 6 –REMISE DES DOTATIONS ET MODALITÉS D’UTILISATION DES DOTATIONS
+
+              L’Organisateur du jeu-concours contactera uniquement sur sa boîte mail le gagnant tirés au sort et
+              l’informera des modalités à suivre pour accéder à leur dotation. Aucun courrier ne sera adressé aux
+              participants n’ayant pas gagné, seul le gagnant sera contacté. Les gagnants devront répondre dans un délai
+              de 30 jours suivant l’envoi de ce courrier électronique et fournir leurs coordonnées complètes. Sans
+              réponse de la part du gagnant dans les 30 jours suivant l’envoi de ce courrier électronique, il sera déchu
+              de son lot et ne pourra prétendre à aucune indemnité, dotation ou compensation que ce soit. Dans cette
+              hypothèse, le lot sera attribué au premier désigné lors du tirage au sort de la session concernée. Pour le
+              cas où il ne répondrait pas dans les mêmes délais que ceux imposés au gagnant, le lot sera attribué au
+              2ème suppléant. Sans réponse de ce dernier dans les délais, le lot ne pourra pas être attribué.
+
+              Le gagnant (ou, le cas échéant, les suppléants) devra se conformer au présent règlement. S’il s’avérait
+              qu’il ne répond pas aux critères du présent règlement, le lot ne lui sera pas attribué et sera attribué
+              aux suppléants. À cet effet, les participants autorisent toutes les vérifications concernant leur
+              identité, leur âge, leurs coordonnées ou la loyauté et la sincérité de leur participation. Toute fausse
+              déclaration, indication d’identité ou d’adresse postale fausse entraîne l’élimination immédiate du
+              participant et l’acquisition du lot par l’Organisateur. La dotation est à utiliser pendant la période
+              indiquée selon les modalités et conditions communiquées ultérieurement au gagnant. En outre, en cas
+              d’impossibilité pour l’Organisateur de délivrer au gagnant la dotation remportée, et ce, quel qu’en soit
+              la cause, l’Organisateur se réserve le droit d’y substituer une dotation de valeur équivalente, ce que
+              tout participant consent.
+
+              ARTICLE 7 – RESPONSABILITE
+              L’Organisateur ne saurait voir sa responsabilité engagée du fait de l’impossibilité de contacter le
+              gagnant, de même qu’en cas de perte, de vol ou de dégradation du lot lors de son acheminement.
+              L’Organisateur ne pourra non plus être responsable des erreurs éventuelles portant sur le nom, l’adresse
+              et/ou les coordonnées communiquées par les personnes ayant participé au jeu-concours. Par ailleurs,
+              l’Organisateur du jeu concours décline toute responsabilité pour tous les incidents qui pourraient
+              survenir lors de la jouissance du prix attribué et/ou fait de son utilisation et/ou de ses conséquences,
+              notamment de la jouissance d’un lot par un mineur, qui reste sous l’entière et totale responsabilité d’une
+              personne ayant l’autorité parentale. L’Organisateur se réserve le droit, si les circonstances l’exigent,
+              d’écourter, de prolonger, de modifier, d’interrompre, de différer ou d’annuler le jeu-concours, sans que
+              sa responsabilité ne soit engagée. Toutefois, toute modification fera l’objet d’un avenant qui sera mis en
+              ligne sur le Site et adressé gratuitement à toute personne ayant fait une demande de règlement par écrit.
+              L’Organisateur se dégage de toute responsabilité en cas de dysfonctionnement empêchant l’accès et/ ou le
+              bon déroulement du jeu-concours notamment dû à des actes de malveillances externes. L’utilisation de
+              robots ou de tous autres procédés similaires permettant de participer au jeu-concours de façon mécanique
+              ou autre est proscrite, la violation de cette règle entraînant l’élimination définitive de son réalisateur
+              et/ ou utilisateur. L’Organisateur pourra annuler tout ou partie du jeu-concours s’il apparaît que des
+              fraudes sont intervenues sous quelque forme que ce soit, notamment de manière informatique dans le cadre
+              de la participation au jeu-concours ou de la détermination des gagnants. Il se réserve, dans cette
+              hypothèse, le droit de ne pas attribuer les dotations aux fraudeurs et/ ou de poursuivre devant les
+              juridictions compétentes les auteurs de ces fraudes.
+
+              Article 8 – DÉPÔT DU REGLEMENT
+              Le règlement est, à titre gratuit et en intégralité, mis à disposition des Participants sur la plateforme.
+              Il pourra être, à titre gratuit, adressé par e-mail sur simple demande. Une copie peut être obtenue
+              gratuitement auprès de la Société Organisatrice sur simple demande écrite à l'adresse indiquée ci-dessous
+              ou directement accessible sur https://vw.hivehorizon.com/
+              Volkswagen Group France dont le siège social est situé 11 avenue de Boursonne 02600 Villers-Cotterets,
+              enregistrée au RCS de Soissons sous le numéro d'entreprise Soissons B 832 277 370,il ne sera répondu à
+              aucune autre demande orale concernant le Jeu.
+
+              Le règlement est déposé à l’étude FRADIN TRONEL SASSARD et associés, Commissaires de Justice à Lyon.
+              ARTICLE 9. LA LOI APPLICABLE
+              Le Règlement est exclusivement régi par la loi française notamment pour tout litige qui viendrait à naître
+              du fait du Jeu ou qui serait directement ou indirectement lié au Jeu, ce sans préjudice des éventuelles
+              règles de conflits de lois pouvant exister. Pour tout litige entre le(s) Participant(s) et la Société
+              Organisatrice, les règles de compétence légale s’appliqueront.
+
+              Le Jeu, le Règlement et son interprétation sont soumis à la loi française.
+
+              ARTICLE 10 – LES DONNEES A CARACTERE PERSONNEL
+              Les données à caractère personnel collectées dans le cadre de chaque Jeu-concours sont les noms, prénoms,
+              catégories professionnels, revenus du foyer, pays, emails des participants et des Gagnants (ci-après les «
+              Données à caractère personnel »).
+              Les Données à caractère personnel ainsi collectées font l’objet d’un traitement de la part de la Société
+              Organisatrice, afin de permettre la désignation des Gagnants et des suppléants et l’envoi des Lots.
+              Le responsable du traitement des Données à caractère personnel Volkswagen Group France dont le siège
+              social est situé 11 avenue de Boursonne 02600 Villers-Cotterets, enregistrée au RCS de Soissons sous le
+              numéro d'entreprise Soissons B 832 277 370, (Si après « responsable du traitement »)
+              Le Responsable du Traitement s’engage à collecter et traiter les Données à caractère personnel
+              conformément à la règlementation en vigueur, à savoir :
+              - La loi dite « Informatiques et Libertés » n°78-17 du 6 janvier 1978 modifiée
+
+              - La loi n°2018-493 du 20 juin 2018 relative à la protection des données personnelles et son décret
+              d’application n°2018-687 du 1er août 2018,
+              - Règlement (UE) 2016/79 du Parlement européen et du Conseil du 27 avril 2016 relatif à la protection des
+              personnes physiques à l’égard du traitement des données à caractère personnel et à la libre circulation de
+              ces données.
+              Les Données à caractère personnel sont transmises à l’entreprise WMH PROJECT (ci-après les « Destinataires
+              des Données ») pour le compte de DAIKIN (ci-après le « Propriétaire des Données »).
+              Les Données à caractère personnel seront conservées par les Destinataires pour la durée nécessaire à la
+              réalisation du Jeu-concours soit pour une durée de 3 mois.
+              Les Données à caractère personnel seront conservées par le Propriétaire des Données pendant 2 ans dans le
+              cadre de leurs actions de communications/marketing.
+              Le Participant dispose des droits suivants, qu’il peut librement exercer auprès du Responsable du
+              traitement :
+              - Le droit d’accès, de rectification et/ou d’effacement de ses Données à caractère personnel,
+              - Le droit de limiter le traitement de ses Données à caractère personnel,
+              - Le droit de s’opposer au traitement de ses Données à caractère personnel,
+              - Le droit à la portabilité de ses Données à caractère personnel,
+              - Le droit de retirer son consentement au traitement de ses Données à caractère personnel, et ce, à tout
+              moment.
+
+              Afin d’exercer ses droits, vous pouvez joindre notre service de protection des données, y compris le
+              délégué à la protection des données, à l’adresse suivante :
+
+              Courriel : donneespersonnelles@volkswagengroup.fr
+              Ou par écrit : VOLKSWAGEN Group France, Relations client – 11 avenue de Boursonne, BP 62, 02601 Villers
+              Cotterêts Cedex, France.
+
+
+              Le Participant dispose également du droit d’introduire une réclamation auprès d’une autorité de contrôle.
+              En France, l’autorité de contrôle compétente est la Commission Nationale de l’Informatique et des Libertés
+              (CNIL) - 3 Place de Fontenoy - TSA 80715- 75334 PARIS CEDEX 07.
+
+
             </p>
           </div>
           <div class="flex flex-col justify-center items-center gap-2 mt-4">
