@@ -280,6 +280,21 @@ const onSubmit = async () => {
     router.push('/success-optin')
   }
 }
+
+const legalDialogRef = ref(null)
+
+const legalDialogMotion = useMotion(legalDialogRef, {
+  initial: { opacity: 0, y: 20 },
+  enter: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { 
+      duration: 400,
+      delay: 500 + (formFields.value.length + consentFields.value.length) * 100, 
+      ease: 'easeOut' 
+    } 
+  },
+})
 </script>
 
 <template>
@@ -290,33 +305,29 @@ const onSubmit = async () => {
           <span v-if="gameStore.gamesWon > 0">Félicitations !</span>
         </h2>
         <h2 class="text-xl" ref="subtitleRef" v-motion="subtitleMotion">
-          Vous avez gagné {{ gameStore.gamesWon }} étape{{ gameStore.gamesWon > 1 ? 's' : '' }} sur 3. Remplissez et envoyez le formulaire
+          Vous avez gagné {{ gameStore.gamesWon }} étape{{ gameStore.gamesWon > 1 ? 's' : '' }} sur 3. Remplissez et
+          envoyez le formulaire
           afin d'avoir une chance d'être tiré au sort pour gagner votre lot.
         </h2>
       </div>
       <form @submit.prevent="onSubmit" class="flex flex-col gap-4 max-w-[600px]">
-        <div v-for="(field, index) in formFields" :key="field" class="flex flex-col" v-motion="createFieldMotion(index)">
+        <div v-for="(field, index) in formFields" :key="field" class="flex flex-col"
+          v-motion="createFieldMotion(index)">
           <label :for="field" class="text-xs mb-[5px]">{{ fieldLabels[field] }}</label>
-          <input 
-            :id="field" 
-            v-model="values[field]" 
-            :type="field === 'email' ? 'email' : 'text'"
+          <input :id="field" v-model="values[field]" :type="field === 'email' ? 'email' : 'text'"
             :inputmode="field === 'telephone' ? 'numeric' : 'text'"
-            :pattern="field === 'telephone' ? '[0-9]*' : undefined"
-            :placeholder="fieldPlaceholders[field]" 
-            class="p-1 text-vw-dark" 
-            autocomplete="off" 
-          />
+            :pattern="field === 'telephone' ? '[0-9]*' : undefined" :placeholder="fieldPlaceholders[field]"
+            class="p-1 text-vw-dark" autocomplete="off" />
           <p v-if="hasSubmitted && errors[field]" class="text-sm text-red-400 mt-1">{{ errors[field] }}</p>
         </div>
         <div class="flex flex-col space-y-4 py-4">
-          <div v-for="(field, index) in consentFields" :key="field" class="flex items-start space-x-3" v-motion="createConsentMotion(index)">
+          <div v-for="(field, index) in consentFields" :key="field" class="flex items-start space-x-3"
+            v-motion="createConsentMotion(index)">
             <input :id="field" v-model="values[field]" type="checkbox" class="mt-1 big-checkbox" />
             <div class="flex">
               <label :for="field" class="text-xs">
                 {{ field === 'consentData' ? "J'autorise Volkswagen à traiter mes données personnelles." : "J'accepte de recevoir des communications marketing." }}
                 <span v-if="field === 'consentData'" class="text-red-400 ml-1">*</span>
-                <LegalDialog v-if="field === 'consentData'" class="m-0 p-0" />.
               </label>
             </div>
           </div>
@@ -326,6 +337,9 @@ const onSubmit = async () => {
           <p class="text-xs mt-2" ref="requiredFieldRef" v-motion="requiredFieldMotion">
             <span class="text-red-400">*</span> Champ obligatoire
           </p>
+        </div>
+        <div class="flex justify-start m-0 mb-5 p-0" ref="legalDialogRef" v-motion="legalDialogMotion">
+          <LegalDialog />
         </div>
         <div class="inline-block" ref="submitButtonRef" v-motion="submitButtonMotion">
           <button :disabled="isSaving" type="submit" class="bg-vw-light text-white text-2xl font-medium py-1 px-8">
