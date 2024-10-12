@@ -306,13 +306,15 @@ const legalDialogMotion = useMotion(legalDialogRef, {
         </h2>
         <h2 class="text-xl" ref="subtitleRef" v-motion="subtitleMotion">
           Vous avez gagné {{ gameStore.gamesWon }} étape{{ gameStore.gamesWon > 1 ? 's' : '' }} sur 3. Remplissez et
-          envoyez le formulaire afin d'avoir une chance d'être tiré au sort pour remporter votre bon d'achat d'une valeur de 100€.
+          envoyez le formulaire afin d'avoir une chance d'être tiré au sort pour remporter votre bon d'achat d'une
+          valeur de 100€.
         </h2>
       </div>
       <form @submit.prevent="onSubmit" class="flex flex-col gap-4 max-w-[600px]">
         <div v-for="(field, index) in formFields" :key="field" class="flex flex-col"
           v-motion="createFieldMotion(index)">
-          <label :for="field" class="text-xs mb-[5px]">{{ fieldLabels[field] }}</label>
+          <label :for="field" class="text-xs mb-[5px]">{{ fieldLabels[field] }} <span
+              class="text-red-400">*</span></label>
           <input :id="field" v-model="values[field]" :type="field === 'email' ? 'email' : 'text'"
             :inputmode="field === 'telephone' ? 'numeric' : 'text'"
             :pattern="field === 'telephone' ? '[0-9]*' : undefined" :placeholder="fieldPlaceholders[field]"
