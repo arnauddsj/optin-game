@@ -39,7 +39,7 @@ onMounted(() => {
         <div class="content flex flex-col gap-10" ref="content" v-motion="contentMotion">
           <h2 class="text-2xl">
             <span class="font-bold">Merci,</span>
-            <br /><br />
+            <br />
             nous avons bien reçu votre participation.
           </h2>
           <div ref="button" v-motion="buttonMotion">
