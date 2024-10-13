@@ -225,7 +225,7 @@ onMounted(() => {
       <div class="flex flex-col">
         <div class="game-container flex-grow grid grid-cols-3 gap-s p-4 justify-self: center">
           <!-- Left column: Initial cars -->
-          <div class="col-span-1 drop-zones grid grid-rows-8 gap-2">
+          <div class="col-span-1 drop-zones grid grid-rows-8 gap-1">
             <div v-for="(zone, index) in zones.slice(8)" :key="zone.id" class="drop-zone flex items-center justify-center"
               :data-zone-id="zone.id">
               <div v-if="zone.car" class="car-item flex items-center justify-center w-full h-full"
@@ -250,7 +250,7 @@ onMounted(() => {
           </div>
 
           <!-- Right column: Drop zones -->
-          <div class="col-span-1 drop-zones grid grid-rows-8 gap-2">
+          <div class="col-span-1 drop-zones grid grid-rows-8 gap-1">
             <div v-for="zone in zones.slice(0, 8)" :key="zone.id"
               class="drop-zone bg-vw-light flex items-center justify-center" :data-zone-id="zone.id"
               v-motion="{ initial: { opacity: 0, scale: 0.8 }, enter: { opacity: 1, scale: 1, transition: { duration: 300 } } }">
