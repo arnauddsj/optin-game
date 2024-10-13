@@ -232,7 +232,7 @@ onMounted(() => {
                 :data-car-id="zone.car.id" @touchstart="startDrag($event, zone.car)" @touchmove="onDrag"
                 @touchend="endDrag"
                 v-motion="createCarAnimation(index)">
-                <img :src="zone.car.image" :alt="zone.car.name" class="object-contain w-full h-full">
+                <img :src="zone.car.image" :alt="zone.car.name" class="object-contain w-full h-full" style="max-wdith: 100px;">
               </div>
             </div>
           </div>
@@ -242,7 +242,7 @@ onMounted(() => {
             <div class="absolute h-full w-0.5 bg-white left-1/2 transform -translate-x-1/2"></div>
             <div v-for="(zone, index) in zones.slice(0, 8)" :key="zone.id"
               class="year-marker flex items-center justify-center flex-grow">
-              <span class="year-text text-white font-bold bg-vw-dark px-1 py-1"
+              <span class="year-text text-white font-bold bg-vw-dark px-1 py-1" style="font-size: 0.8rem;"
                 v-motion="{ initial: { opacity: 0, x: -20 }, enter: { opacity: 1, x: 0, transition: { delay: index * 50, duration: 300 } } }">
                 {{ zone.year }}
               </span>
