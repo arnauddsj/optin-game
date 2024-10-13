@@ -318,7 +318,7 @@ const legalDialogMotion = useMotion(legalDialogRef, {
           <input :id="field" v-model="values[field]" :type="field === 'email' ? 'email' : 'text'"
             :inputmode="field === 'telephone' ? 'numeric' : 'text'"
             :pattern="field === 'telephone' ? '[0-9]*' : undefined" :placeholder="fieldPlaceholders[field]"
-            class="p-1 text-vw-dark" autocomplete="off" />
+            class="text-vw-dark" autocomplete="off" />
           <p v-if="hasSubmitted && errors[field]" class="text-sm text-red-400 mt-1">{{ errors[field] }}</p>
         </div>
         <div class="flex flex-col space-y-4 py-4">
@@ -348,7 +348,7 @@ const legalDialogMotion = useMotion(legalDialogRef, {
           </button>
         </div>
       </form>
-      <p v-if="submissionStatus" class="mt-4 text-xl font-bold text-vw-light">{{ submissionStatus }}</p>
+      <p v-if="submissionStatus" class="mt-2 text-xl font-bold text-vw-light" style="min-height: 1rem!important; padding-top:0!important;padding-bottom:0!important;font-size: 0.85rem;">{{ submissionStatus }}</p>
     </div>
   </PublicLayout>
 </template>
