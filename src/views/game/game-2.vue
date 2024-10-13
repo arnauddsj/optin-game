@@ -136,7 +136,7 @@ onMounted(() => {
         <h2 class="mb-[2rem]" ref="title" v-motion="titleMotion" style="line-height: 1.25rem;">
           Parmi ces propositions, quelle version <span class="font-bold">n’est pas un modèle sportif</span> de la Golf ?
         </h2>
-        <div class="grid grid-cols-2 gap-x-6 gap-y-10 mb-4" ref="golfContainer" v-motion="golfContainerMotion">
+        <div class="grid grid-cols-2 gap-x-4 gap-y-4 mb-1" ref="golfContainer" v-motion="golfContainerMotion">
           <div v-for="(golf, index) in golfs" :key="golf.id" class="golf flex flex-col items-center h-full"
             :class="{ 'selected': golf.isSelected }" v-motion="createGolfAnimation(index)">
             <div class="flex flex-col flex-grow items-center">
