@@ -21,7 +21,7 @@ const handleClick = () => {
 
 <template>
   <div>
-    <button @click="handleClick" class="bg-vw-light text-white text-1xl font-medium py-1 px-2 whitespace-nowrap outline-none inline-block mx-auto" style="min-height: 2rem!important; padding-top:0!important;padding-bottom:0!important;">
+    <button @click="handleClick" class="bg-vw-light text-white text-1xl font-medium py-1 px-2 whitespace-nowrap outline-none inline-block mx-auto" style="min-height: 2rem!important; padding-top:0!important;padding-bottom:0!important;font-size: 0.85rem;">
       {{ cta }}
     </button>
   </div>
