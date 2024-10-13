@@ -37,7 +37,7 @@ onMounted(() => {
 <template>
   <PublicLayout>
     <div class="flex flex-col h-full overflow-hidden" ref="container" v-motion="containerMotion">
-      <div class="flex flex-col flex-grow justify-center p-4">
+      <div class="flex flex-col flex-grow justify-center p-2">
         <div class="content flex flex-col gap-4">
           <h2 class="" ref="title" v-motion="titleMotion" style="line-height: 1rem!important;font-size:0.8rem!important;">
             Volkswagen a produit 8 générations de Golf depuis 1974, saurez-vous les reconnaître et <span
