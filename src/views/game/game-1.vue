@@ -223,7 +223,7 @@ onMounted(() => {
   <PublicLayout>
     <ToastProvider>
       <div class="flex flex-col">
-        <div class="game-container flex-grow grid grid-cols-3 gap-s p-4 justify-self: center">
+        <div class="game-container flex-grow grid grid-cols-3 gap-s p-1 justify-self: center">
           <!-- Left column: Initial cars -->
           <div class="col-span-1 drop-zones grid grid-rows-8 gap-1">
             <div v-for="(zone, index) in zones.slice(8)" :key="zone.id" class="drop-zone flex items-center justify-center"

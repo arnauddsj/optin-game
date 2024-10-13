@@ -39,7 +39,7 @@ onMounted(() => {
     <div class="flex flex-col h-full overflow-hidden" ref="container" v-motion="containerMotion">
       <div class="flex flex-col flex-grow justify-center p-4">
         <div class="content flex flex-col gap-4" style="line-height: 1.2rem">
-          <h2 ref="title" v-motion="titleMotion">
+          <h2 ref="title" v-motion="titleMotion" style="line-height: 0.85rem!important;font-size:0.6rem!important;">
             À l'été 1976, Volkswagen a lancé sur le marché une Golf particulièrement sportive : la GTI. Qui deviendra
             ensuite le modèle sportif compact le plus vendu au monde.
           </h2>
