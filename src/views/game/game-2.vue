@@ -133,7 +133,7 @@ onMounted(() => {
   <PublicLayout>
     <ToastProvider>
       <div class="flex flex-col flex-grow px-4 justify-center">
-        <h2 class="mb-[2rem]" ref="title" v-motion="titleMotion" style="font-size: 0.8rem; line-height: 1rem;">
+        <h2 ref="title" v-motion="titleMotion" style="font-size: 0.8rem; line-height: 1rem;">
           Parmi ces propositions, quelle version <span class="font-bold">n’est pas un modèle sportif</span> de la Golf ?
         </h2>
         <div class="grid grid-cols-2 gap-x-4 gap-y-4 mb-1" ref="golfContainer" v-motion="golfContainerMotion">
@@ -142,7 +142,7 @@ onMounted(() => {
             <div class="flex flex-col flex-grow items-center">
               <img :src="golf.image" :alt="golf.name" class="cursor-pointer" @click="toggleChoice(golf)"
                 :style="{ transform: golf.isSelected ? 'scale(1.05)' : 'scale(1)' }">
-              <p class="text-center mt-2">{{ golf.name }}</p>
+              <p class="text-center mt-1" style="font-size: 0.8rem; line-height: 1rem;">{{ golf.name }}</p>
             </div>
           </div>
         </div>
