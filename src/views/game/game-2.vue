@@ -146,7 +146,7 @@ onMounted(() => {
             </div>
           </div>
         </div>
-        <button class="bg-vw-light text-white text-2xl font-medium py-1 px-8 whitespace-nowrap outline-none" style="margin-top:20px;"
+        <button class="bg-vw-light text-white font-medium py-1 px-8 whitespace-nowrap outline-none" style="margin-top:20px;min-height: 1.3rem!important; padding-top:0!important;padding-bottom:0!important;font-size: 0.85rem;"
           @click="validateSelection" ref="validateButton" v-motion="validateButtonMotion">
           Valider
         </button>
