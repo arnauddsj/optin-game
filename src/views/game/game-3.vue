@@ -144,7 +144,7 @@ onMounted(() => {
                   :style="{ transform: tech.isSelected ? 'scale(1.05)' : 'scale(1)' }"
                   :class="{ 'chatGPT': tech.name === 'ChatGPT' }">
               </div>
-              <p class="text-center mt-2">{{ tech.name }}</p>
+              <p class="text-center mt-2" style="font-size: 0.5rem!important; line-height: 0.75rem!important;">{{ tech.name }}</p>
             </div>
           </div>
         </div>
@@ -208,8 +208,8 @@ img {
 }
 
 img {
-  max-height: 200px;
-  width: auto;
+  height: auto;
+  width: 150px;
   object-fit: contain;
 }
 </style>
