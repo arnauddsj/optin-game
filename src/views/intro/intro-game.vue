@@ -38,7 +38,7 @@ onMounted(() => {
   <PublicLayout>
     <div class="flex flex-col h-full overflow-hidden" ref="container" v-motion="containerMotion">
       <div class="flex flex-col flex-grow justify-center p-2 gap-4" style="line-height: 1.2rem">
-        <p ref="text" v-motion="textMotion" style="line-height: 1rem!important;font-size:0.8rem!important;">
+        <p ref="text" v-motion="textMotion" style="line-height: 0.85rem!important;font-size:0.6rem!important;">
           Pour les 50 ans de la Golf, tentez de remporter un <span class="font-bold">bon d'achat d'une valeur de
           100€</span> sur la boutique en ligne Volkswagen.
         </p>

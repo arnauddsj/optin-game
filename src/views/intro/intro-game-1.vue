@@ -39,7 +39,7 @@ onMounted(() => {
     <div class="flex flex-col h-full overflow-hidden" ref="container" v-motion="containerMotion">
       <div class="flex flex-col flex-grow justify-center p-2">
         <div class="content flex flex-col gap-4">
-          <h2 class="" ref="title" v-motion="titleMotion" style="line-height: 1rem!important;font-size:0.8rem!important;">
+          <h2 class="" ref="title" v-motion="titleMotion" style="line-height: 0.85rem!important;font-size:0.6rem!important;">
             Volkswagen a produit 8 générations de Golf depuis 1974, saurez-vous les reconnaître et <span
               class="font-bold">les placer dans le bon ordre chronologique</span> ?
           </h2>
