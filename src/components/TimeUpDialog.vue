@@ -29,7 +29,7 @@ const handleQuit = () => {
     <DialogPortal>
       <DialogOverlay class="fixed inset-0 z-50 bg-black/50" />
       <DialogContent class="fixed inset-0 z-50 flex items-center justify-center">
-        <div class="flex flex-col gap-5 bg-white py-10 px-5 shadow-lg text-center text-vw-dark w-[80%] max-w-md">
+        <div class="flex flex-col gap-4 bg-white py-10 px-4 shadow-lg text-center text-vw-dark w-[80%] max-w-md">
           <DialogTitle class="font-bold" style="line-height: 1.25rem;">
             Malheureusement le temps est écoulé !
           </DialogTitle>

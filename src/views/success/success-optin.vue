@@ -35,9 +35,9 @@ onMounted(() => {
 <template>
   <PublicLayout>
     <div class="flex flex-col h-full" ref="container" v-motion="containerMotion">
-      <div class="flex flex-col flex-1 justify-center p-10">
-        <div class="content flex flex-col gap-10" ref="content" v-motion="contentMotion">
-          <h2 class="text-2xl">
+      <div class="flex flex-col flex-1 justify-center p-4">
+        <div class="content flex flex-col gap-4" ref="content" v-motion="contentMotion">
+          <h2 style="line-height: 1.25rem;">
             <span class="font-bold">Merci,</span>
             <br />
             nous avons bien reçu votre participation.
