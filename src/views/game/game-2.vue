@@ -142,7 +142,7 @@ onMounted(() => {
             <div class="flex flex-col flex-grow items-center">
               <img :src="golf.image" :alt="golf.name" class="cursor-pointer" @click="toggleChoice(golf)"
                 :style="{ transform: golf.isSelected ? 'scale(1.05)' : 'scale(1)' }">
-              <p class="text-center mt-1" style="font-size: 0.8rem; line-height: 1rem;">{{ golf.name }}</p>
+              <p class="text-center mt-1" style="font-size: 0.5rem!important; line-height: 0.75rem!important;">{{ golf.name }}</p>
             </div>
           </div>
         </div>
