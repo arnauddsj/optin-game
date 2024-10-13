@@ -299,18 +299,18 @@ const legalDialogMotion = useMotion(legalDialogRef, {
 
 <template>
   <PublicLayout>
-    <div class="flex flex-col justify-center gap-5 w-[80vw] px-5">
+    <div class="flex flex-col justify-center gap-5 w-[80vw] px-2">
       <div class="flex flex-col gap-2">
         <h2 class="text-xl" ref="titleRef" v-motion="titleMotion">
           <span v-if="gameStore.gamesWon > 0">Félicitations !</span>
         </h2>
-        <h2 class="text-xl" ref="subtitleRef" v-motion="subtitleMotion">
+        <h2 class="text-xl" ref="subtitleRef" v-motion="subtitleMotion" style="font-size: 0.6rem; line-height: 0.8rem;">
           Vous avez gagné {{ gameStore.gamesWon }} étape{{ gameStore.gamesWon > 1 ? 's' : '' }} sur 3. Remplissez et
           envoyez le formulaire afin d'avoir une chance d'être tiré au sort pour remporter votre bon d'achat d'une
           valeur de 100€.
         </h2>
       </div>
-      <form @submit.prevent="onSubmit" class="flex flex-col gap-4 max-w-[600px]">
+      <form @submit.prevent="onSubmit" class="flex flex-col gap-2 max-w-[600px]">
         <div v-for="(field, index) in formFields" :key="field" class="flex flex-col"
           v-motion="createFieldMotion(index)">
           <label :for="field" class="text-xs mb-[5px]">{{ fieldLabels[field] }} <span
