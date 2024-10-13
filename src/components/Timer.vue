@@ -54,7 +54,7 @@ onUnmounted(() => {
 
 <template>
   <div class="circular-timer">
-    <svg width="90" height="90" viewBox="0 0 90 90"> <!-- Increased from 60x60 to 90x90 -->
+    <svg width="90" height="90" viewBox="0 0 180 180"> <!-- Increased from 60x60 to 90x90 -->
       <circle cx="45" cy="45" r="36" fill="none" stroke="#ffffff" stroke-width="3" stroke-opacity="0.3" /> <!-- Updated cx, cy, r, and stroke-width -->
       <circle cx="45" cy="45" r="36" fill="none" stroke="#ffffff" stroke-width="3" :stroke-dasharray="strokeDasharray"
         :stroke-dashoffset="strokeDashoffset" transform="rotate(-90 45 45)" /> <!-- Updated cx, cy, r, stroke-width, and transform -->
@@ -67,9 +67,9 @@ onUnmounted(() => {
 
 <style scoped>
 .circular-timer {
-  position: relative;
-  margin: 0 auto;
-  display: block;
+  position: absolute;
+  top: 18px;
+  left: 50px;
 }
 
 circle {
