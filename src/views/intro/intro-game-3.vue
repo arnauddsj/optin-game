@@ -37,9 +37,9 @@ onMounted(() => {
 <template>
   <PublicLayout>
     <div class="flex flex-col h-full overflow-hidden" ref="container" v-motion="containerMotion">
-      <div class="flex flex-col flex-grow justify-center p-10">
-        <div class="content flex flex-col gap-10">
-          <h2 class="text-2xl" ref="title" v-motion="titleMotion">
+      <div class="flex flex-col flex-grow justify-center p-4">
+        <div class="content flex flex-col gap-4"  style="line-height: 1.2rem">
+          <h2 ref="title" v-motion="titleMotion">
             Traversant les générations depuis 50 ans, la Golf n'a cessé d'évoluer avec son temps. La preuve en est avec
             la Nouvelle Golf sortie cette année, qui intègre une <span class="font-bold">technologie embarquée</span>
             permettant notamment de réaliser des recherches sur Internet via la commande vocale.
