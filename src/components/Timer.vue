@@ -68,8 +68,8 @@ onUnmounted(() => {
 <style scoped>
 .circular-timer {
   position: absolute;
-  top: 18px;
-  left: 50px;
+  top: 10px;
+  left: 40px;
 }
 
 circle {

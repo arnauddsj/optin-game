@@ -25,7 +25,7 @@ import Logo50Years from '@/assets/50ans-logo.svg'
   width: 100%;
   position: relative;
   z-index: 1;
-  margin-top: 0.25rem;
+  margin-top: 0rem;
 }
 
 .logo-wrapper {
