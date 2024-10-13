@@ -133,7 +133,7 @@ onMounted(() => {
   <PublicLayout>
     <ToastProvider>
       <div class="flex flex-col flex-grow px-4 justify-center">
-        <h2 ref="title" v-motion="titleMotion" style="font-size: 0.8rem; line-height: 1rem;">
+        <h2 ref="title" v-motion="titleMotion" style="font-size: 0.6rem; line-height: 0.8rem;">
           Parmi ces propositions, quelle version <span class="font-bold">n’est pas un modèle sportif</span> de la Golf ?
         </h2>
         <div class="grid grid-cols-2 gap-x-4 gap-y-4 mb-1" ref="golfContainer" v-motion="golfContainerMotion" style="margin-top:20px;">

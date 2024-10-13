@@ -130,8 +130,8 @@ onMounted(() => {
 <template>
   <PublicLayout>
     <ToastProvider>
-      <div class="flex flex-col flex-grow px-10 justify-center">
-        <h2 class="text-2xl mb-[2rem] px-2" ref="title" v-motion="titleMotion">
+      <div class="flex flex-col flex-grow px-2 justify-center">
+        <h2 class="mb-[1rem] px-2" ref="title" v-motion="titleMotion"  style="line-height: 0.85rem!important;font-size:0.6rem!important;">
           Parmi ces technologies, laquelle vous permet d'effectuer des <span class="font-bold"> recherches vocales ?
           </span>
         </h2>
