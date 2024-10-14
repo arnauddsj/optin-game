@@ -54,7 +54,7 @@ const resetSelection = () => {
 }
 
 const showTimeUpDialog = ref(false)
-const timerDuration = ref(15)
+const timerDuration = ref(55)
 const timerKey = ref(0)
 
 const handleTimeUp = () => {
