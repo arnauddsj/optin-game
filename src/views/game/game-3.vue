@@ -141,7 +141,7 @@ onMounted(() => {
             <div class="">
               <div class="justify-center">
                 <img :src="tech.image" :alt="tech.name" class="cursor-pointer" @click="toggleChoice(tech)"
-                  :style="{ transform: tech.isSelected ? 'scale(1.05)' : 'scale(1)' }"
+                  :style="{ transform: tech.isSelected ? 'scale(1.25)' : 'scale(1)' }"
                   :class="{ 'chatGPT': tech.name === 'ChatGPT' }">
               </div>
               <p class="text-center mt-2" style="font-size: 0.5rem!important; line-height: 0.75rem!important;">{{ tech.name }}</p>
