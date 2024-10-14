@@ -136,12 +136,12 @@ onMounted(() => {
           </span>
         </h2>
         <div class="grid grid-cols-2 gap-2 auto-rows-fr" ref="techContainer" v-motion="techContainerMotion" style="margin-top:20px;">
-          <div v-for="(tech, index) in techs" :key="tech.id" class="flex flex-col items-center "
+          <div v-for="(tech, index) in techs" :key="tech.id" class="flex flex-col items-center picto"
             :class="{ 'selected': tech.isSelected }" v-motion="createTechAnimation(index)">
             <div class="">
               <div class="justify-center">
                 <img :src="tech.image" :alt="tech.name" class="cursor-pointer" @click="toggleChoice(tech)"
-                  :style="{ transform: tech.isSelected ? 'scale(1.25);' : 'scale(1);' }{ outline: tech.isSelected ? '4px solid #00B0F0' : 'none' }"
+                  :style="{ transform: tech.isSelected ? 'scale(1.25);' : 'scale(1);' }"
                   :class="{ 'chatGPT': tech.name === 'ChatGPT' }">
               </div>
               <p class="text-center mt-2" style="font-size: 0.5rem!important; line-height: 0.75rem!important;">{{ tech.name }}</p>
@@ -211,5 +211,9 @@ img {
   height: auto;
   width: 100px;
   object-fit: contain;
+}
+.picto.selected img {
+  outline: 4px solid #00B0F0;
+  outline-offset: 4px;
 }
 </style>
