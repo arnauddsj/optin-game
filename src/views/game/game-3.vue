@@ -135,7 +135,7 @@ onMounted(() => {
           Parmi ces technologies, laquelle vous permet d'effectuer des <span class="font-bold"> recherches vocales ?
           </span>
         </h2>
-        <div class="grid grid-cols-2 gap-2 auto-rows-fr" ref="techContainer" v-motion="techContainerMotion">
+        <div class="grid grid-cols-2 gap-2 auto-rows-fr" ref="techContainer" v-motion="techContainerMotion" style="margin-top:20px;">
           <div v-for="(tech, index) in techs" :key="tech.id" class="flex flex-col items-center "
             :class="{ 'selected': tech.isSelected }" v-motion="createTechAnimation(index)">
             <div class="">
@@ -148,7 +148,7 @@ onMounted(() => {
             </div>
           </div>
         </div>
-        <button class="bg-vw-light text-white font-medium py-1 px-2 whitespace-nowrap outline-none" style="margin-top:0px;min-height: 1.3rem!important; padding-top:0!important;padding-bottom:0!important;font-size: 0.85rem;"
+        <button class="bg-vw-light text-white font-medium py-1 px-2 whitespace-nowrap outline-none" style="margin-top:20px;min-height: 1.3rem!important; padding-top:0!important;padding-bottom:0!important;font-size: 0.85rem;"
           @click="validateSelection" ref="validateButton" v-motion="validateButtonMotion">
           Valider
         </button>
