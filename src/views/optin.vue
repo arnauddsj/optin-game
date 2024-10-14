@@ -326,7 +326,7 @@ const legalDialogMotion = useMotion(legalDialogRef, {
             v-motion="createConsentMotion(index)">
             <input :id="field" v-model="values[field]" type="checkbox" class="mt-1" style="min-width: 0.5rem;min-height: 0.5rem;" />
             <div class="flex">
-              <label :for="field" class="text-xs" style="line-height:1rem!important;font-size: 0.85rem;">
+              <label :for="field" class="text-xs" style="line-height:0.65rem!important;font-size: 0.5rem;">
                 {{ field === 'consentData' ? "J'autorise Volkswagen à traiter mes données personnelles." : "J'accepte de recevoir des communications marketing." }}
                 <span v-if="field === 'consentData'" class="text-red-400 ml-1">*</span>
               </label>
