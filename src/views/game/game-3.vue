@@ -54,7 +54,7 @@ const resetSelection = () => {
 }
 
 const showTimeUpDialog = ref(false)
-const timerDuration = ref(55)
+const timerDuration = ref(15)
 const timerKey = ref(0)
 
 const handleTimeUp = () => {
@@ -191,7 +191,7 @@ img {
 }
 
 .chatGPT {
-  width: 200px;
+  hirght: 60px;
 }
 
 .tech {
