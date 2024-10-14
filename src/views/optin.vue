@@ -321,7 +321,7 @@ const legalDialogMotion = useMotion(legalDialogRef, {
             class="text-vw-dark" autocomplete="off" style="font-size: 0.6rem!important;" />
           <p v-if="hasSubmitted && errors[field]" class="text-sm text-red-400 mt-1">{{ errors[field] }}</p>
         </div>
-        <div class="flex flex-col space-y-4 py-4">
+        <div class="flex flex-col space-y-2 py-2">
           <div v-for="(field, index) in consentFields" :key="field" class="flex items-start space-x-3"
             v-motion="createConsentMotion(index)">
             <input :id="field" v-model="values[field]" type="checkbox" class="mt-1" style="min-width: 0.5rem;min-height: 0.5rem;" />
