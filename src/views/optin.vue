@@ -299,7 +299,7 @@ const legalDialogMotion = useMotion(legalDialogRef, {
 
 <template>
   <PublicLayout>
-    <div class="flex flex-col justify-center gap-5 w-[80vw]" style="overflow: scroll;">
+    <div class="flex flex-col justify-center gap-5 w-[80vw] scrollable-content" style="overflow: scroll;">
       <div class="flex flex-col gap-2">
         <h2 class="text-xl" ref="titleRef" v-motion="titleMotion">
           <span v-if="gameStore.gamesWon > 0">Félicitations !</span>
