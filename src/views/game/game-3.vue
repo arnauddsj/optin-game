@@ -131,11 +131,11 @@ onMounted(() => {
   <PublicLayout>
     <ToastProvider>
       <div class="flex flex-col flex-grow px-2 justify-center">
-        <h2 class="mb-[1rem] px-2" ref="title" v-motion="titleMotion"  style="line-height: 0.85rem!important;font-size:0.6rem!important;">
+        <h2 class="px-2" ref="title" v-motion="titleMotion"  style="line-height: 0.85rem!important;font-size:0.6rem!important; margin-bottom: 0.5rem;">
           Parmi ces technologies, laquelle vous permet d'effectuer des <span class="font-bold"> recherches vocales ?
           </span>
         </h2>
-        <div class="grid grid-cols-2 gap-2 mb-2 auto-rows-fr" ref="techContainer" v-motion="techContainerMotion">
+        <div class="grid grid-cols-2 gap-2 auto-rows-fr" ref="techContainer" v-motion="techContainerMotion">
           <div v-for="(tech, index) in techs" :key="tech.id" class="flex flex-col items-center "
             :class="{ 'selected': tech.isSelected }" v-motion="createTechAnimation(index)">
             <div class="">
