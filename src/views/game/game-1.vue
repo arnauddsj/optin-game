@@ -253,7 +253,7 @@ onMounted(() => {
           <div class="col-span-1 drop-zones grid grid-rows-8 gap-1">
             <div v-for="zone in zones.slice(0, 8)" :key="zone.id"
               class="drop-zone bg-vw-light flex items-center justify-center" :data-zone-id="zone.id"
-              v-motion="{ initial: { opacity: 0, scale: 0.8 }, enter: { opacity: 1, scale: 1, transition: { duration: 300 } } }">
+              v-motion="{ initial: { opacity: 0, scale: 0.8 }, enter: { opacity: 1, scale: 1, transition: { duration: 300 } } }" style="max-height: 50px;">
               <div v-if="zone.car" class="car-item flex items-center justify-center w-full h-full"
                 :data-car-id="zone.car.id" @touchstart="startDrag($event, zone.car)" @touchmove="onDrag"
                 @touchend="endDrag">
