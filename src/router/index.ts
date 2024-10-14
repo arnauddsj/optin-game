@@ -17,8 +17,7 @@ import IntroGame from '@/views/intro/intro-game.vue'
 import SuccessOptin from '@/views/success/success-optin.vue'
 
 const routes = [
-  { path: '/', component: home },
-  { path: '/intro-game', component: IntroGame },
+  { path: '/', component: IntroGame },
   { path: '/game1', component: Game1 },
   { path: '/game2', component: Game2 },
   { path: '/game3', component: Game3 },
