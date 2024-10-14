@@ -343,12 +343,12 @@ const legalDialogMotion = useMotion(legalDialogRef, {
           <LegalDialog />
         </div>
         <div class="inline-block" ref="submitButtonRef" v-motion="submitButtonMotion">
-          <button :disabled="isSaving" type="submit" class="bg-vw-light text-white text-2xl font-medium py-1 px-8">
+          <button :disabled="isSaving" type="submit" class="bg-vw-light text-white font-medium py-1 px-4" style="min-height: 1rem!important; padding-top:0!important;padding-bottom:0!important;font-size: 0.85rem;">
             Envoyer
           </button>
         </div>
       </form>
-      <p v-if="submissionStatus" class="mt-2 text-xl font-bold text-vw-light" style="min-height: 1rem!important; padding-top:0!important;padding-bottom:0!important;font-size: 0.85rem;">{{ submissionStatus }}</p>
+      <p v-if="submissionStatus" class="mt-2 text-xl font-bold text-vw-light">{{ submissionStatus }}</p>
     </div>
   </PublicLayout>
 </template>
