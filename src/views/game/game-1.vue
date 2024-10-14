@@ -288,10 +288,10 @@ onUnmounted(() => {
 
       <ToastRoot v-model:open="showToast" :duration="2000"
         class="bg-white p-[15px] grid [grid-template-areas:_'title_action'_'description_action'] grid-cols-[auto_max-content] gap-x-[15px] items-center data-[state=open]:animate-slideIn data-[state=closed]:animate-hide data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=cancel]:translate-x-0 data-[swipe=cancel]:transition-[transform_200ms_ease-out] data-[swipe=end]:animate-swipeOut">
-        <ToastTitle class="[grid-area:_title] mb-[5px] text-vw-dark text-xl">
+        <ToastTitle class="[grid-area:_title] mb-[5px] text-vw-dark text-xl" style="font-size: 0.5rem!important; line-height: 0.75rem!important;">
           Continuez !
         </ToastTitle>
-        <ToastDescription class="[grid-area:_description] m-0 text-vw-dark text-xs">
+        <ToastDescription class="[grid-area:_description] m-0 text-vw-dark text-xs" style="font-size: 0.5rem!important; line-height: 0.75rem!important;">
           {{ 8 - zones.slice(0, 8).filter(zone => zone.car !== null).length }} emplacement(s) sont incorrects.
         </ToastDescription>
       </ToastRoot>
