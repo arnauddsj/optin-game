@@ -77,7 +77,7 @@ let db: IDBDatabase
 const enableScroll = () => {
   document.body.style.overflow = 'auto'
   document.body.style.overscrollBehavior = 'auto'
-  document.removeEventListener('touchmove', preventDefault, { passive: false })
+  document.removeEventListener('touchmove', preventDefault)
 }
 
 const preventDefault = (e: Event) => e.preventDefault()
