@@ -193,7 +193,7 @@ const closeDialog = () => {
           </div>
           <div class="flex flex-col justify-center items-center gap-2 mt-4">
             <DialogClose asChild>
-              <button @click="closeDialog" class="bg-vw-light text-white text-base py-2 px-4 rounded">
+              <button @click="closeDialog" class="bg-vw-light text-white text-base py-2 px-4 rounded" style="min-height: 1rem!important; padding-top:0!important;padding-bottom:0!important;font-size: 0.85rem;">
                 Fermer
               </button>
             </DialogClose>
