@@ -31,10 +31,10 @@ const closeDialog = () => {
       <DialogOverlay class="fixed inset-0 z-50 bg-black/50" />
       <DialogContent class="fixed inset-0 z-50 flex items-center justify-center">
         <div class="flex flex-col gap-3 bg-white py-5 px-5 shadow-lg text-center text-vw-dark w-[80%] max-w-md">
-          <DialogTitle class="text-3xl font-bold mb-4">
+          <DialogTitle class="font-bold mb-4" style="font-size: 0.85rem; line-height: 1rem;">
             Règlement du jeu concours
           </DialogTitle>
-          <div class="scrollable-content">
+          <div class="scrollable-content" style="font-size: 0.5rem; line-height: 0.7rem;">
             <p>Règlement du jeu concours Stand Volkswagen Group France – Mondial de l'Auto 2024<br>
               Pour le challenge «Time Escape – Golf» disponible sur a plateforme https://vw.hivehorizon.com/
               (inscription et participation).</p>
