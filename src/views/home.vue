@@ -39,7 +39,7 @@ onMounted(() => {
 
 <template>
   <PublicLayout>
-    <div class="flex flex-col justify-center p-16 text-2xl gap-12">
+    <div class="flex flex-col justify-center p-2 text-2xl gap-12" style="line-height: 0.85rem!important;font-size:0.6rem!important;">
       <p>Ceci est la page d'initialisation du jeu. Appuyez sur le bouton passer en plein écran puis Démarrez le jeu.</p>
       <button @click="toggleFullscreen"
         class="bg-vw-light text-white text-xl font-medium py-2 px-4 rounded-full outline-none">
