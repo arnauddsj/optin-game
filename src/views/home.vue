@@ -48,6 +48,7 @@ onMounted(() => {
       <button @click="startGame" class="bg-vw-light text-white text-xl font-medium py-2 px-4 rounded-full outline-none" style="min-height: 1rem!important; padding-top:0!important;padding-bottom:0!important;font-size: 0.85rem;">
         2 - Démarrer le jeu
       </button>
+      
       <button class="self-center max-w-[200px] py-2 px-2 outline-vw-light" @click="goToAdmin">Admin</button>
     </div>
   </PublicLayout>
