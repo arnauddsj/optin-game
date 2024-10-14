@@ -37,7 +37,7 @@ import Logo50Years from '@/assets/50ans-logo.svg'
 }
 
 .years-logo {
-  top: 80px;
+  top: 60px;
   left: 40px;
   height: 4vw;
   width: auto;
