@@ -335,11 +335,11 @@ const legalDialogMotion = useMotion(legalDialogRef, {
           <p v-if="hasSubmitted && errors.consentData" class="text-sm text-red-400 mt-1">
             {{ errors.consentData }}
           </p>
-          <p class="text-xs mt-2" ref="requiredFieldRef" v-motion="requiredFieldMotion">
+          <p class="text-xs mt-2" ref="requiredFieldRef" v-motion="requiredFieldMotion" style="line-height:0.65rem!important;font-size: 0.5rem;">
             <span class="text-red-400">*</span> Champ obligatoire
           </p>
         </div>
-        <div class="flex justify-start m-0 mb-5 p-0" ref="legalDialogRef" v-motion="legalDialogMotion">
+        <div class="flex justify-start m-0 mb-5 p-0" ref="legalDialogRef" v-motion="legalDialogMotion" style="line-height:0.65rem!important;font-size: 0.5rem;">
           <LegalDialog />
         </div>
         <div class="inline-block" ref="submitButtonRef" v-motion="submitButtonMotion">
