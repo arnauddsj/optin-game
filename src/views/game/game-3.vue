@@ -136,7 +136,7 @@ onMounted(() => {
           </span>
         </h2>
         <div class="grid grid-cols-2 gap-2 mb-2 auto-rows-fr" ref="techContainer" v-motion="techContainerMotion">
-          <div v-for="(tech, index) in techs" :key="tech.id" class="tech flex flex-col items-center h-full"
+          <div v-for="(tech, index) in techs" :key="tech.id" class="flex flex-col items-center "
             :class="{ 'selected': tech.isSelected }" v-motion="createTechAnimation(index)">
             <div class="flex flex-col flex-grow items-center justify-center">
               <div class="flex flex-grow items-center justify-center">
@@ -209,7 +209,7 @@ img {
 
 img {
   height: auto;
-  width: 150px;
+  width: 100px;
   object-fit: contain;
 }
 </style>
