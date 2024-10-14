@@ -138,8 +138,8 @@ onMounted(() => {
         <div class="grid grid-cols-2 gap-2 mb-2 auto-rows-fr" ref="techContainer" v-motion="techContainerMotion">
           <div v-for="(tech, index) in techs" :key="tech.id" class="flex flex-col items-center "
             :class="{ 'selected': tech.isSelected }" v-motion="createTechAnimation(index)">
-            <div class="flex flex-col flex-grow items-center justify-center">
-              <div class="flex flex-grow items-center justify-center">
+            <div class="">
+              <div class="justify-center">
                 <img :src="tech.image" :alt="tech.name" class="cursor-pointer" @click="toggleChoice(tech)"
                   :style="{ transform: tech.isSelected ? 'scale(1.05)' : 'scale(1)' }"
                   :class="{ 'chatGPT': tech.name === 'ChatGPT' }">
