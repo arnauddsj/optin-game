@@ -232,7 +232,7 @@ onMounted(() => {
                 :data-car-id="zone.car.id" @touchstart="startDrag($event, zone.car)" @touchmove="onDrag"
                 @touchend="endDrag"
                 v-motion="createCarAnimation(index)">
-                <img :src="zone.car.image" :alt="zone.car.name" class="object-contain w-full h-full" style="max-width: 100px;">
+                <img :src="zone.car.image" :alt="zone.car.name" class="object-contain w-full h-full" style="max-width: 80px;">
               </div>
             </div>
           </div>
