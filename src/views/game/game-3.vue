@@ -191,7 +191,7 @@ img {
 }
 
 .chatGPT {
-  hirght: 60px;
+  height: 60px;
 }
 
 .tech {
