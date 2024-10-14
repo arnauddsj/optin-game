@@ -113,7 +113,6 @@ const startDrag = (event: TouchEvent, car: Car) => {
   draggedCar.value = car
   draggedElement.value = event.target as HTMLElement
 
-  
   const ghostElement = draggedElement.value.cloneNode(true) as HTMLElement
   ghostElement.style.position = 'fixed'
   ghostElement.style.width = '250px'
@@ -121,6 +120,14 @@ const startDrag = (event: TouchEvent, car: Car) => {
   ghostElement.style.zIndex = '1000'
   ghostElement.style.opacity = '0.8'
   ghostElement.style.pointerEvents = 'none'
+
+  const touch = event.touches[0]
+  const rect = draggedElement.value.getBoundingClientRect()
+  const offsetX = touch.clientX - rect.left
+  const offsetY = touch.clientY - rect.top
+
+  ghostElement.style.left = `${touch.clientX - offsetX}px`
+  ghostElement.style.top = `${touch.clientY - offsetY}px`
 
   document.body.appendChild(ghostElement)
   draggedElement.value = ghostElement
@@ -132,8 +139,11 @@ const startDrag = (event: TouchEvent, car: Car) => {
 const onDrag = (event: TouchEvent) => {
   if (draggedElement.value) {
     const touch = event.touches[0]
-    draggedElement.value.style.left = `${touch.clientX - 100}px`
-    draggedElement.value.style.top = `${touch.clientY - 100}px`
+    const rect = draggedElement.value.getBoundingClientRect()
+    const offsetX = rect.width / 2
+    const offsetY = rect.height / 2
+    draggedElement.value.style.left = `${touch.clientX - offsetX}px`
+    draggedElement.value.style.top = `${touch.clientY - offsetY}px`
     event.preventDefault()
   }
 }
