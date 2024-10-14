@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import * as z from 'zod'
 import Airtable from 'airtable'
@@ -74,7 +74,16 @@ const errors = ref<Partial<Record<keyof FormValues, string>>>({})
 
 let db: IDBDatabase
 
+const enableScroll = () => {
+  document.body.style.overflow = 'auto'
+  document.body.style.overscrollBehavior = 'auto'
+  document.removeEventListener('touchmove', preventDefault, { passive: false })
+}
+
+const preventDefault = (e: Event) => e.preventDefault()
+
 onMounted(() => {
+  enableScroll()
   const request = indexedDB.open('OptInDatabase', 4)  
   request.onerror = (event) => {
     console.error("Erreur IndexedDB:", event)
@@ -93,6 +102,10 @@ onMounted(() => {
       store.createIndex('gamesWon', 'gamesWon', { unique: false })
     }
   }
+})
+
+onUnmounted(() => {
+  enableScroll()
 })
 
 const gameStore = useGameStore()
@@ -299,7 +312,7 @@ const legalDialogMotion = useMotion(legalDialogRef, {
 
 <template>
   <PublicLayout>
-    <div class="flex flex-col justify-center gap-5 w-[80vw] scrollable-content" style="overflow: scroll;">
+    <div class="flex flex-col justify-center gap-5 w-[80vw]" style="overflow: scroll;">
       <div class="flex flex-col gap-2">
         <h2 class="text-xl" ref="titleRef" v-motion="titleMotion">
           <span v-if="gameStore.gamesWon > 0">Félicitations !</span>

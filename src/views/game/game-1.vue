@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, watch, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import PublicLayout from '@/layouts/PublicLayout.vue'
 import TimeUpDialog from '@/components/TimeUpDialog.vue'
@@ -223,10 +223,19 @@ const createCarAnimation = (index: number) => ({
   },
 })
 
+const preventScroll = (e: TouchEvent) => {
+  e.preventDefault()
+}
+
 onMounted(() => {
   resetGame()
   document.body.style.overscrollBehavior = 'none'
-  document.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false })
+  document.addEventListener('touchmove', preventScroll, { passive: false })
+})
+
+onUnmounted(() => {
+  document.body.style.overscrollBehavior = 'auto'
+  document.removeEventListener('touchmove', preventScroll)
 })
 </script>
 <template>
@@ -275,12 +284,9 @@ onMounted(() => {
 
         <TimeUpDialog v-if="showTimeUpDialog" @continue="handleContinue" />
         <Timer :duration="timerDuration" :onTimeUp="handleTimeUp" :key="timerKey" />
-        <!-- <div class="absolute bottom-0 left-0 right-0"><button class="text-sm font-regular outline-none"
-            @click="router.push('/intro-game2')">next</button>
-        </div> -->
       </div>
 
-      <ToastRoot v-model:open="showToast" :duration="5000"
+      <ToastRoot v-model:open="showToast" :duration="2000"
         class="bg-white p-[15px] grid [grid-template-areas:_'title_action'_'description_action'] grid-cols-[auto_max-content] gap-x-[15px] items-center data-[state=open]:animate-slideIn data-[state=closed]:animate-hide data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=cancel]:translate-x-0 data-[swipe=cancel]:transition-[transform_200ms_ease-out] data-[swipe=end]:animate-swipeOut">
         <ToastTitle class="[grid-area:_title] mb-[5px] text-vw-dark text-xl">
           Continuez !
@@ -297,10 +303,6 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.game-container {
- 
-}
-
 .drop-zone {
   position: relative;
 }
