@@ -257,7 +257,7 @@ onMounted(() => {
               <div v-if="zone.car" class="car-item flex items-center justify-center w-full h-full"
                 :data-car-id="zone.car.id" @touchstart="startDrag($event, zone.car)" @touchmove="onDrag"
                 @touchend="endDrag">
-                <img :src="zone.car.image" :alt="zone.car.name" class="object-contain w-full h-full">
+                <img :src="zone.car.image" :alt="zone.car.name" class="object-contain w-full h-full" style="max-height: 45px;">
               </div>
             </div>
           </div>
