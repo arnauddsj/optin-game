@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory, RouteLocationNormalized, NavigationGuardNext } from 'vue-router'
 import { useGameStore } from '@/stores/gameStore'
 import { useRouter } from 'vue-router'
-import home from '@/views/home.vue'
 import Game1 from '@/views/game/game-1.vue'
 import Game2 from '@/views/game/game-2.vue'
 import Game3 from '@/views/game/game-3.vue'
@@ -13,12 +12,11 @@ import SuccessGame2 from '@/views/success/success-game-2.vue'
 import SuccessGame3 from '@/views/success/success-game-3.vue'
 import OptInForm from '@/views/optin.vue'
 import AdminScreen from '@/views/admin.vue'
-import IntroGame from '@/views/intro/intro-game.vue'
+import home from '@/views/intro/intro-game.vue'
 import SuccessOptin from '@/views/success/success-optin.vue'
 
 const routes = [
   { path: '/', component: home },
-  { path: '/intro-game', component: IntroGame },
   { path: '/game1', component: Game1 },
   { path: '/game2', component: Game2 },
   { path: '/game3', component: Game3 },
